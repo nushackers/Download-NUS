@@ -1,1 +1,6 @@
-To be updated. Heh heh heh heh.
+You will need:
+
+1. SCSS for generating scss
+2. React.js tools for generating js
+
+After you have installed both, run `sh develop.sh` to start deving!
