@@ -7,14 +7,26 @@
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-    <header>
-        <h1>Download @ NUS</h1>
+    <header id='main-header'>
+        <div class='inner'>
+            <h1>Download @ NUS</h1>
+            <nav>
+                <ul class='clear-list'>
+                    <li><a href='#'>Upload</a></li>
+                    <li><a href='#'>Mirrors</a></li>
+                    <li><a href='#'>Updates</a></li>
+                    <li><a href='#'>About</a></li>
+                </ul>
+            </nav>
+        </div>
     </header>
     <div id='main'>
-
+        <div class='inner'></div>
     </div>
-    <footer>
-        copy right stuff and sheep
+    <footer id='main-footer'>
+        <div class='inner'>
+            copy right stuff and sheep
+        </div>
     </footer>
 
 
@@ -22,6 +34,8 @@
     <script src="js/lib/react.min.js"></script>
 
     <script src="js/components/loginForm.js"></script>
+    <script src="js/components/bundleItem.js"></script>
+    <script src="js/components/bundleList.js"></script>
     <script src="js/components/app.js"></script>
 </body>
 </html>

@@ -1,4 +1,88 @@
+@import "mixins";
+
 body, html{
     margin: 0;
     padding: 0;
+    font-family: helvetica, sans-serif;
+    background: lighten(#f1e767, 30);
+}
+
+ul.clear-list{
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+$max-width: 1000px;
+
+#main, #main-header, #main-footer{
+    width: 100%;
+
+    .inner{
+        max-width: $max-width;
+        width: 100%;
+        margin: 0 auto;
+        padding: 1px 10px;
+    }
+}
+
+#main-header{
+    text-shadow: 0 -1px 1px rgba(black, 0.5), 0 1px 1px rgba(white, 0.5);
+    box-shadow: 0 0 5px black;
+
+    @include gradient(top, #f1e767, #feb645);
+
+    h1{
+        $extension: 1em;
+        border-bottom: 2px solid black;
+        box-shadow: 0 1px 1px white;
+        padding: 0;
+        margin: 0 (-$extension);
+        padding: 10px $extension;
+        margin-bottom: 2px;
+    }
+
+    nav{
+        li{
+            float: left;
+        }
+        ul:after{
+            content: '';
+            clear: both;
+            display: block;
+        }
+        a:link, a:visited{
+            color: black;
+            text-decoration: none;
+            padding: 10px;
+            display: inline-block;
+            padding-bottom: 5px;
+            font-weight: bold;
+            border-bottom: 3px solid darken(#feb645, 20);
+
+            @include transition-duration(0.2s);
+        }
+
+        a:hover{
+            background: #f1e767;
+            border-bottom: 3px solid darken(#feb645, 10);
+        }
+
+        li:not(:last-of-type):after{
+            content: "-";
+        }
+    }
+}
+
+#main{
+    padding-top: 2em;
+    border-bottom: 1px dashed rgba(black, 0.5);
+}
+
+#main-footer{
+    height: 5em;
+    text-align: center;
+    line-height: 5em;
+    
+    border-top: 1px dashed white;
 }

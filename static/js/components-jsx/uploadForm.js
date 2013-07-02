@@ -1,9 +1,9 @@
 /** @jsx React.DOM */
 (function(Dan){
-    Dan.loginForm = React.createClass({
+    var uploadForm = Dan.uploadForm = React.createClass({
         render: function() {
             return (
-                <div className={"login-form " + this.props.hidden ? "hidden" : ""}>login</div>
+                <div className={"upload-form " + this.props.hidden ? "hidden" : ""}>Upload</div>
             );
         }
     });
