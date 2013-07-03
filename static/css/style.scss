@@ -86,3 +86,25 @@ $max-width: 1000px;
     
     border-top: 1px dashed white;
 }
+
+.filter-bar{
+    padding: 1em;
+    border-radius: 10px;
+    margin: 0 1em;
+    margin-bottom: 2em;
+    border: 1px solid #f1e767;
+    padding-left: 50px;
+
+    @include gradient(top, lighten(#f1e767, 10), lighten(#feb645, 10));
+
+    input{
+        width: 60%;
+        font-size: 1.5em;
+    }
+
+    select{
+        width: 30%;
+        margin-left: 10%;
+        font-size: 1.5em;
+    }
+}

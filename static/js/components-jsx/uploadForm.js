@@ -1,5 +1,7 @@
 /** @jsx React.DOM */
 (function(Dan){
+    "use strict";
+
     var uploadForm = Dan.uploadForm = React.createClass({
         render: function() {
             return (

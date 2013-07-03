@@ -1,6 +1,9 @@
 /** @jsx React.DOM */
 (function(Dan){
-    var bundleList = Dan.bundleList;
+    "use strict";
+
+    var bundleList = Dan.bundleList,
+        filterBar = Dan.filterBar;
     var app = React.createClass({
         getInitialState: function() {
             return {
@@ -10,25 +13,20 @@
         render: function() {
             return (
                 <div>
-                    <header onClick={this.eh}>
-                        Welcome my lord.
-                    </header>
+                    <filterBar categories={this.props.categories} onFilterChange={this.applyFilter} />
                     <bundleList data={ this.state.data } />
                 </div>
             );
         },
-        eh: React.autoBind(function(event){
-            var d = this.state.data;
-            d.push({
-                description: "eh"
-            });
-            this.setState({
-                data: d
-            });
+        applyFilter: React.autoBind(function(filter){
+            console.log(filter);
         })
     });
     React.renderComponent(
-        <app />,
+        <app categories={[{
+                        name: "physics",
+                        value: "physics"
+                    }]}/>,
         document.querySelector("#main .inner")
     );
 })(window.Dan ? window.Dan : window.Dan = {});

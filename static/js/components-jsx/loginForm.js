@@ -1,5 +1,7 @@
 /** @jsx React.DOM */
 (function(Dan){
+    "use strict";
+
     Dan.loginForm = React.createClass({
         render: function() {
             return (

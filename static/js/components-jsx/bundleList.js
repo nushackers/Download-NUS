@@ -1,5 +1,7 @@
 /** @jsx React.DOM */
 (function(Dan){
+    "use strict";
+
     var bundleItem = Dan.bundleItem;
     Dan.bundleList = React.createClass({
         render: function() {
