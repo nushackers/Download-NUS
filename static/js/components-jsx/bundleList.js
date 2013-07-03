@@ -9,7 +9,7 @@
                 <ul className="bundle-list clear-list">
                     {
                         this.props.data.map(function(d){
-                        return <bundleItem data={d} />
+                            return <bundleItem data={d} />
                         })
                     }
                 </ul>

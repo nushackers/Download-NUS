@@ -2,24 +2,26 @@
 (function(Dan){
     "use strict";
 
-    var bundleList = Dan.bundleList,
+    var bundleView = Dan.bundleView,
         filterBar = Dan.filterBar;
     var app = React.createClass({
         getInitialState: function() {
             return {
-                data: [{description: "eeh"}]
+                filter: {}
             };
         },
         render: function() {
             return (
                 <div>
                     <filterBar categories={this.props.categories} onFilterChange={this.applyFilter} />
-                    <bundleList data={ this.state.data } />
+                    <bundleView filter={ this.state.filter } updateData={Dan.api.fetchMetaData}/>
                 </div>
             );
         },
         applyFilter: React.autoBind(function(filter){
-            console.log(filter);
+            this.setState({
+                filter: filter
+            });
         })
     });
     React.renderComponent(
