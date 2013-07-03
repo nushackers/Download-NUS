@@ -22,7 +22,8 @@
                     isCancel: true
                 });
                 this.setState({
-                    loading: true
+                    loading: true,
+                    data: []
                 });
                 this.loader = this.props.updateData(nextProps.filter).done(this.receivedData);
             }

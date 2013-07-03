@@ -27,7 +27,7 @@ $max-width: 1000px;
 }
 
 #main-header{
-    text-shadow: 0 -1px 1px rgba(black, 0.5), 0 1px 1px rgba(white, 0.5);
+    text-shadow: 0 1px 0px rgba(white, 0.5);
     box-shadow: 0 0 5px black;
 
     @include gradient(top, #f1e767, #feb645);
@@ -35,7 +35,7 @@ $max-width: 1000px;
     h1{
         $extension: 1em;
         border-bottom: 2px solid black;
-        box-shadow: 0 1px 1px white;
+        box-shadow: 0 1px 0px white;
         padding: 0;
         margin: 0 (-$extension);
         padding: 10px $extension;
