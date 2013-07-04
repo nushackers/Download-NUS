@@ -5,6 +5,7 @@ body, html{
     padding: 0;
     font-family: helvetica, sans-serif;
     background: lighten(#f1e767, 30);
+    overflow-x: hidden;
 }
 
 ul.clear-list{
@@ -23,6 +24,8 @@ $max-width: 1000px;
         width: 100%;
         margin: 0 auto;
         padding: 0 10px;
+        box-sizing: border-box;
+        -moz-box-sizing: border-box;
     }
 }
 
@@ -61,6 +64,10 @@ $max-width: 1000px;
             border-bottom: 3px solid darken(#feb645, 20);
 
             @include transition-duration(0.2s);
+
+            &.impt{
+                border-bottom: 3px solid red;
+            }
         }
 
         a:hover{
