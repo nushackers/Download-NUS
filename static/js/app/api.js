@@ -7,10 +7,70 @@
             setTimeout(function(){
                 d.resolve([
                 {
-                    description: "ehhh"
+                    description: "Data generated from all my experiements, Data generated from all my experiements, Data generated from all my experiements, Data generated from all my experiements",
+                    name: "Data from my ex",
+                    category: "physics",
+                    size: "1000G",
+                    uploader: "Mr Bob",
+                    type: "Textual",
+                    lastUpdate: "1 Dec 2012"
+                },
+                {
+                    description: "Data generated from all my experiements, Data generated from all my experiements, Data generated from all my experiements, Data generated from all my experiements, Data generated from all my experiements, Data generated from all my experiements, Data generated from all my experiements, Data generated from all my experiements, Data generated from all my experiements, Data generated from all my experiements, Data generated from all my experiements, Data generated from all my experiements, Data generated from all my experiements",
+                    name: "Data from my ex",
+                    category: "physics",
+                    size: "1000G",
+                    uploader: "Mr Bob",
+                    type: "Textual",
+                    lastUpdate: "1 Dec 2012"
+                },
+                {
+                    description: "Data generated from all my experiements",
+                    name: "Data from my ex",
+                    category: "physics",
+                    size: "1000G",
+                    uploader: "Mr Bob",
+                    type: "Textual",
+                    lastUpdate: "1 Dec 2012"
+                },
+                {
+                    description: "Data generated from all my experiements",
+                    name: "Data from my ex",
+                    category: "physics",
+                    size: "1000G",
+                    uploader: "Mr Bob",
+                    type: "Textual",
+                    lastUpdate: "1 Dec 2012"
+                },
+                {
+                    description: "Data generated from all my experiements",
+                    name: "Data from my ex",
+                    category: "physics",
+                    size: "1000G",
+                    uploader: "Mr Bob",
+                    type: "Textual",
+                    lastUpdate: "1 Dec 2012"
+                },
+                {
+                    description: "Data generated from all my experiements",
+                    name: "Data from my ex",
+                    category: "physics",
+                    size: "1000G",
+                    uploader: "Mr Bob",
+                    type: "Textual",
+                    lastUpdate: "1 Dec 2012"
+                },
+                {
+                    description: "Data generated from all my experiements",
+                    name: "Data from my ex",
+                    category: "physics",
+                    size: "1000G",
+                    uploader: "Mr Bob",
+                    type: "Textual",
+                    lastUpdate: "1 Dec 2012"
                 }
                 ]);
-            }, 1000);
+            }, 100);
             return d;
         }
     };

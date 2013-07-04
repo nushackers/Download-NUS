@@ -22,7 +22,7 @@ $max-width: 1000px;
         max-width: $max-width;
         width: 100%;
         margin: 0 auto;
-        padding: 1px 10px;
+        padding: 0 10px;
     }
 }
 
@@ -119,5 +119,90 @@ $max-width: 1000px;
 
     &.hidden{
         display: none;
+    }
+}
+
+.bundle-list{
+    &>li{
+        $size: 7.5em;
+        cursor: pointer;
+        border-radius: 5px;
+        margin: 20px 0;
+        box-shadow:  2px 0 4px rgba(black, 0.5),
+                    -2px 0 4px rgba(black, 0.5),
+                    inset 0 2px 2px rgba(white, 0.5),
+                    inset 0 5px 7px rgba(white, 0.2);
+        position: relative;
+        height: $size;
+        overflow: hidden;
+        padding-left: $size - 1em;
+        text-shadow: 0 1px 1px white;
+
+        @include gradient(top, lighten(#f1e767, 20), lighten(#feb645, 15));
+        @include transition-duration(0.2s);
+
+        &:hover{
+            @include gradient(top, lighten(#f1e767, 25), lighten(#feb645, 20));
+        }
+
+        &:active{
+            box-shadow: 0 2px 2px white,
+                        inset 0 0 5px rgba(black, 0.5);
+
+            @include gradient(top, lighten(#f1e767, 18), lighten(#feb645, 17));
+        }
+
+        .icon{
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            width: $size - 1em;
+
+            background-color: rgba(#feb645, 0.2);
+        }
+
+        .type{
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: 5px;
+            text-align: center;
+        }
+
+        .category{
+            float: right;
+        }
+
+        .name{
+            float: left;
+        }
+
+        .heading:after{
+            content: '';
+            display: block;
+            clear: both;
+        }
+
+        .heading{
+            padding-bottom: 5px;
+            margin: 0 10px;
+            padding-top: 10px;
+            border-bottom: 1px solid black;
+            box-shadow:  0 1px 0 white;
+        }
+
+        .footer{
+            text-align: right;
+            padding: 10px;
+        }
+
+        .description{
+            white-space:nowrap;
+            text-overflow: ellipsis;
+            padding: 10px;
+            overflow: hidden;
+            height: 1.8em;
+        }
     }
 }
