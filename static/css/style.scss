@@ -26,12 +26,19 @@ $max-width: 1000px;
         padding: 0 10px;
         box-sizing: border-box;
         -moz-box-sizing: border-box;
+        position: relative;
     }
+}
+
+.header-wrap{
+    position: relative;
 }
 
 #main-header{
     text-shadow: 0 1px 0px rgba(white, 0.5);
     box-shadow: 0 0 5px black;
+    position: relative;
+    z-index: 2;
 
     @include gradient(top, #f1e767, #feb645);
 
@@ -67,6 +74,10 @@ $max-width: 1000px;
 
             &.impt{
                 border-bottom: 3px solid red;
+            }
+
+            &.cur{
+                background: #f1e767;
             }
         }
 
@@ -210,6 +221,47 @@ $max-width: 1000px;
             padding: 10px;
             overflow: hidden;
             height: 1.8em;
+        }
+    }
+}
+
+.slider{
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    z-index: 1;
+    margin-top: -20px;
+    padding-top: 10px;
+    text-align: center;
+
+    @include transition-duration(0.2s);
+    @include transform(translateY(-101%));
+
+    &.shown{
+        @include transform(translateY(0));
+    }
+
+    .inner{
+        display: inline-block;
+        text-align: left;
+        min-width: 400px;
+        max-width: $max-width;
+        margin: 0 auto;
+        background: lighten(#f1e767, 20);
+        min-height: 200px;
+        box-shadow: 0 0 5px black, inset 0 0 3px white;
+        border-radius: 7px;
+        padding: 10px;
+        padding-top: 20px;
+
+        @include transition-duration(0.3s);
+
+        &>div{
+            display: none;
+            &.cur{
+                display: block;
+            }
         }
     }
 }

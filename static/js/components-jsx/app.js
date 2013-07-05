@@ -4,7 +4,8 @@
 
     var bundleView = Dan.bundleView,
         filterBar = Dan.filterBar;
-    var app = React.createClass({
+
+    Dan.app = React.createClass({
         getInitialState: function() {
             return {
                 filter: {}
@@ -24,11 +25,4 @@
             });
         })
     });
-    React.renderComponent(
-        <app categories={[{
-                        name: "physics",
-                        value: "physics"
-                    }]}/>,
-        document.querySelector("#main .inner")
-    );
 })(window.Dan ? window.Dan : window.Dan = {});
