@@ -5,7 +5,7 @@
     var uploadForm = Dan.uploadForm = React.createClass({
         render: function() {
             return (
-                <div className={"upload-form " + this.props.hidden ? "hidden" : ""}>Upload</div>
+                <div className={"upload-form " + (this.props.hidden ? "hidden" : "")}>Upload</div>
             );
         }
     });

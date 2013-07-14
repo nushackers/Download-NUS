@@ -5,6 +5,12 @@
         Dan.app( {categories:[{name: "physics", value: "physics"}]}, null),
         document.querySelector("#main .inner")
     );
+
+    var uploadView = React.renderComponent(
+        Dan.uploadLoginTab( {loading: true}, null),
+        document.querySelector(".upload-tab")
+    );
+
     Dan.route.setup({
         "about": function(){
             Dan.slider.show("about", 400);
@@ -22,4 +28,21 @@
             Dan.slider.hide();
         }
     });
+
+    Dan.session.whenLogin(function(){
+        uploadView.setProps({
+            needLogin: false,
+            loading: false
+        });
+    }).whenLogout(function(){
+        uploadView.setProps({
+            needLogin: true,
+            loading: false
+        });
+    }).whenNetworkError(function(err){
+        document.write(err);
+    });
+
+    Dan.session.login();
+
 })(window.Dan ? window.Dan : window.Dan = {});

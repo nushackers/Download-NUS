@@ -2,6 +2,18 @@
     "use strict";
 
     Dan.api = {
+        login: function(username, password){
+            var d = $.Deferred();
+            setTimeout(function(){
+                d.reject({
+                    error: "wrong username"
+                });
+            }, 1000);
+            return d;
+        },
+        logout: function(){
+
+        },
         fetchMetaData: function(filter){
             var d = $.Deferred();
             setTimeout(function(){

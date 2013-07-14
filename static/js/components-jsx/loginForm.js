@@ -3,9 +3,21 @@
     "use strict";
 
     Dan.loginForm = React.createClass({
+        handleSubmit: React.autobind(function(){
+            var name = this.refs.author.getDOMNode().value.trim();
+            var pw = this.refs.text.getDOMNode().value.trim();
+            if (!name || !pw) {
+                return false;
+            }
+            return false;
+        }),
         render: function() {
             return (
-                <div className={"login-form " + this.props.hidden ? "hidden" : ""}>login</div>
+                <form className={"login-form " + (this.props.hidden ? "hidden" : "")}>
+                    <input type='text' id='username' placeholder='Username' />
+                    <input type='password' id='password' placeholder='Password' />
+                    <input type='submit' />
+                </form>
             );
         }
     });
