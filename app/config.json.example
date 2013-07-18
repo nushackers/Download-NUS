@@ -1,0 +1,21 @@
+{
+    "app": {
+        "host": "127.0.0.1:8080", 
+        "ip": "0.0.0.0", 
+        "port": 8080,
+        "debug": true
+    }, 
+    "db": {
+        "database": "download_nus", 
+        "host": "127.0.0.1", 
+        "pass": "", 
+        "user": "root"
+    }, 
+    "auth": {
+        "debug": true
+    }, 
+    "session": {
+        "maxAge": 60000, 
+        "secret": "dan"
+    }
+}

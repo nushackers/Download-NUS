@@ -4,3 +4,5 @@ app/node_modules
 *.css
 
 static/js/components
+
+app/config.json
