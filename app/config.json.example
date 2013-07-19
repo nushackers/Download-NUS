@@ -11,9 +11,7 @@
         "pass": "", 
         "user": "root"
     }, 
-    "auth": {
-        "debug": true
-    }, 
+    "auth": {}, 
     "session": {
         "maxAge": 60000, 
         "secret": "dan"
