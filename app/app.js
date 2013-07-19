@@ -1,7 +1,7 @@
 var util = require('util');
 var fs = require('fs');
 
-if (fs.existsSync('./config.json')) {
+if (!fs.existsSync('./config.json')) {
     console.error('config.json not found!');
     console.error('place config.json in app directory');
     console.error('see: config.json.example for example');
@@ -19,7 +19,8 @@ var connection = mysql.createConnection({
     host: config.db.host,
     user: config.db.user,
     password: config.db.pass,
-    database: config.db.database
+    database: config.db.database,
+    port: config.db.port
 });
 
 connection.connect();
