@@ -41,6 +41,10 @@
         });
     }).whenNetworkError(function(err){
         document.write(err);
+    }).whenLoading(function(){
+        uploadView.setProps({
+            loading: true
+        });
     });
 
     Dan.session.login();

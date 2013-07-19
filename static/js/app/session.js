@@ -39,8 +39,10 @@
 
     Dan.session = {
         STATES: STATES,
-        login: function(username, password){
-            return Dan.api.login(username, password).done(function(data){
+        login: function(username, password, windomain){
+            state = STATES.LOADING;
+            listeners.trigger("loading");
+            return Dan.api.login(username, password, windomain).done(function(data){
                 state = STATES.LOGGEDIN;
                 listeners.trigger("login", data.userInfo);
                 userInfo = data.userInfo;
@@ -55,6 +57,8 @@
             });
         },
         logout: function(){
+            state = STATES.LOADING;
+            listeners.trigger("loading");
             return Dan.api.logout().done(function(data){
                 state = STATES.LOGGEDOUT;
                 listeners.trigger("logout");
@@ -80,6 +84,12 @@
                 fn(networkErred);
             }
             return this;
+        },
+        whenLoading: function(fn){
+            listeners.add("loading", fn);
+            if(state === STATES.LOADING){
+                fn();
+            }
         },
         getState: function(){
             return state;

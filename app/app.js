@@ -73,14 +73,19 @@ app.configure(function() {
 app.listen(config.app.port, config.app.ip);
 if (config.app.debug) console.log('(II) [app] listening on port ' + config.app.port);
 
-app.post('/api/login', passport.authenticate('nusauth', {
-    successRedirect: '/',
-    failureRedirect: '/login'
-}));
+app.post('/api/login',
+    passport.authenticate('nusauth'),
+    function(req, res){
+        res.send({
+            success: true
+        });
+    });
 
 app.get('/api/logout', function(req, res) {
     req.logout();
-    res.redirect('/');
+    res.send({
+        success: true
+    });
 });
 
 app.get('/api/profile', function(req, res) {

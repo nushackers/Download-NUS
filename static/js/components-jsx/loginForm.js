@@ -3,21 +3,37 @@
     "use strict";
 
     Dan.loginForm = React.createClass({
-        handleSubmit: React.autobind(function(){
-            var name = this.refs.author.getDOMNode().value.trim();
-            var pw = this.refs.text.getDOMNode().value.trim();
-            if (!name || !pw) {
-                return false;
-            }
+        getInitialState: function(){
+            return {
+                error: null
+            };
+        },
+        getError: React.autoBind(function(err){
+            this.setState({
+                error: err.message
+            });
+        }),
+        submitForm: React.autoBind(function(){
+            Dan.session.login(
+                this.refs.username.getDOMNode().value.trim(),
+                this.refs.password.getDOMNode().value.trim(),
+                this.refs.domain.getDOMNode().value.trim()
+            ).fail(this.getError);
             return false;
         }),
         render: function() {
             return (
-                <form className={"login-form " + (this.props.hidden ? "hidden" : "")}>
-                    <input type='text' id='username' placeholder='Username' />
-                    <input type='password' id='password' placeholder='Password' />
-                    <input type='submit' />
-                </form>
+                <div>
+                    <div className={'error' + (this.state.error ? "" : " hidden")}>
+                        {this.state.error}
+                    </div>
+                    <form className={"login-form " + (this.props.hidden ? "hidden" : "")} onSubmit={this.submitForm}>
+                        <input type='text' name='domain' placeholder='Domain' ref="domain" />
+                        <input type='text' name='username' placeholder='Username' ref="username" />
+                        <input type='password' name='password' placeholder='Password' ref="password"/>
+                        <input type='submit' />
+                    </form>
+                </div>
             );
         }
     });

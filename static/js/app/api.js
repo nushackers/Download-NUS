@@ -2,14 +2,22 @@
     "use strict";
 
     Dan.api = {
-        login: function(username, password){
-            var d = $.Deferred();
-            setTimeout(function(){
-                d.reject({
-                    error: "wrong username"
-                });
-            }, 1000);
-            return d;
+        login: function(username, password, windomain){
+            return $.post("/api/login", {
+                username: username,
+                password: password,
+                windomain: windomain
+            }).pipe(undefined, function(err){
+                if(err.status === 401){
+                    return {
+                        message: "Invalid login credentials"
+                    };
+                }else{
+                    return {
+                        network: "network error"
+                    };
+                }
+            });
         },
         logout: function(){
 

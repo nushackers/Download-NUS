@@ -29,21 +29,27 @@ util.inherits(Strategy, passport.Strategy);
 Strategy.prototype.authenticate = function(req, options) {
     var self = this;
 
+    var username = validator.sanitize(req.body.username).xss();
+    var password = req.body.password;
+    var windomain = req.body.windomain;
+
     if (!req.body.username || !req.body.password || !req.body.windomain) {
+        username = validator.sanitize(req.param("username")).xss();
+        password = req.param("password");
+        windomain = req.param("windomain");
+    }
+
+    if(!username || !password || !windomain){
         if (self._options.debug) console.log('(EE) [nusauth] Missing fields');
         return self.fail(401);
     }
-    
+
     var windomainAllowed = ['nusstu', 'nusstf', 'nusext'];
     var baseDNs = {
         'nusstu': 'dc=stu,dc=nus,dc=edu,dc=sg',
         'nusstf': 'dc=stf,dc=nus,dc=edu,dc=sg',
         'nusext': 'dc=ext,dc=nus,dc=edu,dc=sg'
     };
-
-    var username = validator.sanitize(req.body.username).xss();
-    var password = req.body.password;
-    var windomain = req.body.windomain;
     
     if (windomainAllowed.indexOf(windomain) < 0) {
         if (self._options.debug) console.log('(EE) [nusauth] Domain not allowed: ' + windomain);
