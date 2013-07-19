@@ -13,7 +13,7 @@ var config = require('./config.json');
 var express = require('express');
 var mysql = require('mysql');
 var passport = require('passport');
-var NusStrategy = require('./passport-nusauth.js').Strategy;
+var NusStrategy = require('passport-nus').Strategy;
 
 var connection = mysql.createConnection({
     host: config.db.host,
@@ -74,7 +74,7 @@ app.listen(config.app.port, config.app.ip);
 if (config.app.debug) console.log('(II) [app] listening on port ' + config.app.port);
 
 app.post('/api/login',
-    passport.authenticate('nusauth'),
+    passport.authenticate('nus'),
     function(req, res){
         res.send({
             success: true
