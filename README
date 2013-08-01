@@ -9,3 +9,15 @@ To set up database:
 2. 'CREATE DATABASE download_nus;'
 3. 'node app/maintainence.js' (doesn't actually do maintainence yet... TODO)
 4. Set up db auth in 'app/config.json'
+
+TODO:
+
+1. Create database maintainence script
+2. Implement multiple file upload (DB is already prepped for this)
+3. Implement custom categories/types (DB is already prepped for this)
+4. Implement user profile panel
+5. Implement dataset management (edit, delete etc.)
+6. Implement detailed dataset view
+7. Implement advanced search/filter/order
+8. Give the website a proper theme (must be white background) and add marketing and logo stuff
+9. Implement data retrieval API and corresponding commandline tools
