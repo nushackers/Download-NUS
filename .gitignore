@@ -1,8 +1,2 @@
 app/node_modules
-*.scssc
-
-*.css
-
-static/js/components
-
 app/config.json
