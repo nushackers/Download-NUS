@@ -3,17 +3,33 @@
         "host": "127.0.0.1:8080", 
         "ip": "0.0.0.0", 
         "port": 8080,
-        "debug": true
+        "debug": false
     }, 
     "db": {
         "database": "download_nus", 
         "host": "127.0.0.1", 
         "pass": "", 
-        "user": "root"
+        "user": "root",
+        "opt": {
+            "define": {
+                "engine": "aria"
+            },
+            "logging": false
+        }
     }, 
-    "auth": {}, 
+    "date": {
+        "format": "d mmmm yyyy"
+    }, 
     "session": {
         "maxAge": 60000, 
         "secret": "dan"
+    },
+    "fs": {
+        "dir": "./static/repo/",
+        "mimeAllowed": [
+            "text/plain",
+            "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+            "application/vnd.ms-excel"
+        ]
     }
 }
