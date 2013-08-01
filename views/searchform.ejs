@@ -1,0 +1,12 @@
+<h2>Data Search</h2>
+<p>Find datasets useful for your research</p>
+<form action="search" method="get" class="form-horizontal">
+    <div class="form-group">
+        <div class="col-lg-10 col-sm-10">
+            <input type="text" class="form-control" name="q" placeholder="Search for..." value="<% if (typeof search != "undefined") { %><%= search %><% } %>">
+        </div>
+        <div class="col-lg-2 col-sm-2">
+            <button type="submit" class="form-control btn-primary">Search</button>
+        </div>
+    </div>
+</form>

@@ -1,0 +1,63 @@
+<table class="table table-striped">
+    <tr>
+        <th class="col-lg-1 col-sm-1">
+            #
+        </th>
+        <th class="col-lg-5 col-sm-5">
+            Description
+        </th>
+        <th class="col-lg-1 col-sm-1">
+            Download
+        </th>
+        <th class="col-lg-1 col-sm-1">
+            Category
+        </th>
+        <th class="col-lg-2 col-sm-2">
+            Uploader
+        </th>
+        <th class="col-lg-2 col-sm-2">
+            Date
+        </th>
+    </tr>
+    <% for (var i=0; i<datasets.length; i++) { %>
+    <tr>
+        <td><%= i+1 %></td>
+        <td>
+            <p><strong><%= datasets[i].name %></strong></p>
+            <p><%= datasets[i].description %></p>
+        </td>
+        <td>
+            <% for (var j=0; j<datasets[i].dataFiles.length; j++) { %>
+                <a href="repo/<%= datasets[i].dataFiles[j].filepath %>" class="btn btn-small btn-primary" style="text-transform:uppercase;"><%= datasets[i].dataFiles[j].extension %></a>
+            <% } %>
+        </td>
+        <td><%= datasets[i].dataCategory.name %></td>
+        <td><%= datasets[i].user.name %></td>
+        <td><%= datasets[i].formatedUpdatedAt %></td>
+    </tr>
+    <% } %>
+</table>
+<% if (!datasets.length) { %>
+    <p class="text-center">There is nothing here</p>
+<% } %>
+<div class="text-center">
+    <ul class="pagination">
+        <% if (page > 1) { %>
+            <li><a href="?page<%= page-1 %>">&laquo;</a></li>
+        <% } else { %>
+            <li class="disabled"><a>&laquo;</a></li>
+        <% } %>
+        <% for (var i=1; i<=pages; i++) { %>
+            <% if (i == page) { %>
+                <li class="active"><a href="?page=<%= i %>"><%= i %></a></li>
+            <% } else { %>
+                <li><a href="?page=<%= i %>"><%= i %></a></li>
+            <% } %>    
+        <% } %>
+        <% if (page < pages) { %>
+            <li><a href="?page<%= page+1 %>">&raquo;</a></li>
+        <% } else { %>
+            <li class="disabled"><a>&raquo;</a></li>
+        <% } %>
+    </ul>
+</div>

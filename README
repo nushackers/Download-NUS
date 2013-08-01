@@ -1,6 +1,11 @@
 You will need:
 
-1. SCSS for generating scss
-2. React.js tools for generating js
+1. mariadb because Oracle sucks. If you use mysql, you must use MyISAM engine for 'FULLTEXT' which sucks even more.
+2. 'npm install' buttload of modules
 
-After you have installed both, configure 'app/config.json' and run `sh develop.sh` to start deving!
+To set up database:
+
+1. 'CREATE DATABASE download_nus;'
+2. 'node app/maintainence.js' (doesn't actually do maintainence yet... TODO)
+3. Edit my.cnf and set 'ft_min_word_len = 3' (optional, but indexes need 'REPAIR' if changed)
+4. Set up db auth in 'app/config.json'

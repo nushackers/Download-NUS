@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<title>Download@NUS</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta name="description" content="">
+		<meta name="author" content="">
+		
+		<!-- Le styles -->
+		<link href="css/bootstrap.min.css" rel="stylesheet">
+		<link href="css/style.css" rel="stylesheet">
+		
+		<script src="js/jquery-1.10.2.min.js"></script>
+	</head>
+	<body>
+		<div class="container">
+            <div class="page-header">
+                <h1><img src="img/logo.gif" height="76" width="334"></h1>
+            </div>
+            <div class="navbar">
+                <a class="navbar-brand" href="/">Download@NUS</a>
+                <ul class="nav navbar-nav">
+                    <li><a href="/data">Data</a></li>
+                    <li><a href="/api">API</a></li>
+                </ul>
+                <div class="nav navbar-nav pull-right">
+                    <% if (typeof user == 'undefined') { %>  
+                        <a href="/login" class="btn btn-default navbar-btn">Sign In</a>
+                    <% } else { %>
+                        <a href="/upload" class="btn btn-default btn-primary navbar-btn" href="/upload">Upload</a>
+                        <div class="btn-group">
+                            <button class="btn btn-default navbar-btn dropdown-toggle"  data-toggle="dropdown" href="/login"><%= user.name %> <span class="caret"></span></button>
+                            <ul class="dropdown-menu pull-right" role="menu" aria-labelledby="dLabel">
+                                <li><a href="/profile">Profile</a></li>
+                                <li><a href="/manage">Manage Datasets</a></li>
+                                <li class="divider"></li>
+                                <li><a href="/logout">Log out</a></li>
+                            </ul>
+                        </div>
+                    <% } %>
+                </div>
+            </div>
+            

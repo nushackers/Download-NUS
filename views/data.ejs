@@ -1,0 +1,32 @@
+<% include header %>
+<h2>Dataset Directory</h2>
+
+<div class="row">
+    <div class="col-lg-4 col-sm-4">
+        <p>Browse by category:</p>
+        <div class="list-group">
+            <% for (var i=0; i<categories.length; i++) { %>
+                <a href="?cat=<%= categories[i].id %>" class="list-group-item"><%= categories[i].name %></a>
+            <% } %>
+        </div>
+    </div>
+    <div class="col-lg-4 col-sm-4">
+        <p>Browse by data class:</p>
+        <div class="list-group">
+            <% for (var i=0; i<types.length; i++) { %>
+                <a href="?type=<%= types[i].id %>" class="list-group-item"><%= types[i].name %></a>
+            <% } %>
+        </div>
+    </div>
+    <!--<div class="col-lg-4 col-sm-4">
+        <p>Browse by available formats:</p>
+        <div class="list-group">
+            <a href="#" class="list-group-item">Plaintext</a>
+            <a href="#" class="list-group-item">Excel</a>
+            <a href="#" class="list-group-item">CSV</a>
+            <a href="#" class="list-group-item">JSON</a>
+        </div>
+    </div>-->
+</div>
+<%- include datasets %>
+<%- include footer %>
