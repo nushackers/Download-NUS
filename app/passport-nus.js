@@ -115,7 +115,6 @@ Strategy.prototype.authenticate = function(req, options) {
 
     client.bind(domain + '\\' + username, password, function(err) {
         if (err) {
-            console.log(err);
             return self.fail({ message: 'Invalid credentials' });
         }
 
