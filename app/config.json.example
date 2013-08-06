@@ -7,10 +7,16 @@
     }, 
     "db": {
         "database": "download_nus", 
-        "host": "127.0.0.1", 
         "pass": "", 
         "user": "root",
         "opt": {
+            "dialetc": "mysql",
+            "host": "localhost",
+            "port": 3306,
+            "pool": {
+                "maxConnections": 5,
+                "maxIdleTime": 30
+            },
             "define": {
                 "engine": "aria"
             },

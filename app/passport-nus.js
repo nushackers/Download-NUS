@@ -44,18 +44,33 @@ function Strategy(options, verify) {
     }
     if (!verify) throw new Error('NUS authentication strategy requires a verify function');
     
-    this._usernameField = options.usernameField || 'username';
-    this._passwordField = options.passwordField || 'password';
-    this._domainField   = options.domainField   || 'domain';
-    this._domainAllowed = options.domainAllowed || ['nusstu', 'nusstf', 'nusext'];
+    this._usernameField  = options.usernameField  || 'username';
+    this._passwordField  = options.passwordField  || 'password';
+    this._domainField    = options.domainField    || 'domain';
+    this._domainAllowed  = options.domainAllowed  || ['nusstu', 'nusstf', 'nusext'];
+    
+    this._maxConnections = options.maxConnections || 5;
+    this._timeout        = options.timeout        || 10000;
     
     passport.Strategy.call(this);
     
     this.name = 'nus';
     this.clients = {
-        'nusstu': ldap.createClient({url:'ldap://ldapstu.nus.edu.sg:389'}),
-        'nusstf': ldap.createClient({url:'ldap://ldapstf.nus.edu.sg:389'}),
-        'nusext': ldap.createClient({url:'ldap://ldapext.nus.edu.sg:389'})
+        'nusstu': ldap.createClient({
+            url:'ldap://ldapstu.nus.edu.sg:389',
+            maxConnections: this._maxConnections,
+            timeout: this._timeout
+        }),
+        'nusstf': ldap.createClient({
+            url:'ldap://ldapstf.nus.edu.sg:389',
+            maxConnections: this._maxConnections,
+            timeout: this._timeout
+        }),
+        'nusext': ldap.createClient({
+            url:'ldap://ldapext.nus.edu.sg:389',
+            maxConnections: this._maxConnections,
+            timeout: this._timeout
+        })
     };
     this.baseDNs = {
         'nusstu': 'dc=stu,dc=nus,dc=edu,dc=sg',
@@ -100,6 +115,7 @@ Strategy.prototype.authenticate = function(req, options) {
 
     client.bind(domain + '\\' + username, password, function(err) {
         if (err) {
+            console.log(err);
             return self.fail({ message: 'Invalid credentials' });
         }
 
