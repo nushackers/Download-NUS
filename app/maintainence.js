@@ -27,7 +27,9 @@ try {
         DataType.create({ name: 'Unclassified' });
         DataType.create({ name: 'Synthetic' });
         DataType.create({ name: 'Real-world' });
-    });
+    }).error(function(err){
+        console.log(err);
+    });;
 
 } catch(e) {
     console.log(e);
