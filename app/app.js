@@ -243,6 +243,11 @@ app.get('/login', function(req, res){
 		res.redirect('/');
 		return;
     }
+
+    if (req.header['x-forwarded-proto'] !== "https"){
+        res.redirect("https://" + req.headers.host + req.path);
+        return;
+    }
     
     res.render('login.ejs', { messages: req.flash('error') });
 });
