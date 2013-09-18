@@ -239,12 +239,13 @@ app.post('/upload', ensureLoggedIn('/login'), function(req, res) {
 });
 
 app.get('/login', function(req, res){
+    console.log("asf")
     if (req.isAuthenticated()) {
 		res.redirect('/');
 		return;
     }
 
-    if (req.header('x-forwarded-proto') !== "https"){
+    if (!config.app.insecure && req.header('x-forwarded-proto') !== "https"){
         res.redirect("https://" + req.headers.host + req.path);
         return;
     }

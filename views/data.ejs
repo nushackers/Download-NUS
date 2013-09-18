@@ -5,17 +5,17 @@
     <div class="col-lg-4 col-sm-4">
         <p>Browse by category:</p>
         <div class="list-group">
-            <% for (var i=0; i<categories.length; i++) { %>
-                <a href="?cat=<%= categories[i].id %>" class="list-group-item"><%= categories[i].name %></a>
-            <% } %>
+            <% categories.forEach(function(cat) { %>
+                <a href="?cat=<%= cat.id %>" class="list-group-item"><%= cat.name %></a>
+            <% }) %>
         </div>
     </div>
     <div class="col-lg-4 col-sm-4">
         <p>Browse by data class:</p>
         <div class="list-group">
-            <% for (var i=0; i<types.length; i++) { %>
-                <a href="?type=<%= types[i].id %>" class="list-group-item"><%= types[i].name %></a>
-            <% } %>
+            <% types.forEach(function(t) { %>
+                <a href="?type=<%= t.id %>" class="list-group-item"><%= t.name %></a>
+            <% }) %>
         </div>
     </div>
     <!--<div class="col-lg-4 col-sm-4">

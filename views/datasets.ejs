@@ -19,23 +19,23 @@
             Date
         </th>
     </tr>
-    <% for (var i=0; i<datasets.length; i++) { %>
+    <% datasets.forEach(function(data, ind){ %>
     <tr>
-        <td><%= i+1 %></td>
+        <td><%= ind + 1 %></td>
         <td>
-            <p><strong><%= datasets[i].name %></strong></p>
-            <p><%= datasets[i].description %></p>
+            <p><strong><%= data.name %></strong></p>
+            <p><%= data.description %></p>
         </td>
         <td>
-            <% for (var j=0; j<datasets[i].dataFiles.length; j++) { %>
-                <a href="repo/<%= datasets[i].dataFiles[j].filepath %>" class="btn btn-small btn-primary" style="text-transform:uppercase;"><%= datasets[i].dataFiles[j].extension %></a>
-            <% } %>
+            <% data.dataFiles.forEach(function(file){ %>
+                <a href="repo/<%= file.filepath %>" class="btn btn-small btn-primary" style="text-transform:uppercase;"><%= file.extension %></a>
+            <% }) %>
         </td>
-        <td><%= datasets[i].dataCategory.name %></td>
-        <td><%= datasets[i].user.name %></td>
-        <td><%= datasets[i].formatedUpdatedAt %></td>
+        <td><%= data.dataCategory.name %></td>
+        <td><%= data.user.name %></td>
+        <td><%= data.formatedUpdatedAt %></td>
     </tr>
-    <% } %>
+    <% }) %>
 </table>
 <% if (!datasets.length) { %>
     <p class="text-center">There is nothing here</p>
