@@ -1,1 +1,9 @@
 body { padding-top: 70px; }
+
+.big-icon{
+    font-size: 100px;
+    width: 100%;
+    text-align: center;
+    color: #69e;
+    line-height: 1.2;
+}
