@@ -124,7 +124,8 @@ app.get('/search', function(req, res) {
             pages: pages,
             datasets: datasets,
             categories: categories,
-            types: types
+            types: types,
+            curUser: req.session.passport.user && req.session.passport.user.nusId
         });
     });
 });
@@ -137,7 +138,7 @@ app.get('/data', function(req, res) {
     
     if (req.query.cat) where.DataCategoryId = req.query.cat;
     if (req.query.type) where.DataTypeId = req.query.type;
-    
+
     Q.all([getDatasets(where, 10, offset), getCount(Dataset), getAll(DataCategory), getAll(DataType)])
     .spread(function(datasets, datasetCount, categories, types) {
         var pages = Math.ceil(datasetCount / 10);
@@ -147,7 +148,24 @@ app.get('/data', function(req, res) {
             pages: pages,
             datasets: datasets,
             categories: categories,
-            types: types
+            types: types,
+            curUser: req.session.passport.user && req.session.passport.user.nusId
+        });
+    });
+});
+
+app.get('/manage', function(req, res) {
+    if (!req.isAuthenticated()) {
+        res.redirect('/login');
+        return;
+    }
+
+    getDatasets({"Users.nusId": req.session.passport.user.nusId}, 999999, 0).done(function(datasets){
+        res.render('manageData.ejs', {
+            user: req.user,
+            datasets: datasets,
+            page: 0,
+            curUser: req.session.passport.user && req.session.passport.user.nusId
         });
     });
 });
