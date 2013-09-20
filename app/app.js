@@ -114,7 +114,7 @@ app.get('/search', function(req, res) {
         return;
     }
     
-    Q.all([textSearchDatasets(search, 10, offset), getCount(Dataset), getAll(DataCategory), getAll(DataType)])
+    Q.all([textSearchDatasets(search, 10, offset), wrapDeferred(Dataset.count()), wrapDeferred(DataCategory.findAll()), wrapDeferred(DataType.findAll())])
     .spread(function(datasets, datasetCount, categories, types) {
         var pages = Math.ceil(datasetCount / 10);
         res.render('search.ejs', {
@@ -139,7 +139,7 @@ app.get('/data', function(req, res) {
     if (req.query.cat) where.DataCategoryId = req.query.cat;
     if (req.query.type) where.DataTypeId = req.query.type;
 
-    Q.all([getDatasets(where, 10, offset), getCount(Dataset), getAll(DataCategory), getAll(DataType)])
+    Q.all([getDatasets(where, 10, offset), wrapDeferred(Dataset.count()), wrapDeferred(DataCategory.findAll()), wrapDeferred(DataType.findAll())])
     .spread(function(datasets, datasetCount, categories, types) {
         var pages = Math.ceil(datasetCount / 10);
         res.render('data.ejs', {
@@ -171,7 +171,7 @@ app.get('/manage', function(req, res) {
 });
 
 app.get('/api', function(req, res) {
-    res.render('api.ejs', { user:req.user }); 
+    res.render('api.ejs', { user:req.user });
 });
 
 app.get('/upload', function(req, res) {
@@ -180,7 +180,7 @@ app.get('/upload', function(req, res) {
 		return;
 	}
     
-    Q.all([getAll(DataCategory), getAll(DataType)])
+    Q.all([wrapDeferred(DataCategory.findAll()), wrapDeferred(DataType.findAll())])
     .spread(function(categories, types) {
         res.render('upload.ejs', { form:{}, user:req.user, categories:categories, types:types, messages:req.flash('error') });
     });
@@ -195,7 +195,7 @@ app.post('/upload', ensureLoggedIn('/login'), function(req, res) {
     var userId = req.user.id;
     
     req.onValidationError(function (err) {
-        req.flash('error', err); 
+        req.flash('error', err);
         return fail();
     });
     
@@ -206,7 +206,7 @@ app.post('/upload', ensureLoggedIn('/login'), function(req, res) {
     req.sanitize('name').trim();
     req.sanitize('description').xss();
     
-    Q.all([checkMimeType(file.path), generateShortId(), getById(User, userId), getById(DataCategory, categoryId), getById(DataType, typeId)])
+    Q.all([checkMimeType(file.path), generateShortId(), wrapDeferred(User.find(userId)), wrapDeferred(DataCategory.find(categoryId)), wrapDeferred(DataType.find(typeId))])
     .spread(function(check, shortid, user, category, type) {
         if (!check) {
             req.flash('error', 'File type is not allowed.');
@@ -249,7 +249,7 @@ app.post('/upload', ensureLoggedIn('/login'), function(req, res) {
             typeId:typeId
         };
         
-        Q.all([getAll(DataCategory), getAll(DataType)])
+        Q.all([wrapDeferred(DataCategory.findAll()), wrapDeferred(DataType.findAll())])
         .spread(function(categories, types) {
             res.render('upload.ejs', { form:form, user:req.user, categories:categories, types:types, messages:req.flash('error') });
         });
@@ -329,37 +329,11 @@ function textSearchDatasets(search, n, offset) {
     return getDatasets(where, n, offset);
 }
 
-function getCount(Model) {
+function wrapDeferred(notDeferred){
     var deferred = Q.defer();
-    Model.count()
-    .success(function(c){
-        deferred.resolve(c);
-    })
-    .failure(function(err) {
-        deferred.reject(new Error(err));
-    });
-    return deferred.promise;
-}
-
-function getAll(Model) {
-    var deferred = Q.defer();
-    Model.findAll()
-    .success(function(x) {
-        deferred.resolve(x);
-    })
-    .failure(function(err) {
-        deferred.reject(new Error(err));
-    });
-    return deferred.promise;
-}
-
-function getById(Model, id) {
-    var deferred = Q.defer();
-    Model.find(id)
-    .success(function(x) {
-        deferred.resolve(x);
-    })
-    .failure(function(err) {
+    notDeferred.success(function(d){
+        deferred.resolve(d);
+    }).failure(function(err){
         deferred.reject(new Error(err));
     });
     return deferred.promise;
