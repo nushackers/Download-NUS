@@ -1,6 +1,4 @@
-var fs = require('fs');
 var util = require('util');
-var path = require('path');
 
 try {
     var config = require('./config');
@@ -14,29 +12,16 @@ try {
 var _ = require('underscore');
 var Q = require('q');
 var ejs = require('ejs');
-var mmm = require('mmmagic');
-var Magic = mmm.Magic;
-var shortId = require('shortid');
-var dateFormat = require('dateformat');
 var express = require('express');
 var expressValidator = require('express-validator');
 var flash = require('connect-flash');
 var ensureLoggedIn = require('connect-ensure-login').ensureLoggedIn;
 var passport = require('passport');
-var Sequelize = require('sequelize');
 
 var NusStrategy = require('./passport-nus').Strategy;
 
-var sequelize = new Sequelize(config.db.database, config.db.user, config.db.pass, config.db.opt);
+var dataAccess = require("./Data")(config.db, config.fs, config.date.format);
 
-var Schema = sequelize.import(__dirname + '/schema.js');
-
-var User = Schema.User;
-var Dataset = Schema.Dataset;
-var DataCategory = Schema.DataCategory;
-var DataType = Schema.DataType;
-var DataFile = Schema.DataFile;
-    
 passport.serializeUser(function(user, done) {
     done(null, user);
 });
@@ -46,7 +31,7 @@ passport.deserializeUser(function(user, done) {
 });
 
 passport.use(new NusStrategy(function(profile, done) {
-    User.findOrCreate({ nusId: profile.name }, {
+    dataAccess.User.findOrCreate({ nusId: profile.name }, {
         name: profile.displayName
     }).success(function(user, created){
         done(null, user);
@@ -94,7 +79,7 @@ app.listen(config.app.port, config.app.ip);
 if (config.app.debug) console.log('listening on port ' + config.app.port);
 
 app.get('/', function(req, res) {
-    res.render('main.ejs', { user:req.user }); 
+    res.render('main.ejs', { user:req.user });
 });
 
 app.get('/search', function(req, res) {
@@ -113,21 +98,14 @@ app.get('/search', function(req, res) {
          });
         return;
     }
-    
-    Q.all([textSearchDatasets(search, 10, offset), wrapDeferred(Dataset.count()), wrapDeferred(DataCategory.findAll()), wrapDeferred(DataType.findAll())])
-    .spread(function(datasets, datasetCount, categories, types) {
-        var pages = Math.ceil(datasetCount / 10);
-        res.render('search.ejs', {
-            search: search,
-            user: req.user,
-            page: page,
-            pages: pages,
-            datasets: datasets,
-            categories: categories,
-            types: types,
-            curUser: req.session.passport.user && req.session.passport.user.nusId
+
+    dataAccess.performSearch(search, offset)
+        .then(appendUserInfo(req))
+        .done(function(data){
+            res.render('search.ejs', _.extend({
+                page: page
+            }, data));
         });
-    });
 });
 
 app.get('/data', function(req, res) {
@@ -139,19 +117,13 @@ app.get('/data', function(req, res) {
     if (req.query.cat) where.DataCategoryId = req.query.cat;
     if (req.query.type) where.DataTypeId = req.query.type;
 
-    Q.all([getDatasets(where, 10, offset), wrapDeferred(Dataset.count()), wrapDeferred(DataCategory.findAll()), wrapDeferred(DataType.findAll())])
-    .spread(function(datasets, datasetCount, categories, types) {
-        var pages = Math.ceil(datasetCount / 10);
-        res.render('data.ejs', {
-            user: req.user,
-            page: page,
-            pages: pages,
-            datasets: datasets,
-            categories: categories,
-            types: types,
-            curUser: req.session.passport.user && req.session.passport.user.nusId
+    dataAccess.getDatasets(where, offset, page)
+        .then(appendUserInfo(req))
+        .done(function(data){
+            res.render('data.ejs', _.extend({
+                page: page
+            }, data));
         });
-    });
 });
 
 app.get('/manage', function(req, res) {
@@ -160,30 +132,34 @@ app.get('/manage', function(req, res) {
         return;
     }
 
-    getDatasets({"Users.nusId": req.session.passport.user.nusId}, 999999, 0).done(function(datasets){
-        res.render('manageData.ejs', {
-            user: req.user,
-            datasets: datasets,
-            page: 0,
-            curUser: req.session.passport.user && req.session.passport.user.nusId
+    dataAccess.getUserDatasets(req.session.passport.user.nusId)
+        .then(appendUserInfo(req))
+        .done(function(data){
+            res.render('manageData.ejs', data);
         });
-    });
 });
 
 app.get('/api', function(req, res) {
     res.render('api.ejs', { user:req.user });
 });
 
+function renderUpload(req, res, form){
+    dataAccess.getAllMetaData()
+        .then(appendUserInfo(req))
+        .done(function(data){
+            res.render("upload.ejs", _.extend({
+                form: form,
+                messages:req.flash('error')
+            }, data));
+        });
+}
 app.get('/upload', function(req, res) {
     if (!req.isAuthenticated()) {
 		res.redirect('/login');
 		return;
 	}
     
-    Q.all([wrapDeferred(DataCategory.findAll()), wrapDeferred(DataType.findAll())])
-    .spread(function(categories, types) {
-        res.render('upload.ejs', { form:{}, user:req.user, categories:categories, types:types, messages:req.flash('error') });
-    });
+    renderUpload(req, res, {});
 });
 
 app.post('/upload', ensureLoggedIn('/login'), function(req, res) {
@@ -205,59 +181,27 @@ app.post('/upload', ensureLoggedIn('/login'), function(req, res) {
     
     req.sanitize('name').trim();
     req.sanitize('description').xss();
-    
-    Q.all([checkMimeType(file.path), generateShortId(), wrapDeferred(User.find(userId)), wrapDeferred(DataCategory.find(categoryId)), wrapDeferred(DataType.find(typeId))])
-    .spread(function(check, shortid, user, category, type) {
-        if (!check) {
+
+    dataAccess.uploadDataset(file, userId, categoryId, typeId, name, description).then(function(){
+        res.redirect("/");
+    }, function(err){
+        if(err.fileTypeReject){
             req.flash('error', 'File type is not allowed.');
-            return fail();
+            var form = {
+                name:name,
+                description:description,
+                categoryId:categoryId,
+                typeId:typeId
+            };
+            
+            renderUpload(req, res, form);
+        } else {
+            res.send(500);
         }
-        
-        var path = config.fs.dir + shortid + '/';
-        var data = fs.readFileSync(file.path);
-        
-        fs.mkdirSync(path);
-        fs.writeFileSync(path + file.name, data);
-        
-        DataFile.create({ filepath: shortid + '/' + file.name })
-        .success(function(datafile){
-            var dataset = Dataset.create({
-                shortId: shortid,
-                name: name,
-                description: description
-            }).success(function(dataset) {
-                dataset.setDataCategory(category);
-                dataset.setDataType(type);
-                dataset.setDataFiles([datafile]);
-                dataset.setUser(user);
-        
-                dataset.save()
-                .success(function() {
-                    res.redirect('/');
-                }).failure(function(err) {
-                    res.send(500);
-                });
-            });
-        });
     });
-    
-    function fail() {
-        var form = {
-            name:name,
-            description:description,
-            categoryId:categoryId,
-            typeId:typeId
-        };
-        
-        Q.all([wrapDeferred(DataCategory.findAll()), wrapDeferred(DataType.findAll())])
-        .spread(function(categories, types) {
-            res.render('upload.ejs', { form:form, user:req.user, categories:categories, types:types, messages:req.flash('error') });
-        });
-    }
 });
 
 app.get('/login', function(req, res){
-    console.log("asf")
     if (req.isAuthenticated()) {
 		res.redirect('/');
 		return;
@@ -282,77 +226,10 @@ app.get('/logout', function(req, res) {
     res.redirect('/');
 });
 
-function checkMimeType(file) {
-    var deferred = Q.defer();
-    var magic = new Magic(mmm.MAGIC_MIME_TYPE);
-    magic.detectFile(file, function(err, mime) {
-        if (err) {
-            deferred.reject(new Error(err));
-        }
-        
-        if (config.fs.mimeAllowed.indexOf(mime) != -1) {
-            deferred.resolve(true);
-        } else {
-            deferred.resolve(false);
-        }
-    });
-    return deferred.promise;
-}
-
-function getDatasets(where, n, offset) {
-    where = where || {};
-    n = n || 10;
-    offset = offset || 0;
-    
-    var deferred = Q.defer();
-    Dataset.findAll({ include:[ User, DataCategory, DataType, DataFile ], limit:n, offset:offset, where:where })
-    .success(function(datasets) {
-        datasets.forEach(function(dataset) {
-            dataset.formatedUpdatedAt = dateFormat(dataset.updatedAt, config.date.format);
-            dataset.formatedCreatedAt = dateFormat(dataset.createdAt, config.date.format);
-            
-            dataset.dataFiles.forEach(function(dataFile) {
-                dataFile.extension = path.extname(dataFile.filepath).substr(1);
-            });
-        });
-        deferred.resolve(datasets);
-    })
-    .failure(function(err) {
-        deferred.reject(new Error(err));
-    });
-    return deferred.promise;
-}
-
-function textSearchDatasets(search, n, offset) {
-    search = search || '';
-    var where = 'MATCH (`Datasets`.`name`, `Datasets`.`description`) AGAINST ("' + search + '" IN BOOLEAN MODE)';
-    return getDatasets(where, n, offset);
-}
-
-function wrapDeferred(notDeferred){
-    var deferred = Q.defer();
-    notDeferred.success(function(d){
-        deferred.resolve(d);
-    }).failure(function(err){
-        deferred.reject(new Error(err));
-    });
-    return deferred.promise;
-}
-
-function generateShortId() {
-    var deferred = Q.defer();
-    var shortid = shortId.generate();
-    Dataset.find({ where:{ shortId:shortid } })
-    .success(function(dataset) {
-        if (dataset == null) {
-            deferred.resolve(shortid);
-        } else {
-            generateShortId()
-            .then(function(shortId) {
-                deferred.resolve(shortid);
-            })
-            .done();
-        }
-    });
-    return deferred.promise;
+function appendUserInfo(req){
+    return function(data){
+        return _.extend({
+            user: req.user
+        }, data);
+    };
 }

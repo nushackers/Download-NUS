@@ -38,7 +38,7 @@
         <td><%= data.user.name %></td>
         <td><%= data.formatedUpdatedAt %></td>
         <td>
-            <% if (data.user.nusId === curUser) { %>
+            <% if (data.user.nusId === (user && user.nusId)) { %>
                 <button type="button" class="btn btn-default btn-sm btn-primary">
                     <span class="glyphicon glyphicon-pencil"></span>
                 </button>
