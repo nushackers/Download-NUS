@@ -169,10 +169,17 @@ app.post('/upload', ensureLoggedIn('/login'), function(req, res) {
     var typeId = req.body.typeId;
     var file = req.files.file;
     var userId = req.user.id;
+
+    var form = {
+        name:name,
+        description:description,
+        categoryId:categoryId,
+        typeId:typeId
+    };
     
     req.onValidationError(function (err) {
         req.flash('error', err);
-        return fail();
+        renderUpload(req, res, form);
     });
     
     req.check('name', 'Please enter a valid name').len(3, 255);
@@ -187,18 +194,99 @@ app.post('/upload', ensureLoggedIn('/login'), function(req, res) {
     }, function(err){
         if(err.fileTypeReject){
             req.flash('error', 'File type is not allowed.');
-            var form = {
-                name:name,
-                description:description,
-                categoryId:categoryId,
-                typeId:typeId
-            };
-            
             renderUpload(req, res, form);
         } else {
             res.send(500);
         }
     });
+});
+
+app.get("/data/:id", function(req, res){
+    if (!req.isAuthenticated()) {
+        res.redirect('/login');
+        return;
+    }
+
+    var id = req.param("id");
+    if(isNaN(id)){
+        res.send(404);
+    }else{
+        id = parseInt(id, 10);
+        dataAccess.getDataWithId(id).done(function(data){
+            if(!data){
+                res.send(404);
+            }else if(data.UserId !== req.user.id){
+                res.send(401);
+            }else{
+                data.categoryId = data.DataCategoryId;
+                data.typeId = data.DataTypeId;
+                renderUpload(req, res, data);
+            }
+        });
+    }
+});
+
+
+app.post("/data/:id", function(req, res){
+    if (!req.isAuthenticated()) {
+        res.redirect('/login');
+        return;
+    }
+
+    var id = req.param("id");
+    if(isNaN(id)){
+        res.send(404);
+    }else{
+        id = parseInt(id, 10);
+        var name = req.body.name;
+        var description = req.body.description;
+        var categoryId = req.body.categoryId;
+        var typeId = req.body.typeId;
+        var file = req.files.file;
+        var userId = req.user.id;
+
+        var form = {
+            id: id,
+            name:name,
+            description:description,
+            categoryId:categoryId,
+            typeId:typeId
+        };
+
+        req.onValidationError(function (err) {
+            req.flash('error', err);
+            renderUpload(req, res, form);
+        });
+        
+        req.check('name', 'Please enter a valid name').len(3, 255);
+        req.check('categoryId', 'Invalid categeoryId').isInt();
+        req.check('typeId', 'Invalid typeId').isInt();
+        
+        req.sanitize('name').trim();
+        req.sanitize('description').xss();
+
+        dataAccess.updateDataset({
+            id: id,
+            name: name,
+            description: description,
+            categoryId: categoryId,
+            typeId: typeId,
+            file: file,
+            userId: req.user.id
+        }).then(function(data){
+            res.redirect("/data");
+        }, function(err){
+            console.log(err);
+            if(err.fileTypeReject){
+                req.flash('error', 'File type is not allowed.');
+                renderUpload(req, res, form);
+            } else if (err.notAuthorized){
+                res.send(401);
+            } else {
+                res.send(500);
+            }
+        });
+    }
 });
 
 app.get('/login', function(req, res){

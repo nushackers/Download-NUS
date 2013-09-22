@@ -6,6 +6,7 @@ var dateFormat = require('dateformat');
 var fs = require('fs');
 var Sequelize = require('sequelize');
 var path = require('path');
+var rmdir = require('rimraf');
 
 module.exports = function(db, fsConfig, configDateFormat){
     // initialised closure variable
@@ -24,7 +25,7 @@ module.exports = function(db, fsConfig, configDateFormat){
         offset = offset || 0;
         
         var deferred = Q.defer();
-        Dataset.findAll({ include:[ User, DataCategory, DataType, DataFile ], limit:n, offset:offset, where:where })
+        Dataset.findAll({ include:[ User, DataCategory, DataType, DataFile ], limit:n, offset:offset, where:where, order: 'updatedAt DESC' })
         .success(function(datasets) {
             datasets.forEach(function(dataset) {
                 dataset.formatedUpdatedAt = dateFormat(dataset.updatedAt, configDateFormat);
@@ -94,6 +95,60 @@ module.exports = function(db, fsConfig, configDateFormat){
         return deferred.promise;
     }
 
+    function deleteFileRecord(dataId){
+        var d = Q.defer();
+        DataFile.findAll({
+            where: { "DatasetId": dataId }
+        }).success(function(files){
+            var tasks = [];
+            files.forEach(function(f){
+                tasks.push(wrapDeferred(f.destroy()));
+            });
+            if(!tasks.length){
+                d.resolve();
+            } else {
+                Q.all(tasks).then(d.resolve, d.reject);
+            }
+        }).failure(d.reject);
+        return d.promise;
+    }
+
+    function tryUploadingFile(file, shortid, dataset) {
+        var d = Q.defer();
+        if(!file.size){
+            d.resolve();
+        } else {
+            checkMimeType(file.path).then(function(check){
+                if (!check) {
+                    d.reject({
+                        fileTypeReject: true
+                    });
+                    return;
+                }
+                var path = fsConfig.dir + shortid + '/';
+                var rmdefer = Q.defer();
+                rmdir(path, function(err){
+                    if(err){
+                        rmdefer.reject(err);
+                    } else {
+                        rmdefer.resolve();
+                    }
+                });
+                Q.all([rmdefer, deleteFileRecord(dataset.id)]).then(function(){
+                    console.log("deleted");
+                    var data = fs.readFileSync(file.path);
+
+                    fs.mkdirSync(path);
+                    fs.writeFileSync(path + file.name, data);
+                    
+                    DataFile.create({ filepath: shortid + '/' + file.name })
+                    .success(d.resolve).failure(d.reject);
+                }, d.reject);
+            }, d.reject);
+        }
+        return d.promise;
+    }
+
     // here's what you get
     return {
         User: User,
@@ -110,6 +165,16 @@ module.exports = function(db, fsConfig, configDateFormat){
                     types: types
                 });
             }).fail(d.reject);
+            return d.promise;
+        },
+
+        getDataWithId: function(id){
+            var d = Q.defer();
+            Dataset.find(id).success(function(data){
+                d.resolve(data);
+            }).failure(function(){
+                d.reject();
+            });
             return d.promise;
         },
 
@@ -143,6 +208,32 @@ module.exports = function(db, fsConfig, configDateFormat){
                 .spread(function(categories, types) {
                     d.resolve({ categories:categories, types:types });
                 }).fail(d.reject);
+            return d.promise;
+        },
+
+        updateDataset: function(newDataset){
+            var d = Q.defer();
+            Q.all([wrapDeferred(Dataset.find(newDataset.id)), wrapDeferred(User.find(newDataset.userId)), wrapDeferred(DataCategory.find(newDataset.categoryId)), wrapDeferred(DataType.find(newDataset.typeId))])
+            .spread(function(dataset, user, category, type) {
+                if(!dataset || !user || !category || !type){
+                    d.reject({
+                        malFormedData: true
+                    });
+                } else if(dataset.UserId !== newDataset.userId) {
+                    d.reject({
+                        notAuthorized: true
+                    });
+                } else {
+                    tryUploadingFile(newDataset.file, dataset.shortId, dataset).then(function(datafile){
+                        dataset.name = newDataset.name;
+                        dataset.description = newDataset.description;
+                        if(datafile) dataset.setDataFiles([datafile]);
+                        dataset.setDataCategory(category);
+                        dataset.setDataType(type);
+                        dataset.save().success(d.resolve).failure(d.reject);
+                    }, d.reject);
+                }
+            }).fail(d.reject);
             return d.promise;
         },
 
@@ -184,7 +275,9 @@ module.exports = function(db, fsConfig, configDateFormat){
                             });
                         });
                     });
-                }).failure(d.reject);
+                }).failure(function(){
+                    d.reject();
+                });
             });
             return d.promise;
         }

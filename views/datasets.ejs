@@ -39,9 +39,9 @@
         <td><%= data.formatedUpdatedAt %></td>
         <td>
             <% if (data.user.nusId === (user && user.nusId)) { %>
-                <button type="button" class="btn btn-default btn-sm btn-primary">
+                <a href="<%= "/data/" + data.id %>" type="button" class="btn btn-default btn-sm btn-primary">
                     <span class="glyphicon glyphicon-pencil"></span>
-                </button>
+                </a>
                 <button type="button" class="btn btn-default btn-sm btn-danger">
                     <span class="glyphicon glyphicon-remove"></span>
                 </button>

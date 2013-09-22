@@ -1,11 +1,15 @@
 <% include header %>
-<h2>Upload New Dataset</h2>
+<% if ("id" in form) { %>
+    <h2>Update Dataset</h2>
+<% } else { %>
+    <h2>Upload New Dataset</h2>
+<% } %>
 <% for (var i=0; i<messages.length; i++){ %>
-	<div class="alert alert-error">
+	<div class="alert alert-warning">
 		<%= messages[i] %>
 	</div>
 <% } %>
-<form action="/upload" method="post" enctype="multipart/form-data">
+<form method="post" enctype="multipart/form-data">
     <fieldset>
         <div class="form-group">
             <label for="exampleInputEmail">Title</label>
@@ -33,6 +37,12 @@
         </div>
         <div class="form-group">
             <label for="file">Dataset</label>
+            <% if ("id" in form) { %>
+                <div class="alert alert-info">
+                    <p>Uploading a new file to replace the old one.</p>
+                    <p>Or leave this field blank</p>
+                </div>
+            <% } %>
             <input type="file" id="file" name="file">
             <p class="help-block">File types allowed: XLS, XLSX, CSV, TXT</p>
         </div>

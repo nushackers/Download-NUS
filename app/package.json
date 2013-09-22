@@ -18,6 +18,7 @@
         "mysql": "2.0.x",
         "sequelize": "2.0.x",
         "mmmagic": "0.3.x",
+        "rimraf": "2.x.x",
         "ldapjs": "0.6.x"
     }
 }
