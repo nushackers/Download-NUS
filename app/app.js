@@ -226,6 +226,30 @@ app.get("/data/:id", function(req, res){
     }
 });
 
+app.del("/data/:id", function(req, res){
+    if (!req.isAuthenticated()) {
+        res.redirect('/login');
+        return;
+    }
+
+    var id = req.param("id");
+    if(isNaN(id)){
+        res.send(404);
+    }else{
+        id = parseInt(id, 10);
+        dataAccess.deleteDataset(id, req.user.id).then(function(){
+            res.send("success");
+        }, function(err){
+            console.log(err);
+            if (err.notAuthorized){
+                res.send(401);
+            } else {
+                res.send(500);
+            }
+        });
+    }
+});
+
 
 app.post("/data/:id", function(req, res){
     if (!req.isAuthenticated()) {

@@ -211,6 +211,32 @@ module.exports = function(db, fsConfig, configDateFormat){
             return d.promise;
         },
 
+        deleteDataset: function(id, userId){
+            var d = Q.defer();
+            Dataset.find(id).success(function(dataset){
+                if(dataset.UserId !== userId){
+                    d.reject({
+                        notAuthorized: true
+                    });
+                } else {
+                    var path = fsConfig.dir + dataset.shortId + '/';
+                    var rmdefer = Q.defer();
+                    rmdir(path, function(err){
+                        if(err){
+                            rmdefer.reject(err);
+                        } else {
+                            rmdefer.resolve();
+                        }
+                    });
+                    Q.all([rmdefer, deleteFileRecord(dataset.id)]).then(function(){
+                        console.log("deleted");
+                        dataset.destroy().success(d.resolve).failure(d.reject);
+                    }, d.reject);
+                }
+            });
+            return d.promise;
+        },
+
         updateDataset: function(newDataset){
             var d = Q.defer();
             Q.all([wrapDeferred(Dataset.find(newDataset.id)), wrapDeferred(User.find(newDataset.userId)), wrapDeferred(DataCategory.find(newDataset.categoryId)), wrapDeferred(DataType.find(newDataset.typeId))])
