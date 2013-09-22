@@ -190,7 +190,7 @@ app.post('/upload', ensureLoggedIn('/login'), function(req, res) {
     req.sanitize('description').xss();
 
     dataAccess.uploadDataset(file, userId, categoryId, typeId, name, description).then(function(){
-        res.redirect("/");
+        res.redirect("/data");
     }, function(err){
         if(err.fileTypeReject){
             req.flash('error', 'File type is not allowed.');
