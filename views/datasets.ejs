@@ -19,7 +19,7 @@
             Date
         </th>
         <th class="col-lg-1 col-sm-1">
-            Manage
+            Action
         </th>
     </tr>
     <% datasets.forEach(function(data, ind){ %>
@@ -38,8 +38,11 @@
         <td><%= data.user.name %></td>
         <td><%= data.formatedUpdatedAt %></td>
         <td>
+            <a href="<%= "/data/" + data.id %>" type="button" class="btn btn-default btn-sm btn-info">
+                <span class="glyphicon glyphicon-new-window"></span>
+            </a>
             <% if (data.user.nusId === (user && user.nusId)) { %>
-                <a href="<%= "/data/" + data.id %>" type="button" class="btn btn-default btn-sm btn-primary">
+                <a href="<%= "/data/" + data.id + "?edit" %>" type="button" class="btn btn-sm btn-primary">
                     <span class="glyphicon glyphicon-pencil"></span>
                 </a>
             <% } %>

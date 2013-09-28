@@ -178,6 +178,12 @@ module.exports = function(db, fsConfig, configDateFormat){
             return d.promise;
         },
 
+        getDisplayDataWithId: function(id){
+            return getDatasets({id: id}, 1, 0).then(function(data){
+                return data[0];
+            });
+        },
+
         getDatasets: function(where, offset){
             var d = Q.defer();
             Q.all([getDatasets(where, 10, offset), wrapDeferred(Dataset.count()), wrapDeferred(DataCategory.findAll()), wrapDeferred(DataType.findAll())])

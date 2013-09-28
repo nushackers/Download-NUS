@@ -17,6 +17,7 @@ var expressValidator = require('express-validator');
 var flash = require('connect-flash');
 var ensureLoggedIn = require('connect-ensure-login').ensureLoggedIn;
 var passport = require('passport');
+var truncate = require('truncate-component');
 
 var NusStrategy = require('./passport-nus').Strategy;
 
@@ -100,6 +101,7 @@ app.get('/search', function(req, res) {
     }
 
     dataAccess.performSearch(search, offset)
+        .then(trancate)
         .then(appendUserInfo(req))
         .done(function(data){
             res.render('search.ejs', _.extend({
@@ -118,6 +120,7 @@ app.get('/data', function(req, res) {
     if (req.query.type) where.DataTypeId = req.query.type;
 
     dataAccess.getDatasets(where, offset, page)
+        .then(trancate)
         .then(appendUserInfo(req))
         .done(function(data){
             res.render('data.ejs', _.extend({
@@ -202,9 +205,12 @@ app.post('/upload', ensureLoggedIn('/login'), function(req, res) {
 });
 
 app.get("/data/:id", function(req, res){
-    if (!req.isAuthenticated()) {
-        res.redirect('/login');
-        return;
+    var isEdit = ("edit" in req.query);
+    if(isEdit){
+        if (!req.isAuthenticated()) {
+            res.redirect('/login');
+            return;
+        }
     }
 
     var id = req.param("id");
@@ -212,15 +218,24 @@ app.get("/data/:id", function(req, res){
         res.send(404);
     }else{
         id = parseInt(id, 10);
-        dataAccess.getDataWithId(id).done(function(data){
+        var action = isEdit ? dataAccess.getDataWithId(id) : dataAccess.getDisplayDataWithId(id);
+        action.done(function(data){
             if(!data){
                 res.send(404);
-            }else if(data.UserId !== req.user.id){
+            }else if(isEdit && data.UserId !== req.user.id){
                 res.send(401);
             }else{
                 data.categoryId = data.DataCategoryId;
                 data.typeId = data.DataTypeId;
-                renderUpload(req, res, data);
+                if(isEdit) {
+                    renderUpload(req, res, data);
+                } else {
+                    res.render("displayData.ejs", {
+                        form: data,
+                        messages:req.flash('error'),
+                        user: req.user
+                    });
+                }
             }
         });
     }
@@ -344,4 +359,11 @@ function appendUserInfo(req){
             user: req.user
         }, data);
     };
+}
+
+function trancate(data){
+    data.datasets.forEach(function(d){
+        d.description = truncate(d.description, 30, ' ...');
+    });
+    return data;
 }
