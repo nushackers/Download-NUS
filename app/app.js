@@ -18,6 +18,21 @@ var flash = require('connect-flash');
 var ensureLoggedIn = require('connect-ensure-login').ensureLoggedIn;
 var passport = require('passport');
 var truncate = require('truncate-component');
+var marked = require("marked");
+
+marked.setOptions({
+    gfm: true,
+    highlight: function (code, lang, callback) {
+        return code;
+    },
+    tables: true,
+    breaks: false,
+    pedantic: false,
+    sanitize: true,
+    smartLists: true,
+    smartypants: false,
+    langPrefix: 'lang-'
+});
 
 var NusStrategy = require('./passport-nus').Strategy;
 
@@ -231,7 +246,7 @@ app.get("/data/:id", function(req, res){
                     renderUpload(req, res, data);
                 } else {
                     res.render("displayData.ejs", {
-                        form: data,
+                        form: toMarkdown(data),
                         messages:req.flash('error'),
                         user: req.user
                     });
@@ -361,9 +376,18 @@ function appendUserInfo(req){
     };
 }
 
+function stripMarkdown(str){
+    return str.split(/#|_|\*|\n/g).join("");
+}
+
 function trancate(data){
     data.datasets.forEach(function(d){
-        d.description = truncate(d.description, 30, ' ...');
+        d.description = truncate(stripMarkdown(d.description), 30, ' ...');
     });
     return data;
+}
+
+function toMarkdown(dataset){
+    dataset.description = marked(dataset.description);
+    return dataset;
 }

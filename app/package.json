@@ -20,6 +20,7 @@
         "mmmagic": "0.3.x",
         "rimraf": "2.x.x",
         "ldapjs": "0.6.x",
-        "truncate-component": "0.1.x"
+        "truncate-component": "0.1.x",
+        "marked": ""
     }
 }
