@@ -328,7 +328,7 @@ app.post("/data/:id", function(req, res){
             file: file,
             userId: req.user.id
         }).then(function(data){
-            res.redirect("/data");
+            res.redirect("/data/" + id);
         }, function(err){
             console.log(err);
             if(err.fileTypeReject){
