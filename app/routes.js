@@ -30,4 +30,8 @@ module.exports = function(match, apiClient) {
             callback(null, 'data', res.body);
         });
     });
+
+    match('/login', function(req, callback){
+        callback(null, 'login');
+    });
 };
