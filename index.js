@@ -16,7 +16,7 @@ app.use(express.cookieParser());
 app.use(express.session({ secret:config.session.secret }));
 
 var api = require('./lib/api')(app, "/api"),
-    ApiClient = require("./server_api_client"),
+    ApiClient = require("./lib/server_api_client"),
     router = new Router(routes, ApiClient(api));
 
 // Use the router as a middleware.
