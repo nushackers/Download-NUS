@@ -14,10 +14,9 @@ module.exports = function(match, apiClient) {
 
 
     match('/search', function(req, callback) {
-        // var page = req.query.page || 1;
-        // var offset = (page-1)*10;
-        
-        // var search = req.query.q;
-        callback(null, 'search', {q: "search"});
+        var page = req.query.page || 1;
+        var search = req.query.q;
+        console.log(req);
+        callback(null, 'search', {q: search, page: page});
     });
 };

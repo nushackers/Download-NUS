@@ -5,6 +5,15 @@ var director = require('director'),
     url = require("url"),
     DirectorRouter;
 
+function parsePath(query){
+    query = query.substr(1);
+    var map = {};
+    query.replace(/([^&=]+)=?([^&]*)(?:&+|$)/g, function(match, key, value) {
+        (map[key] = map[key] || []).push(value);
+    });
+    return map;
+}
+
 if (isServer) {
     DirectorRouter = director.http.Router;
 } else {
@@ -65,12 +74,19 @@ Router.prototype.getRouteHandler = function(handler) {
         /** If it's the first render on the client, just return; we don't want to
         * replace the page's HTML.
         */
-
         var routeContext = this,
             params = Array.prototype.slice.call(arguments),
             handleErr = router.handleErr.bind(routeContext);
 
+        console.log(this);
+
         var req = routeContext.req;
+
+        if(!req){
+            req = {
+                query: parsePath(location.search)
+            };
+        }
 
         function handleRoute() {
             handler.apply(null, [req].concat(params).concat(function routeHandler(err, viewPath, data) {
