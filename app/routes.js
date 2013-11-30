@@ -16,7 +16,11 @@ module.exports = function(match, apiClient) {
     match('/search', function(req, callback) {
         var page = req.query.page || 1;
         var search = req.query.q;
-        console.log(req);
-        callback(null, 'search', {q: search, page: page});
+        apiClient.get(req, '/datasets.json', req.query, function(err, res){
+            if(err){
+                return callback(err);
+            }
+            callback(null, 'search', res.body);
+        });
     });
 };

@@ -8,9 +8,11 @@ var superagent = require('superagent');
 * Proxy each method to `superagent`, formatting the URL.
 */
 ['get', 'post', 'put', 'path', 'del'].forEach(function(method) {
-    module.exports[method] = function(req, path, callback) {
+    module.exports[method] = function(req, path, query, callback) {
         if(window.initialData){
-            callback(window.initialData);
+            callback(null, {
+                body: window.initialData
+            });
             window.initialData = null;
         } else {
             var args = Array.prototype.slice.call(arguments, 2);

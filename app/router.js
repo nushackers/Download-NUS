@@ -78,8 +78,6 @@ Router.prototype.getRouteHandler = function(handler) {
             params = Array.prototype.slice.call(arguments),
             handleErr = router.handleErr.bind(routeContext);
 
-        console.log(this);
-
         var req = routeContext.req;
 
         if(!req){
@@ -90,9 +88,11 @@ Router.prototype.getRouteHandler = function(handler) {
 
         function handleRoute() {
             handler.apply(null, [req].concat(params).concat(function routeHandler(err, viewPath, data) {
+                console.log(data, err);
                 if (err) return handleErr(err);
 
                 data = data || {};
+
 
                 var Component = require(viewsDir + '/' + viewPath);
                 if (isServer){
@@ -118,7 +118,7 @@ Router.prototype.handleErr = function(err) {
     if (this.next) {
         this.next(err);
     } else {
-        alert(err.message);
+        console.log(err);
     }
 };
 
