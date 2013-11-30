@@ -80,6 +80,8 @@ module.exports = React.createClass({
                 </div>
             </div>
 
+            <script dangerouslySetInnerHTML={{__html: "window.initialData=" + JSON.stringify(this.props.initialData)}} />
+            <script src="/js/jquery-1.10.2.min.js"></script>
             <script src="/scripts.js"></script>
         </body>
     </html>

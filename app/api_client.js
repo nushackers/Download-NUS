@@ -8,9 +8,15 @@ var superagent = require('superagent');
 * Proxy each method to `superagent`, formatting the URL.
 */
 ['get', 'post', 'put', 'path', 'del'].forEach(function(method) {
-    module.exports[method] = function(req, path) {
-        var args = Array.prototype.slice.call(arguments, 2);
-        superagent[method].apply(null, ['/api' + path].concat(args));
+    module.exports[method] = function(req, path, callback) {
+        if(window.initialData){
+            callback(window.initialData);
+            window.initialData = null;
+        } else {
+            var args = Array.prototype.slice.call(arguments, 2);
+            console.log("request");
+            superagent[method].apply(null, ['/api' + path].concat(args));
+        }
     };
 });
 

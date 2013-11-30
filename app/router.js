@@ -2,6 +2,7 @@ var director = require('director'),
     isServer = typeof window === 'undefined',
     React = require('react-tools').React,
     viewsDir = (isServer ? __dirname : 'app') + '/views',
+    url = require("url"),
     DirectorRouter;
 
 if (isServer) {
@@ -17,6 +18,8 @@ function Router(routesFn, apiClient) {
     if (routesFn == null) throw new Error("Must provide routes.");
 
     this.directorRouter = new DirectorRouter(this.parseRoutes(routesFn));
+
+    if(!isServer) window.directorRouter = this.directorRouter;
 
     // Express middleware.
     if (isServer) {
@@ -67,15 +70,17 @@ Router.prototype.getRouteHandler = function(handler) {
             params = Array.prototype.slice.call(arguments),
             handleErr = router.handleErr.bind(routeContext);
 
+        var req = routeContext.req;
+
         function handleRoute() {
-            handler.apply(null, [routeContext.req].concat(params).concat(function routeHandler(err, viewPath, data) {
+            handler.apply(null, [req].concat(params).concat(function routeHandler(err, viewPath, data) {
                 if (err) return handleErr(err);
 
                 data = data || {};
 
                 var Component = require(viewsDir + '/' + viewPath);
                 if (isServer){
-                    router.handleServerRoute(router.wrapWithLayout(Component(data)), routeContext.req, routeContext.res);
+                    router.handleServerRoute(router.wrapWithLayout(Component(data), data), routeContext.req, routeContext.res);
                 } else {
                     router.handleClientRoute(Component(data));
                 }
@@ -101,20 +106,9 @@ Router.prototype.handleErr = function(err) {
     }
 };
 
-Router.prototype.renderView = function(viewPath, data, callback) {
-    try {
-        var Component = require(viewsDir + '/' + viewPath);
-        React.renderComponentToString(Component(data), function(html) {
-            callback(null, html);
-        });
-    } catch (err) {
-        callback(err);
-    }
-};
-
-Router.prototype.wrapWithLayout = function(component) {
+Router.prototype.wrapWithLayout = function(component, data) {
     var layout = require(viewsDir + '/layout');
-    return layout({}, component);
+    return layout({initialData: data}, [component]);
 };
 
 Router.prototype.handleClientRoute = function(component, data) {
@@ -152,6 +146,16 @@ Router.prototype.start = function() {
                 this.directorRouter.setRoute(el.attributes.href.value);
                 e.preventDefault();
             }
+    }.bind(this), false);
+
+    document.addEventListener("submit", function(e){
+        var ef = e.target,
+            dataset = ef && ef.dataset;
+        if(ef && ef.method.toUpperCase() === "GET" &&
+            (dataset.passThru == null || dataset.passThru === 'false')){
+            e.preventDefault();
+            this.directorRouter.setRoute(ef.action + "?" + $(ef).serialize());
+        }
     }.bind(this), false);
 
     this.directorRouter.init();

@@ -3,10 +3,13 @@
  */
 var React = require('react-tools').React;
 
+var searchform = require("./searchform.jsx");
+
 module.exports = React.createClass({
   render: function() {
     return (
         <div>
+            <searchform />
             <div className="row">
                 <div className="col-lg-3 col-sm-3">
                     <a href="/data" className="btn glyphicon glyphicon-save big-icon"></a>
