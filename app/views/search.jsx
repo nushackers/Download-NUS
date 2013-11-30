@@ -18,7 +18,7 @@ module.exports = React.createClass({
                 ] :
                 [
                 <h2>{"Search results for " + this.props.q}</h2>,
-                <datasets datasets={[]} pages={0} page={0}/>
+                <datasets datasets={this.props.datasets} pages={this.props.pages} page={this.props.page}/>
                 ]
             }
         </div>  

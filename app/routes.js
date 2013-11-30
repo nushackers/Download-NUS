@@ -14,13 +14,20 @@ module.exports = function(match, apiClient) {
 
 
     match('/search', function(req, callback) {
-        var page = req.query.page || 1;
-        var search = req.query.q;
         apiClient.get(req, '/datasets.json', req.query, function(err, res){
             if(err){
                 return callback(err);
             }
             callback(null, 'search', res.body);
+        });
+    });
+
+    match('/data', function(req, callback){
+        apiClient.get(req, '/datasets.json', req.query, function(err, res){
+            if(err){
+                return callback(err);
+            }
+            callback(null, 'data', res.body);
         });
     });
 };
