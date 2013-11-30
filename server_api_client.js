@@ -2,17 +2,16 @@
 * Small wrapper around `superagent` module to make it easier to consume
 * the API the same way on client & server.
 */
-var superagent = require('superagent');
-
-module.exports = function(apiPort){
+module.exports = function(apiApp){
     var client = {};
     /**
     * Proxy each method to `superagent`, formatting the URL.
     */
     ['get', 'post', 'put', 'path', 'del'].forEach(function(method) {
-        client[method] = function(path) {
-            var args = Array.prototype.slice.call(arguments, 1);
-            superagent[method].apply(null, ['http://localhost:' + apiPort + path].concat(args));
+        client[method] = function(req, path) {
+            var args = Array.prototype.slice.call(arguments, 2);
+            // superagent[method].apply(null, ['http://localhost:' + apiPort + path].concat(args));
+            apiApp.callRoute.apply(null, [method, path, req].concat(args));
         };
     });
 

@@ -2,8 +2,7 @@ var director = require('director'),
     isServer = typeof window === 'undefined',
     React = require('react-tools').React,
     viewsDir = (isServer ? __dirname : 'app') + '/views',
-    DirectorRouter,
-    firstRender = true;
+    DirectorRouter;
 
 if (isServer) {
     DirectorRouter = director.http.Router;
@@ -63,30 +62,17 @@ Router.prototype.getRouteHandler = function(handler) {
         /** If it's the first render on the client, just return; we don't want to
         * replace the page's HTML.
         */
-        if (!isServer && firstRender) {
-            firstRender = false;
-            return;
-        }
 
         var routeContext = this,
             params = Array.prototype.slice.call(arguments),
             handleErr = router.handleErr.bind(routeContext);
 
         function handleRoute() {
-            handler.apply(null, params.concat(function routeHandler(err, viewPath, data) {
+            handler.apply(null, [routeContext.req].concat(params).concat(function routeHandler(err, viewPath, data) {
                 if (err) return handleErr(err);
 
                 data = data || {};
 
-                // router.renderView(viewPath, data, function(err, html) {
-                //     if (err) return handleErr(err);
-
-                //     if (isServer) {
-                //         router.handleServerRoute(html, routeContext.req, routeContext.res);
-                //     } else {
-                //         router.handleClientRoute(html);
-                //     }
-                // });
                 var Component = require(viewsDir + '/' + viewPath);
                 if (isServer){
                     router.handleServerRoute(router.wrapWithLayout(Component(data)), routeContext.req, routeContext.res);
@@ -132,15 +118,10 @@ Router.prototype.wrapWithLayout = function(component) {
 };
 
 Router.prototype.handleClientRoute = function(component, data) {
-    // document.getElementById('view-container').innerHTML = html;
     React.renderComponent(component, document.getElementById('view-container'));
 };
 
 Router.prototype.handleServerRoute = function(component, req, res) {
-    // this.wrapWithLayout(html, function(err, layoutHtml) {
-    //     console.log(err, layoutHtml);
-    //     res.send(layoutHtml);
-    // });
     React.renderComponentToString(component, function(html) {
         res.send(html);
     });
