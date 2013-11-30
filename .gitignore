@@ -1,3 +1,4 @@
-app/node_modules
-app/config.json
+node_modules
+config.json
 static/repo
+static/scripts.js

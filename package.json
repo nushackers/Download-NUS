@@ -3,6 +3,7 @@
     "description": "Download @ NUS",
     "version": "0.0.1",
     "private": true,
+    "main": "index.js",
     "dependencies": {
         "q": "0.9.x",
         "underscore": "1.x.x",
@@ -21,6 +22,22 @@
         "rimraf": "2.x.x",
         "ldapjs": "0.6.x",
         "truncate-component": "0.1.x",
-        "marked": ""
+        "marked": "",
+        "superagent": "~0.15.7",
+        "director": "~1.2.0",
+        "underscore": "~1.5.2",
+        "http-proxy": "~0.10.3",
+        "reactify": "~0.4.0",
+        "react-tools": "~0.5.1",
+        "node-jsx": "petehunt/node-jsx"
+    },
+    "devDependencies": {
+        "grunt": "~0.4.1",
+        "browserify": "~2.35.0",
+        "grunt-browserify": "~1.2.9",
+        "grunt-contrib-watch": "~0.5.3",
+        "grunt-nodemon": "~0.1.1",
+        "grunt-concurrent": "~0.4.1",
+        "grunt-contrib-stylus": "~0.10.0"
     }
 }
