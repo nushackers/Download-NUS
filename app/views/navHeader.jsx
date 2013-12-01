@@ -4,6 +4,10 @@
 var React = require('react-tools').React;
 
 module.exports = React.createClass({
+  logout: function(e){
+    this.props.sessionManager.logout();
+    e.preventDefault();
+  },
   render: function() {
     return (
         <header className="navbar navbar-inverse navbar-fixed-top">
@@ -25,7 +29,7 @@ module.exports = React.createClass({
                             <ul className="dropdown-menu pull-right" role="menu" aria-labelledby="dLabel">
                                 <li><a href="/manage">Manage Datasets</a></li>
                                 <li className="divider"></li>
-                                <li><a href="/logout">Log out</a></li>
+                                <li><a href="" data-passthru="true" onClick={this.logout}>Log out</a></li>
                             </ul>
                         </div>
                         ]:
@@ -44,7 +48,7 @@ module.exports = React.createClass({
                             <li><a href="/profile">Profile</a></li>,
                             <li><a href="/manage">Manage Datasets</a></li>,
                             <li className="divider"></li>,
-                            <li><a href="/logout">Log out</a></li>
+                            <li><a href="" data-passthru="true" onClick={this.logout}>Log out</a></li>
                             ] :
                             <li><a href="/login">Sign In</a></li>
                         }

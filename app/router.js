@@ -28,7 +28,10 @@ function Router(routesFn, apiClient) {
 
     this.directorRouter = new DirectorRouter(this.parseRoutes(routesFn));
 
-    if(!isServer) window.directorRouter = this.directorRouter;
+    if(!isServer) {
+        window.directorRouter = this.directorRouter;
+        this.sessionManager = require("./sessionManager")(apiClient, this);
+    }
 
     // Express middleware.
     if (isServer) {
@@ -124,7 +127,11 @@ Router.prototype.renderView = function(viewPath, data, session){
 
 Router.prototype.handleErr = function(err) {
     if(err.redirect){
-        this.res.redirect(err.redirect);
+        if(isServer){
+            this.res.redirect(err.redirect);
+        } else {
+            directorRouter.setRoute(err.redirect);
+        }
     } else {
         console.error(err.message + err.stack);
 

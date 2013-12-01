@@ -48,7 +48,13 @@ module.exports = function(match, apiClient) {
     });
 
     match('/login', function(req, callback){
-        callback(null, 'login');
+        if(apiClient.getSession(req)){
+            callback({
+                redirect: "/"
+            });
+        } else {
+            callback(null, 'login');
+        }
     });
 
     match('/data/:id', function(req, id, callback){

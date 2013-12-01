@@ -9,7 +9,7 @@ module.exports = React.createClass({
   render: function() {
     return (
     <div>
-        <navHeader session={this.props.session} />
+        <navHeader session={this.props.session} sessionManager={this.props.router.sessionManager}/>
         <div className="container">
             <div className="page-header">
                 <h1><img src="/img/logo.gif" height="76" width="334" /></h1>
