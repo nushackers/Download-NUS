@@ -12,9 +12,10 @@ require('node-jsx').install({extension: '.jsx'});
 
 app.use(express.static(__dirname + '/static'));
 
-app.use(express.cookieParser());
-app.use(express.session({ secret:config.session.secret }));
+app.use(express.bodyParser());
 
+app.use(express.cookieParser(config.session.secret));
+app.use(express.session({ secret:config.session.secret }));
 var api = require('./lib/api')(app, "/api", config),
     ApiClient = require("./lib/server_api_client"),
     router = new Router(routes, ApiClient(api));

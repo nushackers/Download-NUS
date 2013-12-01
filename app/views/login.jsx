@@ -9,10 +9,21 @@ var searchform = require("./searchform.jsx"),
 module.exports = React.createClass({
     login: function(e){
         e.preventDefault();
-        $.post("/api/login").done(function(data){
-            this.setState({
-                messages: [data.err]
-            });
+        $.ajax({
+            url: "/api/login",
+            data: $(this.refs.form.getDOMNode()).serialize(),
+            dataType: "json",
+            type: "POST"
+        }).done(function(data){
+            console.log(data);
+            if(data.err){
+                this.setState({
+                    messages: [data.err]
+                });
+            } else {
+                this.props.router.updateSession(data.user);
+                this.props.router.directorRouter.setRoute("/");
+            }
         }.bind(this));
     },
     render: function() {
@@ -21,7 +32,7 @@ module.exports = React.createClass({
                 <div className="col-lg-3"></div>
                 <div className="col-lg-6">
                     <div className="panel">
-                        <form action="/api/login" method="post" onSubmit={this.login}>
+                        <form action="/api/login" method="post" onSubmit={this.login} ref="form">
                             <fieldset>
                                 <legend>Sign In</legend>
                                 {

@@ -17,7 +17,7 @@ module.exports = React.createClass({
                     <p>Browse by category:</p>
                     <div className="list-group">
                         {
-                            this.props.categories.map(function(cat) {
+                            this.props.data.categories.map(function(cat) {
                                 return <a href={"?cat=" + cat.id} className="list-group-item">{cat.name}</a>
                             })
                         }
@@ -27,13 +27,13 @@ module.exports = React.createClass({
                     <p>Browse by data className:</p>
                     <div className="list-group">
                         {
-                            this.props.types.map(function(t) {
+                            this.props.data.types.map(function(t) {
                                 return <a href={"?type=" + t.id} className="list-group-item">{t.name}</a>
                             })
                         }
                     </div>
                 </div>
-                <datasets datasets={this.props.datasets} pages={this.props.pages} page={this.props.page}/>
+                <datasets datasets={this.props.data.datasets} pages={this.props.data.pages} page={this.props.data.page}/>
             </div>
         </div>
     );

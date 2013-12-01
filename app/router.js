@@ -69,6 +69,7 @@ Router.prototype.parseRoutes = function(routesFn) {
 
 Router.prototype.getRouteHandler = function(handler) {
     var router = this;
+    var apiClient = this.apiClient;
 
     return function() {
         /** If it's the first render on the client, just return; we don't want to
@@ -93,12 +94,12 @@ Router.prototype.getRouteHandler = function(handler) {
 
                 data = data || {};
 
+                var session = apiClient.getSession(req);
 
-                var Component = require(viewsDir + '/' + viewPath);
                 if (isServer){
-                    router.handleServerRoute(router.wrapWithLayout(Component(data), data), routeContext.req, routeContext.res);
+                    router.handleServerRoute(router.wrapWithLayout(router.renderView(viewPath, data, session), data, session), routeContext.req, routeContext.res);
                 } else {
-                    router.handleClientRoute(Component(data));
+                    router.handleClientRoute(router.renderView(viewPath, data, session));
                 }
             }));
         }
@@ -109,6 +110,12 @@ Router.prototype.getRouteHandler = function(handler) {
             handleErr(err);
         }
     };
+};
+
+Router.prototype.renderView = function(viewPath, data, session){
+    var Component = require(viewsDir + '/' + viewPath),
+        PageBody = require(viewsDir + "/pageBody");
+    return PageBody({session: session, router: this}, Component({data: data, router: this, session: session}));
 };
 
 Router.prototype.handleErr = function(err) {
@@ -122,13 +129,17 @@ Router.prototype.handleErr = function(err) {
     }
 };
 
-Router.prototype.wrapWithLayout = function(component, data) {
+Router.prototype.updateSession = function(session){
+    this.apiClient.setSession(session);
+};
+
+Router.prototype.wrapWithLayout = function(component, data, session) {
     var layout = require(viewsDir + '/layout');
-    return layout({initialData: data}, [component]);
+    return layout({initialData: data, session: session}, [component]);
 };
 
 Router.prototype.handleClientRoute = function(component, data) {
-    React.renderComponent(component, document.getElementById('view-container'));
+    React.renderComponent(component, document.querySelector("#body-container"));
 };
 
 Router.prototype.handleServerRoute = function(component, req, res) {

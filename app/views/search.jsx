@@ -10,15 +10,15 @@ module.exports = React.createClass({
   render: function() {
     return (
         <div>
-            <searchform q={this.props.q} />
-            {this.props.error ?
+            <searchform q={this.props.data.q} />
+            {this.props.data.error ?
                 [
-                <h2>{this.props.error.title}</h2>,
-                <p>{this.props.error.description}</p>
+                <h2>{this.props.data.error.title}</h2>,
+                <p>{this.props.data.error.description}</p>
                 ] :
                 [
-                <h2>{"Search results for " + this.props.q}</h2>,
-                <datasets datasets={this.props.datasets} pages={this.props.pages} page={this.props.page}/>
+                <h2>{"Search results for " + this.props.data.q}</h2>,
+                <datasets datasets={this.props.data.datasets} pages={this.props.data.pages} page={this.props.data.page}/>
                 ]
             }
         </div>  

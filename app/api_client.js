@@ -22,3 +22,14 @@ var superagent = require('superagent');
     };
 });
 
+module.exports.getSession = function(){
+    if(!this.session){
+        this.session = window.initialSession;
+        window.initialSession = null;
+    }
+    return this.session;
+};
+
+module.exports.setSession = function(session){
+    this.session = session;
+};
