@@ -50,4 +50,13 @@ module.exports = function(match, apiClient) {
     match('/login', function(req, callback){
         callback(null, 'login');
     });
+
+    match('/data/:id', function(req, id, callback){
+        apiClient.get(req, '/datasets/' + id + ".json", req.query, function(err, res){
+            if(err){
+                return callback(err);
+            }
+            callback(null, 'dataDisplay', res.body);
+        });
+    });
 };
