@@ -89,7 +89,7 @@ Router.prototype.getRouteHandler = function(handler) {
 
         function handleRoute() {
             handler.apply(null, [req].concat(params).concat(function routeHandler(err, viewPath, data) {
-                if (err) return handleErr(err);
+                if (err) return handleErr(err, router.directorRouter);
 
                 data = data || {};
 
@@ -123,13 +123,17 @@ Router.prototype.renderView = function(viewPath, data, session){
 };
 
 Router.prototype.handleErr = function(err) {
-    console.error(err.message + err.stack);
-
-    // `this.next` is defined on the server.
-    if (this.next) {
-        this.next(err);
+    if(err.redirect){
+        this.res.redirect(err.redirect);
     } else {
-        console.log(err);
+        console.error(err.message + err.stack);
+
+        // `this.next` is defined on the server.
+        if (this.next) {
+            this.next(err);
+        } else {
+            console.log(err);
+        }
     }
 };
 

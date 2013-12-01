@@ -22,7 +22,7 @@ module.exports = React.createClass({
                 });
             } else {
                 this.props.router.updateSession(data.user);
-                this.props.router.directorRouter.setRoute("/");
+                history.back();
             }
         }.bind(this));
     },
