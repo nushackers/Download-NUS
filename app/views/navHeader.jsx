@@ -19,8 +19,9 @@ module.exports = React.createClass({
                     {this.props.session ?  
                         [
                         <a href="/upload" className="btn btn-default btn-primary navbar-btn" href="/upload">Upload</a>,
+                        " ",
                         <div className="btn-group">
-                            <button className="btn btn-default navbar-btn dropdown-toggle"  data-toggle="dropdown" href="/login">{ this.props.session.name }<span className="caret"></span></button>
+                            <button className="btn btn-default navbar-btn dropdown-toggle"  data-toggle="dropdown" href="/login">{ this.props.session.name + " " }<span className="caret"></span></button>
                             <ul className="dropdown-menu pull-right" role="menu" aria-labelledby="dLabel">
                                 <li><a href="/manage">Manage Datasets</a></li>
                                 <li className="divider"></li>

@@ -116,6 +116,7 @@ Router.prototype.getRouteHandler = function(handler) {
 };
 
 Router.prototype.renderView = function(viewPath, data, session){
+    console.log(data, session, "render", viewPath);
     var Component = require(viewsDir + '/' + viewPath),
         PageBody = require(viewsDir + "/pageBody");
     return PageBody({session: session, router: this}, Component({data: data, router: this, session: session}));

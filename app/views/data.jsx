@@ -24,7 +24,7 @@ module.exports = React.createClass({
                     </div>
                 </div>
                 <div className="col-lg-4 col-sm-4">
-                    <p>Browse by data className:</p>
+                    <p>Browse by data class:</p>
                     <div className="list-group">
                         {
                             this.props.data.types.map(function(t) {
@@ -33,8 +33,8 @@ module.exports = React.createClass({
                         }
                     </div>
                 </div>
-                <datasets datasets={this.props.data.datasets} pages={this.props.data.pages} page={this.props.data.page}/>
             </div>
+            <datasets datasets={this.props.data.datasets} pages={this.props.data.pages} page={this.props.data.page} session={this.props.session}/>
         </div>
     );
   }

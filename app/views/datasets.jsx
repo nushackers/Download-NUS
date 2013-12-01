@@ -11,7 +11,7 @@ module.exports = React.createClass({
     for(var i = 1; i <= this.props.pages; i++){
         pagesNum.push(i);
     }
-    console.log(this.props.datasets);
+    var session = this.props.session;
     return (
         <div>
             <table className="table table-striped">
@@ -58,8 +58,13 @@ module.exports = React.createClass({
                         <td>{ data.formatedUpdatedAt }</td>
                         <td>
                             <a href={"/data/" + data.id} type="button" className="btn btn-default btn-sm btn-info">
-                                <span className="glyphicon glyphicon-new-window"></span>
-                            </a>
+                                <span className="glyphicon glyphicon-new-window">{' '}</span>
+                            </a> {' '}
+                            { (data.user.nusId === (session && session.nusId)) ? 
+                                <a href={"/data/" + data.id + "?edit"} type="button" className="btn btn-sm btn-primary">
+                                    <span className="glyphicon glyphicon-pencil"></span>
+                                </a> : null
+                            }
                         </td>
                     </tr>
                     )
