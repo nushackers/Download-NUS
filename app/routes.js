@@ -31,6 +31,16 @@ module.exports = function(match, apiClient) {
         });
     });
 
+    match('/manage', function(req, callback){
+        var session = apiClient.getSession(req);
+        apiClient.get(req, '/datasets.json', {user: session && session.nusId}, function(err, res){
+            if(err){
+                return callback(err);
+            }
+            callback(null, 'manageData', res.body);
+        });
+    });
+
     match('/login', function(req, callback){
         callback(null, 'login');
     });
