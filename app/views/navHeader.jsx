@@ -34,7 +34,7 @@ module.exports = React.createClass({
                 <div className="collapse navbar-collapse navbar-ex1-collapse">
                     <ul className="nav navbar-nav">
                         <li><a href="/data">Download</a></li>
-                        <li><a href="/mirror/">Mirrors</a></li>
+                        <li><a data-passthru={"true"} href="/mirror/">Mirrors</a></li>
                     </ul>
                     <ul className="nav navbar-nav visible-xs">
                         {this.props.session ?

@@ -11,9 +11,11 @@ module.exports = React.createClass({
     for(var i = 1; i <= this.props.pages; i++){
         pagesNum.push(i);
     }
+    console.log(this.props.datasets);
     return (
         <div>
             <table className="table table-striped">
+            <tbody>
                 <tr>
                     <th className="col-lg-1 col-sm-1">
                         #
@@ -47,7 +49,7 @@ module.exports = React.createClass({
                         </td>
                         <td>
                             { data.dataFiles.map(function(file){
-                                    return <a href={"repo/" + file.filepath} className="btn btn-sm btn-primary" style="text-transform:uppercase;">{ file.extension }</a>
+                                    return <a data-passthru="true" href={"repo/" + file.filepath} className="btn btn-sm btn-primary" style={{textTransform:"uppercase"}}>{ file.filepath.split(".").pop() }</a>
                                })
                             }
                         </td>
@@ -63,9 +65,10 @@ module.exports = React.createClass({
                     )
                 })
                 }
+            </tbody>
             </table>
             {
-                !this.props.datasets || !this.props.datasets.length ?
+                (!this.props.datasets || !this.props.datasets.length) ?
                 <p className="text-center">There is nothing here</p> : null
             }
             {

@@ -15,7 +15,7 @@ module.exports = React.createClass({
                 <h1><img src="/img/logo.gif" height="76" width="334" /></h1>
             </div>
 
-            <div id="view-container">
+            <div>
               {this.props.children}
             </div>
 

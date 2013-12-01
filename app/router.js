@@ -89,7 +89,6 @@ Router.prototype.getRouteHandler = function(handler) {
 
         function handleRoute() {
             handler.apply(null, [req].concat(params).concat(function routeHandler(err, viewPath, data) {
-                console.log(data, err);
                 if (err) return handleErr(err);
 
                 data = data || {};
@@ -100,6 +99,10 @@ Router.prototype.getRouteHandler = function(handler) {
                     router.handleServerRoute(router.wrapWithLayout(router.renderView(viewPath, data, session), data, session), routeContext.req, routeContext.res);
                 } else {
                     router.handleClientRoute(router.renderView(viewPath, data, session));
+                    if(window.initialData){
+                        window.initialData = null;
+                        window.session = null;
+                    }
                 }
             }));
         }
@@ -168,7 +171,7 @@ Router.prototype.start = function() {
         var el = e.target,
         dataset = el && el.dataset;
         if (el && el.nodeName === 'A' && (
-            dataset.passThru == null || dataset.passThru === 'false'
+            dataset.passthru == null || dataset.passthru === 'false'
             )) {
                 this.directorRouter.setRoute(el.attributes.href.value);
                 e.preventDefault();
@@ -179,7 +182,7 @@ Router.prototype.start = function() {
         var ef = e.target,
             dataset = ef && ef.dataset;
         if(ef && ef.method.toUpperCase() === "GET" &&
-            (dataset.passThru == null || dataset.passThru === 'false')){
+            (dataset.passthru == null || dataset.passthru === 'false')){
             e.preventDefault();
             this.directorRouter.setRoute(ef.action + "?" + $(ef).serialize());
         }
