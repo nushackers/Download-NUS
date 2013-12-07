@@ -1,3 +1,5 @@
+var _ = require("underscore");
+
 module.exports = function(match, apiClient) {
     match('/', function(req, callback) {
         callback(null, 'index');
@@ -77,7 +79,13 @@ module.exports = function(match, apiClient) {
             if(err){
                 return callback(err);
             }
-            callback(null, 'dataDisplay', res.body);
+            if('edit' in req.query){
+                apiClient.get(req, '/metadata.json', {}, function(err, metaRes){
+                    callback(null, 'dataEdit', _.extend(res.body, metaRes.body));
+                });
+            } else {
+                callback(null, 'dataDisplay', res.body);
+            }
         });
     });
 };

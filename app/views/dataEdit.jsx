@@ -43,17 +43,17 @@ module.exports = React.createClass({
             <fieldset>
                 <div className="form-group">
                     <label htmlFor="exampleInputEmail">Title</label>
-                    <input type="text" className="form-control" id="exampleInputEmail" name="name" placeholder="Enter title" initialValue={this.props.data.name} />
+                    <input type="text" className="form-control" id="exampleInputEmail" name="name" placeholder="Enter title" defaultValue={this.props.data.name} />
                 </div>
                 <div className="form-group">
                     <label htmlFor="exampleInputPassword">Description</label>
-                    <textarea className="form-control" id="exampleInputPassword" name="description" placeholder="Enter description" initialValue={this.props.data.description}/>
+                    <textarea className="form-control" id="exampleInputPassword" name="description" placeholder="Enter description" defaultValue={this.props.data.description}/>
                 </div>
                 <div className="form-group">
                     <label htmlFor="exampleInputPassword">Category</label>
                     <select className="form-control" name="categoryId">
                         { this.props.data.categories.map(function(cat){
-                            return <option selected={categoryId == cat.id} initialValue={cat.id}>{cat.name}</option>
+                            return <option selected={categoryId == cat.id} defaultValue={cat.id}>{cat.name}</option>
                         }) }
                     </select>
                 </div>
