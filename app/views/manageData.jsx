@@ -10,7 +10,7 @@ module.exports = React.createClass({
     return (
         <div>
             <h2>Manage Your Datasets</h2>
-            <datasets datasets={this.props.data.datasets} page={this.props.data.page} pages={this.props.data.pages} />
+            <datasets session={this.props.session} datasets={this.props.data.datasets} page={this.props.data.page} pages={this.props.data.pages} />
         </div>
     );
   }
