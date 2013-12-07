@@ -70,7 +70,7 @@ module.exports = React.createClass({
                     {this.props.data.id ?
                         <div className="alert alert-info">
                             <p>Uploading a new file to replace the old one.</p>
-                            <p>Or leave this field blank</p>
+                            <p>Or leave this field blank to keep the old file</p>
                         </div>
                         : null }
                     <input type="file" id="file" name="file" />
@@ -78,10 +78,10 @@ module.exports = React.createClass({
                 </div>
                 <button type="submit" className="btn btn-default btn-primary">Submit</button>
                 { this.props.data.id ?
-                    <button type="button" className="btn btn-default btn-danger" onClick={this.deleteDataset}>
+                    [' ', <button type="button" className="btn btn-default btn-danger" onClick={this.deleteDataset}>
                         <span className="glyphicon glyphicon-remove"></span>
                         Delete This Dataset
-                    </button>
+                    </button>]
                     : null }
             </fieldset>
         </form>

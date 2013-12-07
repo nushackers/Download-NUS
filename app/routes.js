@@ -75,17 +75,23 @@ module.exports = function(match, apiClient) {
     });
 
     match('/data/:id', function(req, id, callback){
-        apiClient.get(req, '/datasets/' + id + ".json", req.query, function(err, res){
-            if(err){
-                return callback(err);
-            }
-            if('edit' in req.query){
-                apiClient.get(req, '/metadata.json', {}, function(err, metaRes){
-                    callback(null, 'dataEdit', _.extend(res.body, metaRes.body));
-                });
-            } else {
-                callback(null, 'dataDisplay', res.body);
-            }
-        });
+        if('edit' in req.query && !apiClient.getSession(req)){
+            callback({
+                redirect: "/login"
+            });
+        } else {
+            apiClient.get(req, '/datasets/' + id + ".json", req.query, function(err, res){
+                if(err){
+                    return callback(err);
+                }
+                if('edit' in req.query){
+                    apiClient.get(req, '/metadata.json', {}, function(err, metaRes){
+                        callback(null, 'dataEdit', _.extend(res.body, metaRes.body));
+                    });
+                } else {
+                    callback(null, 'dataDisplay', res.body);
+                }
+            });
+        }
     });
 };
