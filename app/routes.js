@@ -47,6 +47,21 @@ module.exports = function(match, apiClient) {
         }
     });
 
+    match('/upload', function(req, callback){
+        if(!apiClient.getSession(req)){
+            callback({
+                redirect: "/login"
+            });
+        } else {
+            apiClient.get(req, '/metadata.json', {}, function(err, res){
+                if(err){
+                    return callback(err);
+                }
+                callback(null, 'dataEdit', res.body);
+            });
+        }
+    });
+
     match('/login', function(req, callback){
         if(apiClient.getSession(req)){
             callback({
