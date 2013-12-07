@@ -187,17 +187,14 @@ Router.prototype.start = function() {
             self.directorRouter.setRoute(this.attributes.href.value);
             e.preventDefault();
         }
-    });
-
-    document.addEventListener("submit", function(e){
-        var ef = e.target,
-            dataset = ef && ef.dataset;
-        if(ef && ef.method.toUpperCase() === "GET" &&
+    }).on("submit", "form", function(e){
+        var dataset = this.dataset;
+        if(this.method.toUpperCase() === "GET" &&
             (dataset.passthru == null || dataset.passthru === 'false')){
             e.preventDefault();
-            this.directorRouter.setRoute(ef.action + "?" + $(ef).serialize());
+            self.directorRouter.setRoute(this.action + "?" + $(this).serialize());
         }
-    }.bind(this), false);
+    });
 
     this.directorRouter.init();
 };
