@@ -175,20 +175,19 @@ Router.prototype.initPushState = function() {
 Router.prototype.start = function() {
     this.initPushState();
 
+    var self = this;
+
     /**
     * Intercept any links that don't have 'data-pass-thru' and route using
     * pushState.
     */
-    document.addEventListener('click', function(e) {
-        var el = e.target,
-        dataset = el && el.dataset;
-        if (el && el.nodeName === 'A' && (
-            dataset.passthru == null || dataset.passthru === 'false'
-            )) {
-                this.directorRouter.setRoute(el.attributes.href.value);
-                e.preventDefault();
-            }
-    }.bind(this), false);
+    $(document.body).on("click", "a", function(e){
+        dataset = this.dataset;
+        if (dataset.passthru == null || dataset.passthru === 'false') {
+            self.directorRouter.setRoute(this.attributes.href.value);
+            e.preventDefault();
+        }
+    });
 
     document.addEventListener("submit", function(e){
         var ef = e.target,
