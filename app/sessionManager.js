@@ -1,5 +1,5 @@
 module.exports = function(apiClient, initialSession){
-    var session = null;
+    var session = initialSession;
     return {
         logout: function(){
             apiClient.post({}, "/logout", {}, function(){

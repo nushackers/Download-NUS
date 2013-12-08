@@ -5,9 +5,7 @@
 var ClientRouter = require('./ClientRouter'),
     apiClient = require("./api_client"),
     routes = require('./routes')(apiClient),
-    sessionManager = require('./sessionManager')(window.initialSession),
+    sessionManager = require('./sessionManager')(apiClient, window.initialSession),
     router = new ClientRouter(routes, sessionManager);
-
-window.initialSession = null;
 
 router.start();
