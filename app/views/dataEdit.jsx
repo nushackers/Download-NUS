@@ -1,35 +1,21 @@
 /**
  * @jsx React.DOM
  */
-var React = require('react-tools').React,
-    marked = require("marked");
-
-marked.setOptions({
-    gfm: true,
-    highlight: function (code, lang, callback) {
-        return code;
-    },
-    tables: true,
-    breaks: false,
-    pedantic: false,
-    sanitize: true,
-    smartLists: true,
-    smartypants: false,
-    langPrefix: 'lang-'
-});
+var React = require('react-tools').React;
 
 module.exports = React.createClass({
-    submit: function(){
+    submit: function(e){
+        e.preventDefault();
         var formData = new FormData(this.refs.form.getDOMNode());
         return $.ajax({
-            url: "/url",
+            url: "/api/datasets",
             type: "POST",
             data: formData,
             cache: false,
             contentType: false,
             processData: false
         }).done(function(data){
-            this.props.directorRouter.setRoute("/data/" + data.id);
+            this.props.router.directorRouter.setRoute("/data/" + data.id);
         }).fail(function(err){
             console.log(err);
         });
