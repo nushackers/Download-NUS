@@ -2,9 +2,12 @@
  * Entry point for client-side.
  */
 
-var Router = require('./router'),
-    routes = require('./routes'),
+var ClientRouter = require('./ClientRouter'),
     apiClient = require("./api_client"),
-    router = new Router(routes, apiClient);
+    routes = require('./routes')(apiClient),
+    sessionManager = require('./sessionManager')(window.initialSession),
+    router = new ClientRouter(routes, sessionManager);
+
+window.initialSession = null;
 
 router.start();

@@ -1,10 +1,16 @@
-module.exports = function(apiClient, router){
+module.exports = function(apiClient, initialSession){
+    var session = null;
     return {
         logout: function(){
             apiClient.post({}, "/logout", {}, function(){
-                apiClient.setSession(null);
-                router.directorRouter.setRoute(location.pathname);
+                session = null;
             });
+        },
+        getSession: function(){
+            return session;
+        },
+        setSession: function(val){
+            session = val;
         }
     };
 };

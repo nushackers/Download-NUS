@@ -9,11 +9,8 @@ var superagent = require('superagent');
 */
 ['get', 'post', 'put', 'path', 'del'].forEach(function(method) {
     module.exports[method] = function(req, path, query, callback) {
-        if(window.initialData){
-            callback(null, {
-                body: window.initialData
-            });
-            window.initialData = null;
+        if (window.initialData) {
+            callback(null, {body: null}); // first render
         } else {
             var args = Array.prototype.slice.call(arguments, 2);
             console.log("request");
@@ -21,15 +18,3 @@ var superagent = require('superagent');
         }
     };
 });
-
-module.exports.getSession = function(){
-    if(!this.session){
-        this.session = window.initialSession;
-        window.initialSession = null;
-    }
-    return this.session;
-};
-
-module.exports.setSession = function(session){
-    this.session = session;
-};

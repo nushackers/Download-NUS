@@ -1,117 +1,29 @@
-var director = require('director'),
-    isServer = typeof window === 'undefined',
-    React = require('react-tools').React,
-    viewsDir = (isServer ? __dirname : 'app') + '/views',
-    url = require("url"),
-    DirectorRouter;
-
-function parsePath(query){
-    query = query.substr(1);
-    var map = {};
-    query.replace(/([^&=]+)=?([^&]*)(?:&+|$)/g, function(match, key, value) {
-        (map[key] = map[key] || []).push(value);
-    });
-    return map;
-}
-
-if (isServer) {
-    DirectorRouter = director.http.Router;
-} else {
-    DirectorRouter = director.Router;
-}
+var _ = require("underscore");
 
 module.exports = Router;
 
-function Router(routesFn, apiClient) {
-    this.apiClient = apiClient;
-    if (routesFn == null) throw new Error("Must provide routes.");
-
-    this.directorRouter = new DirectorRouter(this.parseRoutes(routesFn));
-
-    if(!isServer) {
-        window.directorRouter = this.directorRouter;
-        this.sessionManager = require("./sessionManager")(apiClient, this);
-    }
-
-    // Express middleware.
-    if (isServer) {
-        this.middleware = function(req, res, next) {
-            // Attach `this.next` to route handler, for better handling of errors.
-            this.directorRouter.attach(function() {
-                this.next = next;
-            });
-
-            this.directorRouter.dispatch(req, res, function (err) {
-                if (err) {
-                    next(err);
-                }
-            });
-        }.bind(this);
-    }
+function Router(routes, DirectorRouter, viewsDir, routeParser) {
+    this.viewsDir = viewsDir;
+    this.directorRouter = new DirectorRouter(this.parseRoutes(routes, routeParser));
 }
 
-/**
-* Capture routes as object that can be passed to Director.
-*/
-Router.prototype.parseRoutes = function(routesFn) {
-    var routes = {};
-
-    routesFn(function(pattern, handler) {
-        // Server routes are an object, not a function. We just use `get`.
-        if (isServer) {
-            routes[pattern] = {
-                get: this.getRouteHandler(handler)
-            };
-        } else {
-            routes[pattern] = this.getRouteHandler(handler);
-        }
-    }.bind(this), this.apiClient);
-
-    return routes;
+Router.prototype.parseRoutes = function(routes, routeParser) {
+    return _.reduce(_.keys(routes), function(obj, k){
+        obj[k] = routeParser(routes[k], k);
+        return obj;
+    }, {});
 };
 
-Router.prototype.getRouteHandler = function(handler) {
+Router.prototype.getRouteHandler = function(handler, route) {
     var router = this;
-    var apiClient = this.apiClient;
 
     return function() {
-        /** If it's the first render on the client, just return; we don't want to
-        * replace the page's HTML.
-        */
         var routeContext = this,
-            params = Array.prototype.slice.call(arguments),
-            handleErr = router.handleErr.bind(routeContext);
+            handleErr = router.handleErr.bind(routeContext),
+            req = router.getReq(routeContext);
 
-        var req = routeContext.req;
-
-        if(!req){
-            req = {
-                query: parsePath(location.search)
-            };
-        }
-
-        function handleRoute() {
-            handler.apply(null, [req].concat(params).concat(function routeHandler(err, viewPath, data) {
-                if (err) return handleErr(err, router.directorRouter);
-
-                data = data || {};
-
-                var session = apiClient.getSession(req);
-
-                if (isServer){
-                    router.handleServerRoute(router.wrapWithLayout(router.renderView(viewPath, data, session), data, session), routeContext.req, routeContext.res);
-                } else {
-                    router.handleClientRoute(router.renderView(viewPath, data, session));
-                    if(window.initialData){
-                        window.initialData = null;
-                        window.session = null;
-                    }
-                }
-            }));
-        }
-
-        try {
-            handleRoute();
+        try{
+            handler.apply(null, [req, router.getRes(routeContext)].concat(Array.prototype.slice.call(arguments)));
         } catch (err) {
             handleErr(err);
         }
@@ -119,82 +31,12 @@ Router.prototype.getRouteHandler = function(handler) {
 };
 
 Router.prototype.renderView = function(viewPath, data, session){
-    console.log(data, session, "render", viewPath);
-    var Component = require(viewsDir + '/' + viewPath),
-        PageBody = require(viewsDir + "/pageBody");
+    var Component = require(this.viewsDir + '/' + viewPath),
+        PageBody = require(this.viewsDir + "/pageBody");
     return PageBody({session: session, router: this}, Component({data: data, router: this, session: session}));
 };
 
 Router.prototype.handleErr = function(err) {
-    if(err.redirect){
-        if(isServer){
-            this.res.redirect(err.redirect);
-        } else {
-            directorRouter.setRoute(err.redirect);
-        }
-    } else {
-        console.error(err.message + err.stack);
-
-        // `this.next` is defined on the server.
-        if (this.next) {
-            this.next(err);
-        } else {
-            console.log(err);
-        }
-    }
-};
-
-Router.prototype.updateSession = function(session){
-    this.apiClient.setSession(session);
-};
-
-Router.prototype.wrapWithLayout = function(component, data, session) {
-    var layout = require(viewsDir + '/layout');
-    return layout({initialData: data, session: session}, [component]);
-};
-
-Router.prototype.handleClientRoute = function(component, data) {
-    React.renderComponent(component, document.querySelector("#body-container"));
-};
-
-Router.prototype.handleServerRoute = function(component, req, res) {
-    React.renderComponentToString(component, function(html) {
-        res.send(html);
-    });
-};
-
-Router.prototype.initPushState = function() {
-    this.directorRouter.configure({
-        html5history: true
-    });
-};
-
-/**
-* Client-side handler to start router.
-*/
-Router.prototype.start = function() {
-    this.initPushState();
-
-    var self = this;
-
-    /**
-    * Intercept any links that don't have 'data-pass-thru' and route using
-    * pushState.
-    */
-    $(document.body).on("click", "a", function(e){
-        dataset = this.dataset;
-        if (dataset.passthru == null || dataset.passthru === 'false') {
-            self.directorRouter.setRoute(this.attributes.href.value);
-            e.preventDefault();
-        }
-    }).on("submit", "form", function(e){
-        var dataset = this.dataset;
-        if(this.method.toUpperCase() === "GET" &&
-            (dataset.passthru == null || dataset.passthru === 'false')){
-            e.preventDefault();
-            self.directorRouter.setRoute(this.action + "?" + $(this).serialize());
-        }
-    });
-
-    this.directorRouter.init();
+    console.log(err);
+    // console.error(err.message + err.stack);
 };

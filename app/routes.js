@@ -1,97 +1,83 @@
 var _ = require("underscore");
 
-module.exports = function(match, apiClient) {
-    match('/', function(req, callback) {
-        callback(null, 'index');
-    });
+module.exports = function(apiClient) {
+    return {
+        '/': function(req, res) {
+            res.render('index');
+        },
+        '/posts': function(req, res) {
+            apiClient.get(req, '/posts.json', {}, function(err, re) {
+                if (err) return res.err(err);
 
-    match('/posts', function(req, callback) {
-        apiClient.get(req, '/posts.json', function(err, res) {
-            if (err) return callback(err);
-
-            var posts = res.body;
-            callback(null, 'posts', {posts: posts});
-        });
-    });
-
-
-    match('/search', function(req, callback) {
-        apiClient.get(req, '/datasets.json', req.query, function(err, res){
-            if(err){
-                return callback(err);
+                var posts = re.body;
+                res.render('posts', {posts: posts});
+            });
+        },
+        '/search': function(req, res) {
+            apiClient.get(req, '/datasets.json', req.query, function(err, re){
+                if(err){
+                    return res.err(err);
+                }
+                res.render('search', re.body);
+            });
+        },
+        '/data': function(req, res) {
+            apiClient.get(req, '/datasets.json', req.query, function(err, re){
+                if(err){
+                    return res.err(err);
+                }
+                res.render('data', re.body);
+            });
+        },
+        '/manage': function(req, res) {
+            if(!req.user){
+                res.redirect("/login");
+            } else {
+                var user = req.user;
+                apiClient.get(req, '/datasets.json', {user: user && user.nusId}, function(err, re){
+                    if(err){
+                        return res.err(err);
+                    }
+                    res.render('manageData', re.body);
+                });
             }
-            callback(null, 'search', res.body);
-        });
-    });
-
-    match('/data', function(req, callback){
-        apiClient.get(req, '/datasets.json', req.query, function(err, res){
-            if(err){
-                return callback(err);
+        },
+        '/upload': function(req, res) {
+            if(!req.user){
+                res.redirect("/login");
+            } else {
+                apiClient.get(req, '/metadata.json', {}, function(err, re){
+                    if(err){
+                        return res.err(err);
+                    }
+                    res.render('dataEdit', re.body);
+                });
             }
-            callback(null, 'data', res.body);
-        });
-    });
-
-    match('/manage', function(req, callback){
-        if(!apiClient.getSession(req)){
-            callback({
-                redirect: "/login"
-            });
-        } else {
-            var session = apiClient.getSession(req);
-            apiClient.get(req, '/datasets.json', {user: session && session.nusId}, function(err, res){
-                if(err){
-                    return callback(err);
-                }
-                callback(null, 'manageData', res.body);
-            });
+        },
+        '/login': function(req, res) {
+            if(req.user){
+                res.redirect("/");
+            } else {
+                res.render('login');
+            }
+        },
+        '/data/:id': function(req, res, id) {
+            if('edit' in req.query && !req.user){
+                res.redirect("/login");
+            } else {
+                apiClient.get(req, '/datasets/' + id, req.query, function(err, re){
+                    if(err || re.body.err){
+                        return res.err(err || re.body.err);
+                    }
+                    if('edit' in req.query){
+                        apiClient.get(req, '/metadata.json', {}, function(err, metaRe){
+                            res.render('dataEdit', _.extend(re.body, metaRe.body));
+                        });
+                    } else {
+                        res.render('dataDisplay', re.body);
+                    }
+                });
+            }
         }
-    });
-
-    match('/upload', function(req, callback){
-        if(!apiClient.getSession(req)){
-            callback({
-                redirect: "/login"
-            });
-        } else {
-            apiClient.get(req, '/metadata.json', {}, function(err, res){
-                if(err){
-                    return callback(err);
-                }
-                callback(null, 'dataEdit', res.body);
-            });
-        }
-    });
-
-    match('/login', function(req, callback){
-        if(apiClient.getSession(req)){
-            callback({
-                redirect: "/"
-            });
-        } else {
-            callback(null, 'login');
-        }
-    });
-
-    match('/data/:id', function(req, id, callback){
-        if('edit' in req.query && !apiClient.getSession(req)){
-            callback({
-                redirect: "/login"
-            });
-        } else {
-            apiClient.get(req, '/datasets/' + id + ".json", req.query, function(err, res){
-                if(err){
-                    return callback(err);
-                }
-                if('edit' in req.query){
-                    apiClient.get(req, '/metadata.json', {}, function(err, metaRes){
-                        callback(null, 'dataEdit', _.extend(res.body, metaRes.body));
-                    });
-                } else {
-                    callback(null, 'dataDisplay', res.body);
-                }
-            });
-        }
-    });
+    };
 };

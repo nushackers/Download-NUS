@@ -19,9 +19,22 @@ marked.setOptions({
 });
 
 module.exports = React.createClass({
-  render: function() {
-    var categoryId = this.props.data.categoryId,
-        typeId = this.props.data.typeId;
+    submit: function(){
+        var formData = new FormData(this.refs.form.getDOMNode());
+        return $.ajax({
+            url: "/url",
+            type: "POST",
+            data: formData,
+            cache: false,
+            contentType: false,
+            processData: false
+        }).done(function(data){
+            this.props.directorRouter.setRoute("/data/" + data.id);
+        }).fail(function(err){
+            console.log(err);
+        });
+    },
+    render: function() {
     return (
         <div>
         { this.props.data.id ?
@@ -51,17 +64,17 @@ module.exports = React.createClass({
                 </div>
                 <div className="form-group">
                     <label htmlFor="exampleInputPassword">Category</label>
-                    <select className="form-control" name="categoryId">
+                    <select className="form-control" name="categoryId" defaultValue={this.props.data.DataCategoryId}>
                         { this.props.data.categories.map(function(cat){
-                            return <option selected={categoryId == cat.id} defaultValue={cat.id}>{cat.name}</option>
+                            return <option value={cat.id}>{cat.name}</option>
                         }) }
                     </select>
                 </div>
                 <div className="form-group">
                     <label htmlFor="exampleInputPassword">Class</label>
-                    <select className="form-control" name="typeId">
+                    <select className="form-control" name="typeId" defaultValue={this.props.data.DataTypeId}>
                         { this.props.data.types.map(function(type){
-                            return <option selected={typeId == type.id} value={type.id}>{type.name}</option>
+                            return <option value={type.id}>{type.name}</option>
                         }) }
                     </select>
                 </div>
@@ -76,7 +89,7 @@ module.exports = React.createClass({
                     <input type="file" id="file" name="file" />
                     <p className="help-block">File types allowed: XLS, XLSX, CSV, TXT</p>
                 </div>
-                <button type="submit" className="btn btn-default btn-primary">Submit</button>
+                <button type="submit" className="btn btn-default btn-primary" onClick={this.submit}>Submit</button>
                 { this.props.data.id ?
                     [' ', <button type="button" className="btn btn-default btn-danger" onClick={this.deleteDataset}>
                         <span className="glyphicon glyphicon-remove"></span>

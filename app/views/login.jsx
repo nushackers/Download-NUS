@@ -21,7 +21,7 @@ module.exports = React.createClass({
                     messages: [data.err]
                 });
             } else {
-                this.props.router.updateSession(data.user);
+                this.props.router.sessionManager.setSession(data.user);
                 history.back();
             }
         }.bind(this));

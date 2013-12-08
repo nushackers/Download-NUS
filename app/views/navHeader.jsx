@@ -5,8 +5,9 @@ var React = require('react-tools').React;
 
 module.exports = React.createClass({
   logout: function(e){
-    this.props.sessionManager.logout();
     e.preventDefault();
+    e.stopPropagation();
+    this.props.sessionManager.logout();
   },
   render: function() {
     return (
