@@ -7,7 +7,9 @@ module.exports = React.createClass({
     submit: function(e){
         e.preventDefault();
         var formData = new FormData(this.refs.form.getDOMNode());
-        var director = this.props.router.directorRouter;
+        var director = this.props.router.directorRouter,
+            router = this.props.router,
+            tdata = this.props.data;
         if(this.props.data.id) {
             var id = this.props.data.id;
             return $.ajax({
@@ -18,7 +20,17 @@ module.exports = React.createClass({
                 contentType: false,
                 processData: false
             }).done(function(data){
-                director.setRoute("/data/" + id);
+                if(data.err){
+                    tdata.error = {
+                        messages: data.err.map(function(er){
+                            return er.msg;
+                        })
+                    };
+                    router.render();
+                    window.scroll(0, 0);
+                } else {
+                    director.setRoute("/data/" + id);
+                }
             }).fail(function(err){
                 console.log(err);
             });
@@ -31,7 +43,17 @@ module.exports = React.createClass({
                 contentType: false,
                 processData: false
             }).done(function(data){
-                director.setRoute("/data/" + data.id);
+                if(data.err){
+                    tdata.error = {
+                        messages: data.err.map(function(er){
+                            return er.msg;
+                        })
+                    };
+                    router.render();
+                    window.scroll(0, 0);
+                } else {
+                    director.setRoute("/data/" + data.id);
+                }
             }).fail(function(err){
                 console.log(err);
             });

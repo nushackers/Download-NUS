@@ -34,10 +34,10 @@ ResHandler.prototype = {
             window.initialData = null;
         }
 
-        React.renderComponent(
-            this.router.renderView(viewPath, data, this.router.sessionManager.getSession()),
-            document.querySelector("#body-container"));
-        this.router.finishLoading();
+        this.router.lastData = data;
+        this.router.lastView = viewPath;
+
+        this.router.render();
     },
     err: function(err){
         if(!this.valid) return;
@@ -111,6 +111,13 @@ ClientRouter.prototype.start = function() {
 
 
     this.directorRouter.init();
+};
+
+ClientRouter.prototype.render = function(){
+    React.renderComponent(
+        this.renderView(this.lastView, this.lastData, this.sessionManager.getSession()),
+        document.querySelector("#body-container"));
+    this.finishLoading();
 };
 
 
