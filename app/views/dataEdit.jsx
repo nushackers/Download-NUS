@@ -4,6 +4,24 @@
 var React = require('react-tools').React;
 
 module.exports = React.createClass({
+    deleteDataset: function(e){
+        e.preventDefault();
+        var id = this.props.data.id,
+            director = this.props.router.directorRouter;
+        vex.dialog.confirm({
+            message: "Are you sure you want to delete this dataset? This cannot be undone!",
+            callback: function(val){
+                    if(val){
+                        $.ajax({
+                            url: "/api/datasets/" + id,
+                            type: "DELETE"
+                        }).done(function(){
+                            director.setRoute("/manage");
+                        });
+                    }
+                }
+            });
+    },
     submit: function(e){
         e.preventDefault();
         var formData = new FormData(this.refs.form.getDOMNode());
