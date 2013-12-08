@@ -1,9 +1,10 @@
 module.exports = function(apiClient, initialSession){
     var session = initialSession;
     return {
-        logout: function(){
+        logout: function(callback){
             apiClient.post({}, "/logout", {}, function(){
                 session = null;
+                callback();
             });
         },
         getSession: function(){

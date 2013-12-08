@@ -7,7 +7,10 @@ module.exports = React.createClass({
   logout: function(e){
     e.preventDefault();
     e.stopPropagation();
-    this.props.sessionManager.logout();
+    var router = this.props.router;
+    this.props.sessionManager.logout(function(){
+        router.refresh();
+    });
   },
   render: function() {
     return (

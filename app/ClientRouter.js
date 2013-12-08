@@ -114,12 +114,16 @@ ClientRouter.prototype.start = function() {
 };
 
 ClientRouter.prototype.render = function(){
+    console.log(this.sessionManager.getSession(), "render");
     React.renderComponent(
         this.renderView(this.lastView, this.lastData, this.sessionManager.getSession()),
         document.querySelector("#body-container"));
     this.finishLoading();
 };
 
+ClientRouter.prototype.refresh = function(){
+    this.directorRouter.setRoute(location.pathname);
+};
 
 ClientRouter.prototype.startLoading = function(){
     if(!this.loadingTimer){
