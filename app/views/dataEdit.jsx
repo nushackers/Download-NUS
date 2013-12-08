@@ -7,6 +7,7 @@ module.exports = React.createClass({
     submit: function(e){
         e.preventDefault();
         var formData = new FormData(this.refs.form.getDOMNode());
+        
         return $.ajax({
             url: "/api/datasets",
             type: "POST",

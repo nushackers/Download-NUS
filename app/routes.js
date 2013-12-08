@@ -66,7 +66,7 @@ module.exports = function(apiClient) {
                 res.redirect("/login");
             } else {
                 apiClient.get(req, '/datasets/' + id, req.query, function(err, re){
-                    if(err || re.body.err){
+                    if(err || (re.body && re.body.err)){
                         return res.err(err || re.body.err);
                     }
                     if('edit' in req.query){

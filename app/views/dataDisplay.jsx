@@ -2,7 +2,9 @@
  * @jsx React.DOM
  */
 var React = require('react-tools').React,
-    marked = require("marked");
+    marked = require("marked"),
+    dateFormat = require('dateformat'),
+    path = require("path");
 
 marked.setOptions({
     gfm: true,
@@ -20,6 +22,7 @@ marked.setOptions({
 
 module.exports = React.createClass({
   render: function() {
+    var updatedTime = dateFormat(this.props.data.updatedAt, "d mmmm yyyy");
     return (
         <div className="panel panel-default">
             <header className="panel-heading">
@@ -29,7 +32,7 @@ module.exports = React.createClass({
                     <dd>{ this.props.data.user.name }</dd>
 
                     <dt>Last update: </dt>
-                    <dd>{ this.props.data.formatedUpdatedAt }</dd>
+                    <dd>{ updatedTime }</dd>
 
                     <dt>Category: </dt>
                     <dd>In { this.props.data.dataCategory.name }</dd>
@@ -40,7 +43,7 @@ module.exports = React.createClass({
                 <li className="list-group-item">
                     <p> Download: </p>
                     {this.props.data.dataFiles.map(function(file){
-                        return <a href={"repo/" + file.filepath} className="btn btn-sm btn-primary" data-passthru="true" style={{textTransform: "uppercase"}}>{ file.filepath.split(".").pop() }</a>
+                        return <a href={"repo/" + file.filepath} className="btn btn-sm btn-primary" data-passthru="true" style={{textTransform: "uppercase"}}>{ path.extname(file.filepath).substr(1) }</a>
                     })}
                 </li>
             </ul>

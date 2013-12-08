@@ -1,7 +1,8 @@
 /**
  * @jsx React.DOM
  */
-var React = require('react-tools').React;
+var React = require('react-tools').React,
+    path = require("path");
 
 var searchform = require("./searchform.jsx");
 
@@ -49,7 +50,7 @@ module.exports = React.createClass({
                         </td>
                         <td>
                             { data.dataFiles.map(function(file){
-                                    return <a data-passthru="true" href={"repo/" + file.filepath} className="btn btn-sm btn-primary" style={{textTransform:"uppercase"}}>{ file.filepath.split(".").pop() }</a>
+                                    return <a data-passthru="true" href={"repo/" + file.filepath} className="btn btn-sm btn-primary" style={{textTransform:"uppercase"}}>{ path.extname(file.filepath).substr(1) }</a>
                                })
                             }
                         </td>
