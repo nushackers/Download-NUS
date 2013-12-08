@@ -25,6 +25,13 @@ ResHandler.prototype = {
     kill: function(){
         this.valid = false;
     },
+    ensureHTTPS: function(){
+        var isHTTPS = location.protocol === "https:";
+        if(isHTTPS) return true;
+        else {
+            window.location.href = "https:" + window.location.href.substring(window.location.protocol.length);
+        }
+    },
     render: function(viewPath, data) {
         if(!this.valid) return;
 

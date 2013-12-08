@@ -1,6 +1,6 @@
 var _ = require("underscore");
 
-module.exports = function(apiClient) {
+module.exports = function(apiClient, insecure) {
     return {
         '/': function(req, res) {
             res.render('index');
@@ -55,10 +55,16 @@ module.exports = function(apiClient) {
             }
         },
         '/login': function(req, res) {
-            if(req.user){
-                res.redirect("/");
-            } else {
-                res.render('login');
+            var ok = true;
+            if(!insecure) {
+                ok = res.ensureHTTPS();
+            }
+            if(ok){
+                if(req.user){
+                    res.redirect("/");
+                } else {
+                    res.render('login');
+                }
             }
         },
         '/data/:id': function(req, res, id) {
