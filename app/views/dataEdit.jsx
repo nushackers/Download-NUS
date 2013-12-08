@@ -7,19 +7,35 @@ module.exports = React.createClass({
     submit: function(e){
         e.preventDefault();
         var formData = new FormData(this.refs.form.getDOMNode());
-        
-        return $.ajax({
-            url: "/api/datasets",
-            type: "POST",
-            data: formData,
-            cache: false,
-            contentType: false,
-            processData: false
-        }).done(function(data){
-            this.props.router.directorRouter.setRoute("/data/" + data.id);
-        }).fail(function(err){
-            console.log(err);
-        });
+        var director = this.props.router.directorRouter;
+        if(this.props.data.id) {
+            var id = this.props.data.id;
+            return $.ajax({
+                url: "/api/datasets/" + id,
+                type: "PUT",
+                data: formData,
+                cache: false,
+                contentType: false,
+                processData: false
+            }).done(function(data){
+                director.setRoute("/data/" + id);
+            }).fail(function(err){
+                console.log(err);
+            });
+        } else {
+            return $.ajax({
+                url: "/api/datasets",
+                type: "POST",
+                data: formData,
+                cache: false,
+                contentType: false,
+                processData: false
+            }).done(function(data){
+                director.setRoute("/data/" + data.id);
+            }).fail(function(err){
+                console.log(err);
+            });
+        }
     },
     render: function() {
     return (

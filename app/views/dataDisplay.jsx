@@ -43,7 +43,7 @@ module.exports = React.createClass({
                 <li className="list-group-item">
                     <p> Download: </p>
                     {this.props.data.dataFiles.map(function(file){
-                        return <a href={"repo/" + file.filepath} className="btn btn-sm btn-primary" data-passthru="true" style={{textTransform: "uppercase"}}>{ path.extname(file.filepath).substr(1) }</a>
+                        return <a href={"/repo/" + file.filepath} className="btn btn-sm btn-primary" data-passthru="true" style={{textTransform: "uppercase"}}>{ path.extname(file.filepath).substr(1) }</a>
                     })}
                 </li>
             </ul>
