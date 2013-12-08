@@ -24,7 +24,9 @@ module.exports = React.createClass({
             <div id="body-container">
                 {this.props.children}
             </div>
-
+            <div id="loading-screen">
+                <div className="loading-gear" />
+            </div>
             <script dangerouslySetInnerHTML={{__html: "window.initialData=" + JSON.stringify(this.props.initialData) + "; window.initialSession=" + JSON.stringify(this.props.session)}} />
             <script src="/js/jquery-1.10.2.min.js"></script>
             <script src="/js/bootstrap.min.js"></script>

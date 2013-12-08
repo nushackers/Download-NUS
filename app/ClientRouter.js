@@ -37,6 +37,7 @@ ResHandler.prototype = {
         React.renderComponent(
             this.router.renderView(viewPath, data, this.router.sessionManager.getSession()),
             document.querySelector("#body-container"));
+        this.router.finishLoading();
     },
     err: function(err){
         if(!this.valid) return;
@@ -62,6 +63,7 @@ ClientRouter.prototype.initPushState = function() {
 };
 
 ClientRouter.prototype.getReq = function(context, params, route) {
+    this.startLoading(); //hack
     return {
         query: parsePath(location.search),
         user: this.sessionManager.getSession()
@@ -101,5 +103,29 @@ ClientRouter.prototype.start = function() {
         }
     });
 
+    $(document).on("ajaxStart", function(){
+        self.startLoading();
+    }).on("ajaxStop", function(){
+        self.finishLoading();
+    });
+
+
     this.directorRouter.init();
 };
+
+
+ClientRouter.prototype.startLoading = function(){
+    if(!this.loadingTimer){
+        this.loadingTimer = setTimeout(function(){
+            $("#loading-screen").addClass("shown");
+            this.loadingTimer = 0;
+        }.bind(this), 200);
+    }
+};
+
+ClientRouter.prototype.finishLoading = function(){
+    clearTimeout(this.loadingTimer);
+    this.loadingTimer = 0;
+    $("#loading-screen").removeClass("shown");
+};
+
