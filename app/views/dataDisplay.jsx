@@ -24,8 +24,7 @@ module.exports = React.createClass({
   edit: function(e){
     e.stopPropagation();
     e.preventDefault();
-    this.props.router.setRouteWithData(e.target.href, this.props.data);
-    return false;
+    this.props.router.setRouteWithData(this.refs.editLink.props.href, this.props.data);
   },
   render: function() {
     var updatedTime = dateFormat(this.props.data.updatedAt, "d mmmm yyyy");
@@ -55,7 +54,7 @@ module.exports = React.createClass({
             </ul>
             {(this.props.data.user.nusId === (this.props.session && this.props.session.nusId)) ?
                 <div className="panel-footer">
-                    <a href={"/data/" + this.props.data.id + "?edit"} type="button" className="btn btn-default btn-sm btn-primary" onClick={this.edit} data-passthru="true">
+                    <a ref="editLink" href={"/data/" + this.props.data.id + "?edit"} type="button" className="btn btn-default btn-sm btn-primary" onClick={this.edit} data-passthru="true">
                         <span className="glyphicon glyphicon-pencil"></span> Edit
                     </a>
                 </div> : null

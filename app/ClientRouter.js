@@ -96,9 +96,9 @@ ClientRouter.prototype.start = function() {
     * pushState.
     */
     $(document.body).on("click", "a", function(e){
-        console.log(e.target);
         dataset = this.dataset;
         if (dataset.passthru == null || dataset.passthru === 'false') {
+            console.log(e.target);
             self.directorRouter.setRoute(this.attributes.href.value);
             e.preventDefault();
         }

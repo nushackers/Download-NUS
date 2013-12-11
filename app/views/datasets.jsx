@@ -2,6 +2,7 @@
  * @jsx React.DOM
  */
 var React = require('react-tools').React,
+    dateFormat = require('dateformat'),
     path = require("path");
 
 var searchform = require("./searchform.jsx");
@@ -56,7 +57,7 @@ module.exports = React.createClass({
                         </td>
                         <td>{ data.dataCategory.name }</td>
                         <td>{ data.user.name }</td>
-                        <td>{ data.formatedUpdatedAt }</td>
+                        <td>{ dateFormat(data.updatedAt, "d mmmm yyyy") }</td>
                         <td>
                             <a href={"/data/" + data.id} type="button" className="btn btn-default btn-sm btn-info">
                                 <span className="glyphicon glyphicon-new-window">{' '}</span>
