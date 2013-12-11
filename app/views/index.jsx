@@ -24,10 +24,10 @@ module.exports = React.createClass({
                     <a href="/upload">More...</a>
                 </div>
                 <div className="col-lg-4 col-sm-4">
-                    <a href="/mirror/" className="btn glyphicon glyphicon-globe big-icon"></a>
+                    <a href="/mirror/" data-passthru={true} className="btn glyphicon glyphicon-globe big-icon"></a>
                     <h3>Mirrors</h3>
                     <p className="lead">Download@NUS also hosts some mirrors for various open-source projects</p>
-                    <a href="/mirror/">More...</a>
+                    <a href="/mirror/" data-passthru={true}>More...</a>
                 </div>
             </div> 
         </div>  
