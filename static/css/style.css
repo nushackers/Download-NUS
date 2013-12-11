@@ -75,3 +75,8 @@ body { padding-top: 70px; }
 
     -webkit-animation: 2s linear rotate infinite;
 }
+
+.footer{
+    padding: 1em;
+    text-align: center;
+}
