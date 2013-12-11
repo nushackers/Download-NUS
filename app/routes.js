@@ -46,12 +46,7 @@ module.exports = function(apiClient, insecure) {
             if(!req.user){
                 res.redirect("/login");
             } else {
-                apiClient.get(req, '/metadata.json', {}, function(err, re){
-                    if(err){
-                        return res.err(err);
-                    }
-                    res.render('dataEdit', re.body);
-                });
+                res.render('dataEdit', {});
             }
         },
         '/login': function(req, res) {
@@ -67,22 +62,28 @@ module.exports = function(apiClient, insecure) {
                 }
             }
         },
-        '/data/:id': function(req, res, id) {
+        '/data/:id': function(req, res, id, data) {
             if('edit' in req.query && !req.user){
                 res.redirect("/login");
             } else {
-                apiClient.get(req, '/datasets/' + id, req.query, function(err, re){
-                    if(err || (re.body && re.body.err)){
-                        return res.err(err || re.body.err);
-                    }
+                if(data){
                     if('edit' in req.query){
-                        apiClient.get(req, '/metadata.json', {}, function(err, metaRe){
-                            res.render('dataEdit', _.extend(re.body, metaRe.body));
-                        });
+                        res.render('dataEdit', data);
                     } else {
-                        res.render('dataDisplay', re.body);
+                        res.render('dataDisplay', data);
                     }
-                });
+                } else {
+                    apiClient.get(req, '/datasets/' + id, req.query, function(err, re){
+                        if(err || (re.body && re.body.err)){
+                            return res.err(err || re.body.err);
+                        }
+                        if('edit' in req.query){
+                            res.render('dataEdit', re.body);
+                        } else {
+                            res.render('dataDisplay', re.body);
+                        }
+                    });
+                }
             }
         }
     };

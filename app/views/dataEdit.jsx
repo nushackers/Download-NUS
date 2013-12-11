@@ -3,6 +3,8 @@
  */
 var React = require('react-tools').React;
 
+var metaData = require("../metadata.json");
+
 module.exports = React.createClass({
     deleteDataset: function(e){
         e.preventDefault();
@@ -28,54 +30,42 @@ module.exports = React.createClass({
         var director = this.props.router.directorRouter,
             router = this.props.router,
             tdata = this.props.data;
+        var action;
         if(this.props.data.id) {
-            var id = this.props.data.id;
-            return $.ajax({
-                url: "/api/datasets/" + id,
+            action = $.ajax({
+                url: "/api/datasets/" + this.props.data.id,
                 type: "PUT",
                 data: formData,
                 cache: false,
                 contentType: false,
                 processData: false
-            }).done(function(data){
-                if(data.err){
-                    tdata.error = {
-                        messages: data.err.map(function(er){
-                            return er.msg;
-                        })
-                    };
-                    router.render();
-                    window.scroll(0, 0);
-                } else {
-                    director.setRoute("/data/" + id);
-                }
-            }).fail(function(err){
-                console.log(err);
             });
         } else {
-            return $.ajax({
+            action = $.ajax({
                 url: "/api/datasets",
                 type: "POST",
                 data: formData,
                 cache: false,
                 contentType: false,
                 processData: false
-            }).done(function(data){
-                if(data.err){
-                    tdata.error = {
-                        messages: data.err.map(function(er){
-                            return er.msg;
-                        })
-                    };
-                    router.render();
-                    window.scroll(0, 0);
-                } else {
-                    director.setRoute("/data/" + data.id);
-                }
-            }).fail(function(err){
-                console.log(err);
             });
         }
+        action.done(function(data){
+            if(data.err){
+                tdata.error = {
+                    messages: data.err.map(function(er){
+                        return er.msg;
+                    })
+                };
+                router.render();
+                window.scroll(0, 0);
+            } else {
+                console.log(data, "data");
+                router.setRouteWithData("/data/" + data.id, data);
+            }
+        }).fail(function(err){
+            console.log(err);
+        });
     },
     render: function() {
     return (
@@ -108,7 +98,7 @@ module.exports = React.createClass({
                 <div className="form-group">
                     <label htmlFor="exampleInputPassword">Category</label>
                     <select className="form-control" name="categoryId" defaultValue={this.props.data.DataCategoryId}>
-                        { this.props.data.categories.map(function(cat){
+                        { metaData.categories.map(function(cat){
                             return <option value={cat.id}>{cat.name}</option>
                         }) }
                     </select>
@@ -116,7 +106,7 @@ module.exports = React.createClass({
                 <div className="form-group">
                     <label htmlFor="exampleInputPassword">Class</label>
                     <select className="form-control" name="typeId" defaultValue={this.props.data.DataTypeId}>
-                        { this.props.data.types.map(function(type){
+                        { metaData.types.map(function(type){
                             return <option value={type.id}>{type.name}</option>
                         }) }
                     </select>

@@ -96,6 +96,7 @@ ClientRouter.prototype.start = function() {
     * pushState.
     */
     $(document.body).on("click", "a", function(e){
+        console.log(e.target);
         dataset = this.dataset;
         if (dataset.passthru == null || dataset.passthru === 'false') {
             self.directorRouter.setRoute(this.attributes.href.value);
@@ -130,6 +131,11 @@ ClientRouter.prototype.render = function(){
 
 ClientRouter.prototype.refresh = function(){
     this.directorRouter.setRoute(location.pathname);
+};
+
+ClientRouter.prototype.setRouteWithData = function(route, data){
+    this.priorData = data;
+    this.directorRouter.setRoute(route);
 };
 
 ClientRouter.prototype.startLoading = function(){

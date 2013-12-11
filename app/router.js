@@ -23,7 +23,8 @@ Router.prototype.getRouteHandler = function(handler, route) {
             req = router.getReq(routeContext);
 
         try{
-            handler.apply(null, [req, router.getRes(routeContext)].concat(Array.prototype.slice.call(arguments)));
+            handler.apply(null, [req, router.getRes(routeContext)].concat(Array.prototype.slice.call(arguments)).concat([router.priorData]));
+            router.priorData = null;
         } catch (err) {
             handleErr(err);
         }

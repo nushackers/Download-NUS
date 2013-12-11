@@ -13,7 +13,7 @@ var superagent = require('superagent');
             callback(null, {body: null}); // first render
         } else {
             var args = Array.prototype.slice.call(arguments, 2);
-            console.log("request");
+            console.log("request", path, query);
             superagent[method].apply(null, ['/api' + path].concat(args));
         }
     };

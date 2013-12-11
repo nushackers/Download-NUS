@@ -6,6 +6,8 @@ var React = require('react-tools').React;
 var searchform = require("./searchform.jsx"),
     datasets = require("./datasets.jsx");
 
+var metaData = require("../metadata.json");
+
 module.exports = React.createClass({
   render: function() {
     return (
@@ -17,7 +19,7 @@ module.exports = React.createClass({
                     <p>Browse by category:</p>
                     <div className="list-group">
                         {
-                            this.props.data.categories.map(function(cat) {
+                            metaData.categories.map(function(cat) {
                                 return <a href={"?cat=" + cat.id} className="list-group-item">{cat.name}</a>
                             })
                         }
@@ -27,7 +29,7 @@ module.exports = React.createClass({
                     <p>Browse by data class:</p>
                     <div className="list-group">
                         {
-                            this.props.data.types.map(function(t) {
+                            metaData.types.map(function(t) {
                                 return <a href={"?type=" + t.id} className="list-group-item">{t.name}</a>
                             })
                         }

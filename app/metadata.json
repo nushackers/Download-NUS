@@ -1,0 +1,66 @@
+{
+  "categories": [
+    {
+      "name": "Chemistry",
+      "id": 1,
+      "createdAt": "2013-08-02T14:20:49.000Z",
+      "updatedAt": "2013-08-02T14:20:49.000Z"
+    },
+    {
+      "name": "Programming",
+      "id": 2,
+      "createdAt": "2013-08-02T14:20:49.000Z",
+      "updatedAt": "2013-08-02T14:20:49.000Z"
+    },
+    {
+      "name": "Uncategorized",
+      "id": 3,
+      "createdAt": "2013-08-02T14:20:49.000Z",
+      "updatedAt": "2013-08-02T14:20:49.000Z"
+    },
+    {
+      "name": "Biology",
+      "id": 4,
+      "createdAt": "2013-08-02T14:20:49.000Z",
+      "updatedAt": "2013-08-02T14:20:49.000Z"
+    },
+    {
+      "name": "Physics",
+      "id": 5,
+      "createdAt": "2013-08-02T14:20:49.000Z",
+      "updatedAt": "2013-08-02T14:20:49.000Z"
+    },
+    {
+      "name": "Sociology",
+      "id": 6,
+      "createdAt": "2013-08-02T14:20:49.000Z",
+      "updatedAt": "2013-08-02T14:20:49.000Z"
+    },
+    {
+      "name": "Mathematics",
+      "id": 7,
+      "createdAt": "2013-08-02T14:20:49.000Z",
+      "updatedAt": "2013-08-02T14:20:49.000Z"
+    }
+  ],
+  "types": [
+    {
+      "name": "Unclassified",
+      "id": 1,
+      "createdAt": "2013-08-02T14:20:49.000Z",
+      "updatedAt": "2013-08-02T14:20:49.000Z"
+    },
+    {
+      "name": "Synthetic",
+      "id": 2,
+      "createdAt": "2013-08-02T14:20:49.000Z",
+      "updatedAt": "2013-08-02T14:20:49.000Z"
+    },
+    {
+      "name": "Real-world",
+      "id": 3,
+      "createdAt": "2013-08-02T14:20:49.000Z",
+      "updatedAt": "2013-08-02T14:20:49.000Z"
+    }
+  ]
+}
