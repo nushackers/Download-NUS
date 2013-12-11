@@ -22,6 +22,18 @@ module.exports = function (grunt) {
       },
     },
 
+    uglify: {
+      main: {
+        options: {
+          mangle: true,
+          compress: true,
+        },
+        files: {
+          'static/scripts.js': ['static/scripts.js']
+        }
+      }
+    },
+
     nodemon: {
       main: {}
     },
@@ -48,6 +60,7 @@ module.exports = function (grunt) {
   });
 
   grunt.loadNpmTasks('grunt-browserify');
+  grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-contrib-stylus');
   grunt.loadNpmTasks('grunt-nodemon');
   grunt.loadNpmTasks('grunt-contrib-watch');
@@ -55,5 +68,6 @@ module.exports = function (grunt) {
 
   grunt.registerTask('compile', ['browserify']);
   grunt.registerTask('default', ['compile']);
+  grunt.registerTask('deploy-compile', ['compile', 'uglify']);
   grunt.registerTask('server', ['compile', 'concurrent']);
 };
