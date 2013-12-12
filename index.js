@@ -9,7 +9,8 @@ var express = require('express'),
 // Allow directly requiring '.jsx' files.
 require('node-jsx').install({extension: '.jsx'});
 
-app.use(express.static(__dirname + '/static'));
+app.use(express.compress());
+app.use(express.static(__dirname + '/static'), { maxAge: config.app.cacheDuration });
 
 app.use(express.bodyParser());
 
