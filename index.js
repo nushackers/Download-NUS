@@ -5,14 +5,15 @@ var express = require('express'),
     port = config.app.port,
     Router = require('./lib/ServerRouter'),
     ApiClient = require('./lib/server_api_client'),
-    connect = require("connect"),
-    RedisStore = require("connect-redis")(connect);
+    RedisStore = require("connect-redis")(express),
+    redis = require("redis").createClient(config.redis.unixSocket),
+    _ = require("underscore");
 
 // Allow directly requiring '.jsx' files.
 require('node-jsx').install({extension: '.jsx'});
 
-var sessionStore = new RedisStore(config.redisStore.option);
-
+var sessionStore = new RedisStore(_.extend({ client: redis },
+                                           config.redisStore));
 app.use(express.compress());
 app.use(express.static(__dirname + '/static'), { maxAge: config.app.cacheDuration });
 
