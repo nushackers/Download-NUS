@@ -29,7 +29,9 @@
         "http-proxy": "~0.10.3",
         "reactify": "~0.4.0",
         "react-tools": "~0.5.1",
-        "node-jsx": "petehunt/node-jsx"
+        "node-jsx": "petehunt/node-jsx",
+        "connect-redis": "1.4.x",
+        "connect": ""
     },
     "devDependencies": {
         "grunt": "~0.4.1",
