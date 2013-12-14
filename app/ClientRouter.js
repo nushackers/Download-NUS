@@ -1,6 +1,7 @@
 var Router = require('./router'),
     React = require('react-tools').React,
-    DirectorRouter = require('director').Router;
+    DirectorRouter = require('director').Router,
+    bigFileUpload = require("./bigFileUpload");
 
 function parsePath(query){
     query = query.substr(1);
@@ -59,6 +60,7 @@ ResHandler.prototype = {
 function ClientRouter(routes, sessionManager) {
     Router.call(this, routes, DirectorRouter, 'app/views', this.getRouteHandler.bind(this));
     this.sessionManager = sessionManager;
+    this.uploader = bigFileUpload;
 }
 
 ClientRouter.prototype = Object.create(Router.prototype);
@@ -145,6 +147,10 @@ ClientRouter.prototype.startLoading = function(){
             this.loadingTimer = 0;
         }.bind(this), 200);
     }
+};
+
+ClientRouter.prototype.setProgress = function(progress){
+    $(".loading-status").html(progress);
 };
 
 ClientRouter.prototype.finishLoading = function(){

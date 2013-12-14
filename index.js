@@ -1,5 +1,9 @@
 var config = require("./config");
 
+var logger = global.logger = require("winston");
+logger.remove(logger.transports.Console);
+logger.add(logger.transports.Console, { colorize: true, timestamp: true });
+
 var express = require('express'),
     app = express(),
     port = config.app.port,
@@ -21,7 +25,7 @@ app.use(express.bodyParser());
 
 app.use(express.cookieParser(config.session.secret));
 app.use(express.session({ secret:config.session.secret, store: sessionStore }));
-var api = require('./lib/api')(app, "/api", config),
+var api = require('./lib/api')(app, "/api", config, redis),
     apiClient = ApiClient(api),
     routes = require('./app/routes')(apiClient, config.app.insecure),
     router = new Router(routes);

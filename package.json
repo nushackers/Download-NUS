@@ -31,7 +31,9 @@
         "react-tools": "~0.5.1",
         "node-jsx": "petehunt/node-jsx",
         "connect-redis": "1.4.x",
-        "redis": ""
+        "redis": "",
+        "temporary": "0.0.x",
+        "winston": ""
     },
     "devDependencies": {
         "grunt": "~0.4.1",

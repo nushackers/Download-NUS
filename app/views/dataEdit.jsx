@@ -26,37 +26,61 @@ module.exports = React.createClass({
     },
     submit: function(e){
         e.preventDefault();
-        var formData = new FormData(this.refs.form.getDOMNode());
         var director = this.props.router.directorRouter,
             router = this.props.router,
             tdata = this.props.data;
         var action;
-        if(this.props.data.id) {
-            action = $.ajax({
-                url: "/api/datasets/" + this.props.data.id,
-                type: "PUT",
-                data: formData,
-                cache: false,
-                contentType: false,
-                processData: false
-            });
-        } else {
-            action = $.ajax({
-                url: "/api/datasets",
-                type: "POST",
-                data: formData,
-                cache: false,
-                contentType: false,
-                processData: false
-            });
+        var form = $(this.refs.form.getDOMNode()).serializeArray(),
+            file = this.refs.fileInput.getDOMNode().files[0];
+
+        if(!file){
+            tdata.error = {
+                messages: ["Please upload a file"]
+            };
+            return router.render();
         }
-        action.done(function(data){
+
+        var action;
+
+        form.push({
+            name: "onlyValidation",
+            value: true
+        });
+
+        if(this.props.data.id){
+
+        } else {
+            action = $.post("/api/datasets/", form);
+        }
+
+        action.then(function(data){
             if(data.err){
-                tdata.error = {
-                    messages: data.err.map(function(er){
-                        return er.msg;
-                    })
-                };
+                return data;
+            }
+            return router.uploader.upload(file);
+        }).then(function(data){
+            if(data.err){
+                return data;
+            }
+            form.pop();
+            form.push({
+                name: "ticket",
+                value: data.ticket
+            });
+            return $.post("/api/datasets", form);
+        }).done(function(data){
+            if(data.err){
+                if(data.err instanceof Array){
+                    tdata.error = {
+                        messages: data.err.map(function(er){
+                            return er.msg;
+                        })
+                    };
+                } else {
+                    tdata.error = {
+                        messages: [data.err]
+                    };
+                }
                 router.render();
                 window.scroll(0, 0);
             } else {
@@ -65,6 +89,9 @@ module.exports = React.createClass({
             }
         }).fail(function(err){
             console.log(err);
+        }).progress(function(p){
+            router.setProgress(p);
+            console.log(p);
         });
     },
     render: function() {
@@ -119,7 +146,7 @@ module.exports = React.createClass({
                             <p>Or leave this field blank to keep the old file</p>
                         </div>
                         : null }
-                    <input type="file" id="file" name="file" />
+                    <input type="file" id="file" name="file" ref="fileInput" />
                     <p className="help-block">File types allowed: XLS, XLSX, CSV, TXT</p>
                 </div>
                 <button type="submit" className="btn btn-default btn-primary" onClick={this.submit}>Submit</button>
