@@ -1,6 +1,9 @@
 var _ = require("underscore");
 
-var chunkSize = 40000;
+// chunk size about 200m (put this to config?)
+// the first chunk is 1k just to allow detecting mimetype
+var chunkSize = 1024 * 1024 * 200;
+    initChunkSize = 1000;
 
 function buildFormData(formArray, file){
     var formData = new FormData();
@@ -17,10 +20,12 @@ function uploadFile(file, ticket){
 
     function uploadFrom(seq){
         console.log("upload seq", seq);
+        var chunk = seq ? chunkSize : initChunkSize;
+
         $.ajax({
             url: "/api/upload/" + ticket + "/" + seq,
             type: "POST",
-            data: buildFormData([], file.slice(seq, seq + chunkSize)),
+            data: buildFormData([], file.slice(seq, seq + chunk)),
             cache: false,
             contentType: false,
             processData: false,

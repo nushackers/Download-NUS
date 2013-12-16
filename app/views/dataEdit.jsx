@@ -29,35 +29,29 @@ module.exports = React.createClass({
         var director = this.props.router.directorRouter,
             router = this.props.router,
             tdata = this.props.data;
-        var action;
         var form = $(this.refs.form.getDOMNode()).serializeArray(),
             file = this.refs.fileInput.getDOMNode().files[0];
 
-        if(!file){
+        if(!file && !this.props.data.id){
             tdata.error = {
                 messages: ["Please upload a file"]
             };
             return router.render();
         }
 
-        var action;
-
         form.push({
             name: "onlyValidation",
             value: true
         });
 
-        if(this.props.data.id){
+        var dataid = this.props.data.id;
 
-        } else {
-            action = $.post("/api/datasets/", form);
-        }
-
-        action.then(function(data){
+        $.post("/api/datasets/", form).then(function(data){
             if(data.err){
                 return data;
             }
-            return router.uploader.upload(file);
+            if(file) return router.uploader.upload(file);
+            else return data;
         }).then(function(data){
             if(data.err){
                 return data;
@@ -67,7 +61,17 @@ module.exports = React.createClass({
                 name: "ticket",
                 value: data.ticket
             });
-            return $.post("/api/datasets", form);
+            var action;
+            if(dataid){
+                action = $.ajax({
+                    method: "PUT",
+                    url: "/api/datasets/" + dataid,
+                    data: form
+                });
+            } else {
+                action = $.post("/api/datasets", form);
+            }
+            return action;
         }).done(function(data){
             if(data.err){
                 if(data.err instanceof Array){
