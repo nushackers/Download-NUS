@@ -94,7 +94,7 @@ module.exports = React.createClass({
         }).fail(function(err){
             console.log(err);
         }).progress(function(p){
-            router.setProgress(p);
+            router.setProgress(Math.round(p / 100 * 99));
             console.log(p);
         });
     },

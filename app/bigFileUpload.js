@@ -32,7 +32,7 @@ function uploadFile(file, ticket){
             xhr: function(){
                 var xhr = jQuery.ajaxSettings.xhr();
                 xhr.upload.addEventListener("progress", function(evt){
-                    d.notify(Math.round(100 * (evt.loaded + seq) / file.size));
+                    d.notify(Math.min(100, Math.round(100 * (evt.loaded + seq) / file.size)));
                 }, false);
                 return xhr;
             }

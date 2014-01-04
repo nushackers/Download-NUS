@@ -1,6 +1,7 @@
 var Router = require('./router'),
     React = require('react-tools').React,
     DirectorRouter = require('director').Router,
+    progressBar = require("./views/progressBar.jsx"),
     bigFileUpload = require("./bigFileUpload");
 
 function parsePath(query){
@@ -150,7 +151,12 @@ ClientRouter.prototype.startLoading = function(){
 };
 
 ClientRouter.prototype.setProgress = function(progress){
-    $(".loading-status").html(progress);
+    React.renderComponent(
+        progressBar({
+            value: progress
+        }),
+        document.querySelector(".loading-status")
+    );
 };
 
 ClientRouter.prototype.finishLoading = function(){
