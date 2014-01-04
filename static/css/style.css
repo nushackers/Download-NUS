@@ -40,6 +40,46 @@ body { padding-top: 70px; }
 
 }
 
+@keyframes "fade-in" {
+ from {
+    opacity: 0;
+ }
+ to {
+    opacity: 1;
+ }
+
+}
+
+@-webkit-keyframes "fade-in" {
+ from {
+    opacity: 0;
+ }
+ to {
+    opacity: 1;
+ }
+
+}
+
+@-moz-keyframes "fade-in" {
+ from {
+    opacity: 0;
+ }
+ to {
+    opacity: 1;
+ }
+
+}
+
+@-ms-keyframes "fade-in" {
+ from {
+    opacity: 0;
+ }
+ to {
+    opacity: 1;
+ }
+
+}
+
 .big-icon{
     font-size: 100px;
     width: 100%;
@@ -55,12 +95,15 @@ body { padding-top: 70px; }
     bottom: 0;
     left: 0;
     right: 0;
-    background: rgba(0, 0, 0, 0.2);
+    background: rgba(0, 0, 0, 0.7);
     z-index: 10000;
 }
 
 #loading-screen.shown{
     display: block;
+    -webkit-animation: fade-in 0.5s linear;
+    -o-animation: fade-in 0.5s linear;
+    animation: fade-in 0.5s linear;
 }
 
 .loading-gear{
