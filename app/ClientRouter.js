@@ -145,6 +145,7 @@ ClientRouter.prototype.startLoading = function(){
     if(!this.loadingTimer){
         this.loadingTimer = setTimeout(function(){
             $("#loading-screen").addClass("shown");
+            $("#loading-screen .loading-status").html("");
             this.loadingTimer = 0;
         }.bind(this), 200);
     }

@@ -27,9 +27,6 @@ module.exports = React.createClass({
             </div>
             <div id="loading-screen">
                 <img className="loading-gear" src="/img/loading.png" />
-                <div className="text-center">
-                    Uploading...
-                </div>
                 <div className="loading-status"></div>
             </div>
             <script dangerouslySetInnerHTML={{__html: "window.initialData=" + JSON.stringify(this.props.initialData) + "; window.initialSession=" + JSON.stringify(this.props.session)}} />
