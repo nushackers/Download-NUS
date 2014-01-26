@@ -1,3 +1,5 @@
+
+
 body { padding-top: 70px; }
 
 @keyframes "rotate" {
@@ -82,9 +84,9 @@ body { padding-top: 70px; }
 
 .big-icon{
     font-size: 100px;
-    width: 100%;
+    width: 100%!important;
     text-align: center;
-    color: #69e;
+    color: #007196;
     line-height: 1.2;
 }
 
@@ -134,4 +136,8 @@ body { padding-top: 70px; }
 .footer{
     padding: 1em;
     text-align: center;
+}
+
+.navbar {
+    box-shadow: 0 0 7px black;
 }

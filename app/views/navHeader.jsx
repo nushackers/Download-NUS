@@ -14,7 +14,7 @@ module.exports = React.createClass({
   },
   render: function() {
     return (
-        <header className="navbar navbar-inverse navbar-fixed-top">
+        <header className="navbar navbar-fixed-top navbar-default">
             <div className="container">
                 <a className="navbar-brand" href="/">Download@NUS</a>
                 <button type="button" className="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
@@ -23,23 +23,25 @@ module.exports = React.createClass({
                   <span className="icon-bar"></span>
                   <span className="icon-bar"></span>
                 </button>
-                <div className="nav navbar-nav pull-right hidden-xs">
+                <ul className="nav navbar-nav navbar-right hidden-xs">
                     {this.props.session ?  
                         [
-                        <a href="/upload" className="btn btn-default btn-primary navbar-btn" href="/upload">Upload</a>,
-                        " ",
-                        <div className="btn-group">
-                            <button className="btn btn-default navbar-btn dropdown-toggle"  data-toggle="dropdown" href="/login">{ this.props.session.name + " " }<span className="caret"></span></button>
-                            <ul className="dropdown-menu pull-right" role="menu" aria-labelledby="dLabel">
+                        <li>
+                            <a href="/upload">Upload</a>
+                        </li>,
+                        <li className="dropdown">
+                            <a data-toggle="dropdown" href="#">{ this.props.session.name + " " }<b className="caret" /></a>
+                            <ul className="dropdown-menu" role="menu" aria-labelledby="dLabel">
                                 <li><a href="/manage">Manage Datasets</a></li>
-                                <li className="divider"></li>
                                 <li><a href="" data-passthru="true" onClick={this.logout}>Log out</a></li>
                             </ul>
-                        </div>
+                        </li>
                         ]:
+                        <li >
                         <a href="/login" className="btn btn-default navbar-btn">Sign In</a>
+                        </li>
                     }
-                </div>
+                </ul>
                 <div className="collapse navbar-collapse navbar-ex1-collapse">
                     <ul className="nav navbar-nav">
                         <li><a href="/data">Download</a></li>
