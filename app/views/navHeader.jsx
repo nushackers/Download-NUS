@@ -38,7 +38,7 @@ module.exports = React.createClass({
                         </li>
                         ]:
                         <li >
-                        <a href="/login" className="btn btn-default navbar-btn">Sign In</a>
+                        <a href="/login">Sign In</a>
                         </li>
                     }
                 </ul>
