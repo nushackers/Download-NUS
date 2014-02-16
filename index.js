@@ -14,7 +14,7 @@ var express = require('express'),
     _ = require("underscore");
 
 // hack
-process.env.TMPDIR = config.fs.tmp
+process.env.TMPDIR = config.fs.tmpDir
 
 // Allow directly requiring '.jsx' files.
 require('node-jsx').install({extension: '.jsx'});
