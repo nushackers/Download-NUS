@@ -9,10 +9,6 @@ try {
     process.exit(1);
 }
 
-
-// hack
-process.env.TMPDIR = config.fs.tmpDir;
-
 var _ = require('underscore');
 var Q = require('q');
 var ejs = require('ejs');

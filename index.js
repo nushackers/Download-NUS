@@ -13,6 +13,9 @@ var express = require('express'),
     redis = require("redis").createClient(config.redis.unixSocket),
     _ = require("underscore");
 
+// hack
+process.env.TMPDIR = config.fs.tmp
+
 // Allow directly requiring '.jsx' files.
 require('node-jsx').install({extension: '.jsx'});
 
