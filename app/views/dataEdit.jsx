@@ -56,6 +56,7 @@ module.exports = React.createClass({
             if(data.err){
                 return data;
             }
+            console.log("upload complete");
             form.pop();
             form.push({
                 name: "ticket",

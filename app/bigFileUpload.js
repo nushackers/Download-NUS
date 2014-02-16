@@ -21,6 +21,8 @@ function uploadFile(file, ticket){
         console.log("upload seq", seq);
         var chunk = chunkSize;
 
+        console.log("Block", seq, seq + chunk);
+
         $.ajax({
             url: "/api/upload/" + ticket + "/" + seq,
             type: "POST",
