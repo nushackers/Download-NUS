@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <title>Download@NUS</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="description" content="" />
+        <meta name="author" content="" />
+        <link rel="stylesheet" href="/css/vex.css" />
+        <link rel="stylesheet" href="/css/vex-theme-os.css" />
+        <link href="/css/bootstrap.min.css" rel="stylesheet" />
+        <link href="/css/style.css" rel="stylesheet" />
+        
+    </head>
+    <body>
+        <div id="body-container">
+            <%= reactRoot %>
+        </div>
+        <div id="loading-screen">
+            <img class="loading-gear" src="/img/loading.png" />
+            <div class="loading-status"></div>
+        </div>
+        <script>
+            <%- "window.initialData=" + JSON.stringify(initialData) + "; window.initialSession=" + JSON.stringify(session) %>
+        </script>
+        <script src="/js/jquery-1.10.2.min.js"></script>
+        <script src="/js/vex.combined.min.js"></script>
+        <script>
+            <%- "vex.defaultOptions.class = 'vex-theme-os';" %>
+        </script>
+        <script src="/js/bootstrap.min.js"></script>
+        <script src="/scripts.js"></script>
+    </body>
+</html>
+
