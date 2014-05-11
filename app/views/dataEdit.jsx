@@ -124,7 +124,7 @@ module.exports = React.createClass({
                     <input type="text" className="form-control" id="exampleInputEmail" name="name" placeholder="Enter title" defaultValue={this.props.data.name} />
                 </div>
                 <div className="form-group">
-                    <label htmlFor="exampleInputPassword">Description</label>
+                    <label htmlFor="exampleInputPassword">Description (<a href="http://daringfireball.net/projects/markdown/">markdown</a> is supported) </label>
                     <textarea className="form-control" id="exampleInputPassword" name="description" placeholder="Enter description" defaultValue={this.props.data.description}/>
                 </div>
                 <div className="form-group">
