@@ -1,7 +1,7 @@
 /**
  * @jsx React.DOM
  */
-var React = require('react-tools').React;
+var React = require('react');
 
 var searchform = require("./searchform.jsx"),
     datasets = require("./datasets.jsx");

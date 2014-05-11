@@ -39,5 +39,8 @@ Router.prototype.renderView = function(viewPath, data, session){
 
 Router.prototype.handleErr = function(err) {
     console.log(err);
-    // console.error(err.message + err.stack);
+    if (console.error) {
+        console.error(err.message);
+        console.error(err.stack);
+    }
 };

@@ -1,5 +1,5 @@
 var Router = require('./router'),
-    React = require('react-tools').React,
+    React = require('react'),
     DirectorRouter = require('director').Router,
     progressBar = require("./views/progressBar.jsx"),
     bigFileUpload = require("./bigFileUpload");
