@@ -62,7 +62,7 @@ module.exports = React.createClass({
                             <a href={"/data/" + data.id} type="button" className="btn btn-default btn-sm btn-info">
                                 <span className="glyphicon glyphicon-new-window">{' '}</span>
                             </a> {' '}
-                            { (session.level == 2 || (data.user.nusId === (session && session.nusId))) ? 
+                            { ((session && session.level) == 2 || (data.user.nusId === (session && session.nusId))) ? 
                                 <a href={"/data/" + data.id + "?edit"} type="button" className="btn btn-sm btn-primary">
                                     <span className="glyphicon glyphicon-pencil"></span>
                                 </a> : null

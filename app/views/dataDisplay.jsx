@@ -34,7 +34,7 @@ module.exports = React.createClass({
                 <h1>{ this.props.data.name }</h1>
                 <dl className="dl-horizontal">
                     <dt>Uploaded by: </dt>
-                    <dd>{ this.props.data.user.name }</dd>
+                    <dd>{ this.props.data.user.name + " (" + this.props.data.user.nusId + ")" }</dd>
 
                     <dt>Last update: </dt>
                     <dd>{ updatedTime }</dd>
