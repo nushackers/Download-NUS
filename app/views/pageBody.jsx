@@ -22,7 +22,7 @@ module.exports = React.createClass({
             <div style={{height:"1px"}}></div>
                 <hr />
             <div className="footer">
-                &copy; Copyright 2013 National University of Singapore. All Rights Reserved.
+                &copy; Copyright 2014 National University of Singapore. All Rights Reserved.
             </div>
         </div>
     </div>
