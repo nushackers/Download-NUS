@@ -1,0 +1,17 @@
+09 1-23/4 * * * /var/www/download/bin/do_rsync.sh ubuntu archive.ubuntu.com/ubuntu/ '-rtlHp --stats' '--exclude="Packages*" --exclude="Sources*" --exclude="Release*"' '--delete --delete-after'
+20 2-23/2 * * * /var/www/download/bin/do_rsync.sh arch ftp.tku.edu.tw/archlinux/ '-rtlH --delete-after --delay-updates --copy-links --safe-links --ignore-errors'
+
+17 6-23/8 * * * /var/www/download/bin/do_rsync.sh epel mirrors.ustc.edu.cn/fedora-epel/ '-aH --numeric-ids --delete --delete-after --delay-updates'
+
+
+
+30 3      * * * /var/www/download/bin/do_rsync.sh netbsd rsync.tw.NetBSD.org/NetBSD/ '--delete -Warts'
+00 5      * * * /var/www/download/bin/do_rsync.sh slackware ftp.riken.jp/slackware/ '-a --delete --delete-after'
+15 5      * * * /var/www/download/bin/do_rsync.sh gnewsense rsync.archive.gnewsense.org/gnewsense/ '-a -P --delete --delete-before'
+00 03 * * *  /var/www/download/bin/do_rsync.sh centos ftp.riken.jp/centos/ '--delete --delete-after -av'
+
+00 4-23/8 * * * /var/www/download/bin/do_rsync.sh tdf rsync.documentfoundation.org/tdf-pub/ '--no-motd -rlptH -hi --delete'
+20 4-23/8 * * * /var/www/download/bin/do_rsync.sh cygwin cygwin.com/cygwin-ftp/ '-a --delete --delete-after'
+30 4      * * * /var/www/download/bin/do_rsync.sh eclipse download.eclipse.org/eclipseMirror/ '-rtlp --delete'
+35 4      * * * /var/www/download/bin/do_rsync.sh mariadb rsync.osuosl.org/mariadb '-a --partial --delete-after --delay-updates'
+45 4      * * * /var/www/download/bin/do_rsync.sh ctan rsync.dante.ctan.org/CTAN/ '-a --delete'

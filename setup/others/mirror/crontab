@@ -1,0 +1,59 @@
+# high-priority (every 4hrs)
+# start each on different hour
+# eg: 1, 5, 9...for ubuntu, 2, 6, 10...for arch
+09 1-23/4 * * * /var/www/download/bin/do_rsync.sh ubuntu archive.ubuntu.com/ubuntu/ '-rtlHp --stats' '--exclude="Packages*" --exclude="Sources*" --exclude="Release*"' '--delete --delete-after'
+20 2-23/2 * * * /var/www/download/bin/do_rsync.sh arch ftp.tku.edu.tw/archlinux/ '-rtlH --delete-after --delay-updates --copy-links --safe-links --ignore-errors'
+
+# http://fedoraproject.org/wiki/Infrastructure/Mirroring
+#01 6      * * *  /var/www/download/bin/do_rsync.sh fedora ftp.kddilabs.jp/fedora/ '-aH --numeric-ids --delete --delete-after --delay-updates --exclude=archive --exclude=epel --exclude=development'
+#01 */6    * * * /var/www/download/bin/do_rsync.sh fedora ftp.ciril.fr/pub/linux/fedora/linux/ '-aH --numeric-ids --delete --delete-after --delay-updates' --exclude=core
+# others: fr2.rpmfind.net/linux/fedora/linux/
+17 6-23/8 * * * /var/www/download/bin/do_rsync.sh epel mirrors.ustc.edu.cn/fedora-epel/ '-aH --numeric-ids --delete --delete-after --delay-updates'
+
+## OS
+#00 3      * * * /var/www/download/bin/do_rsync.sh freebsd ftp6.tw.FreeBSD.org/FreeBSD/ --delete -a
+
+# others:
+# mirror.aarnet.edu.au/openbsd/
+# mirror.esc7.net/openbsd/
+#15 3      * * * /var/www/download/bin/do_rsync.sh openbsd ftp.jaist.ac.jp/pub/OpenBSD/ '--delete --delete-after -a'
+
+# http://www.netbsd.org/docs/mirror.html#ftp-retrieve-sync
+30 3      * * * /var/www/download/bin/do_rsync.sh netbsd rsync.tw.NetBSD.org/NetBSD/ '--delete -Warts'
+# http://wiki.mandriva.com/en/Development/Howto/Mirror
+# others:
+# ftp.ciril.fr/pub/linux/mandrivalinux/
+# distrib-coffee.ipsl.jussieu.fr/pub/linux/MandrivaLinux/
+# ftp.sunet.se/pub/Linux/distributions/mandrakelinux/
+# ftp-stud.hs-esslingen.de/mandrake/
+# ftp.df.lth.se/pub/mandrivalinux/
+# ftp.nara.wide.ad.jp/pub/Linux/mandrakelinux/
+#45 3      * * * /var/www/download/bin/do_rsync.sh mandriva ftp.df.lth.se/pub/mandrivalinux/ '-aH --partial --delete-after --delay-updates --exclude=old'
+00 5      * * * /var/www/download/bin/do_rsync.sh slackware ftp.riken.jp/slackware/ '-a --delete --delete-after'
+15 5      * * * /var/www/download/bin/do_rsync.sh gnewsense rsync.archive.gnewsense.org/gnewsense/ '-a -P --delete --delete-before'
+# http://bazaar.launchpad.net/~ubumirror-devs/ubumirror/trunk/view/head:/ubucdimage
+#45 5      * * * /var/www/download/bin/do_rsync.sh ubuntu-iso se.releases.ubuntu.com/mirror/ubuntu-releases/ '-a --partial'
+#30 03 * * *  /var/www/download/bin/debian.sh >> /var/www/download/log/debian 2>&1
+00 03 * * *  /var/www/download/bin/do_rsync.sh centos ftp.riken.jp/centos/ '--delete --delete-after -av'
+
+## Software
+# http://download.documentfoundation.org/mirroring.html
+00 4-23/8 * * * /var/www/download/bin/do_rsync.sh tdf rsync.documentfoundation.org/tdf-pub/ '--no-motd -rlptH -hi --delete'
+#15 4      * * * /var/www/download/bin/do_rsync.sh gnu ftp.riken.jp/gnu/ '-rltpHS --delete-excluded'
+20 4-23/8 * * * /var/www/download/bin/do_rsync.sh cygwin cygwin.com/cygwin-ftp/ '-a --delete --delete-after'
+# others: ftp.inf.tu-dresden.de/cygwin/
+#25 4      * * * /var/www/download/bin/do_rsync.sh apache rsync.apache.org '-az --delete --safe-links'
+30 4      * * * /var/www/download/bin/do_rsync.sh eclipse download.eclipse.org/eclipseMirror/ '-rtlp --delete'
+35 4      * * * /var/www/download/bin/do_rsync.sh mariadb rsync.osuosl.org/mariadb '-a --partial --delete-after --delay-updates'
+45 4      * * * /var/www/download/bin/do_rsync.sh ctan rsync.dante.ctan.org/CTAN/ '-a --delete'
+#07 16 * * *  /var/www/download/bin/cpan.sh >> /var/www/download/log/cpan 2>&1
+#02 07 * * *  /var/www/download/bin/kernel.sh >> /var/www/download/log/kernel 2>&1
+
+# for the rest, try and avoid above
+##01 04 * * *  /var/www/download/bin/debian-cd.sh >> /var/www/download/log/debian-cd 2>&1
+#
+
+# mirrored by mirror.nus.edu.sg
+#03 08 * * *  /var/www/download/bin/opensuse.sh >> /var/www/download/log/opensuse 2>&1
+#32 07 * * *  /var/www/download/bin/openoffice.sh >> /var/www/download/log/openoffice 2>&1
+#05 12 * * *  /var/www/download/bin/gentoo.sh >> /var/www/download/log/gentoo 2>&1
