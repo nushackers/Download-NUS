@@ -17,7 +17,7 @@
         "connect-ensure-login": "0.1.x",
         "passport": "0.1.x",
         "mysql": "2.x",
-        "sequelize": "2.x",
+        "sequelize": "2.0.0-rc3",
         "mmmagic": "0.3.x",
         "rimraf": "2.x.x",
         "ldapjs": "0.6.x",
