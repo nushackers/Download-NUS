@@ -1,5 +1,10 @@
 #!/bin/sh
 
+# New and improved with FLOCK
+# Sehr Gut !
+# Funf Sterne !
+
+
 # Usage: name host ['common opts'] ['1st run opts'] ['2nd run opts'] ...
 
 if test "$#" -lt 2; then
@@ -34,13 +39,14 @@ log_info() { _log 'info' "$*"; }
 log_error() { _log 'error' "$*"; }
 
 LOCKFILE=$BASEDIR/log/lock/$NAME.lock
+exec 9>"$LOCKFILE"
 
-if [ -e $LOCKFILE ]; then
+failyo() {
 	log_error 'sync in progress? stopping'
 	exit 1
-fi
+}
 
-touch $LOCKFILE
+flock -n 9 || failyo
 
 die() {
 	/bin/rm $LOCKFILE
@@ -72,7 +78,7 @@ rsync_with_retry(){
 			if [ $TRIES -ne $LIMIT ] ; then
 				sleep 15
 			fi
-    fi
+ 		fi
 	done
 }
 
