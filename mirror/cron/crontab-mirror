@@ -67,6 +67,3 @@
 
 # Distrobutions to be removed soon (Updated every 24 hours)
 # If its a Linux distribution >100th in rank on distrowatch, it will be placed here
-
-55 2 * * * /var/www/download/bin/do_rsync.sh gutenberg ftp@ftp.ibiblio.org/gutenberg/ '-av --del --ignore-errors'
-55 3 * * * /var/www/download/bin/do_rsync.sh gutenberg-epub ftp@ftp.ibiblio.org/gutenberg-epub/ '-av --del --ignore-errors'
