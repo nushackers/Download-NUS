@@ -34,7 +34,7 @@
 15 3-23/4 * * * /var/www/download/bin/do_rsync.sh kernel rsync.kernel.org/pub/ '-rlHtSvz --delete --ignore-errors'
 15 0-23/4 * * * /var/www/download/bin/do_rsync.sh linuxmint-debian mirror.internode.on.net/linuxmint-debian/ '-av --times --links --hard-links --partial --block-size=131072 --delete --delete-after --ignore-errors'
 15 1-23/4 * * * /var/www/download/bin/do_rsync.sh openbsd sgp1.mirrors.digitalocean.com/openbsd/ '-vaHz --delete --ignore-errors'
-15 2-23/4 * * * /var/www/download/bin/do_rsync.sh manjaro ftp.tsukuba.wide.ad.jp/manjaro '-rtlvH --delete-after --delay-updates --safe-links'
+15 2-23/4 * * * /var/www/download/bin/do_rsync.sh manjaro ftp.tsukuba.wide.ad.jp/manjaro '-rtlvH --delete-after --delay-updates --safe-links --chmod=a+rx'
 15 3-23/4 * * * /var/www/download/bin/do_rsync.sh netbsd rsync3.jp.NetBSD.org/pub/NetBSD/ '--delete -Warts -v --ignore-errors'
 15 0-23/4 * * * /var/www/download/bin/do_rsync.sh repoforge repoforge.eecs.wsu.edu/repoforge/ '-vai4CH --safe-links --delete --block-size=131072 --ignore-errors'
 15 1-23/4 * * * /var/www/download/bin/do_rsync.sh rpmfusion download1.rpmfusion.org/rpmfusion/ '-vaH --numeric-ids --delete --delete-after --delay-updates --ignore-errors'
