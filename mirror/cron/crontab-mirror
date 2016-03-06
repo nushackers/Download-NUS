@@ -4,63 +4,56 @@
 # Official Mirror for Arch, Gnewsense
 # Do not delete without informing the mirror lists!
 
+# Benchmarked Distributions
+
+15-59/30 * * * * /var/www/download/bin/do_rsync.sh arch linux.cs.nctu.edu.tw/archlinux/ '-rtlHv --delete-after --delay-updates --copy-links --safe-links --ignore-errors'
+15-59/30 * * * * /var/www/download/bin/do_rsync.sh ubuntu archive.ubuntu.com/ubuntu/ '-rtlHpv --stats --ignore-errors' '--exclude="Packages*" --exclude="Sources*" --exclude="Release*" --ignore-errors -v' '--delete --delete-after --ignore-errors -v'
+
 # Important Distributions (Updated every hour)
 
-10 * * * * /var/www/download/bin/do_rsync.sh arch linux.cs.nctu.edu.tw/archlinux/ '-rtlHv --delete-after --delay-updates --copy-links --safe-links --ignore-errors'
-20 * * * * /var/www/download/bin/do_rsync.sh centos ftp.riken.jp/centos/ '--delete --delete-after -av --ignore-errors'
-30 * * * * /var/www/download/bin/do_rsync.sh debian mirrors.kernel.org/debian/ '-av --times --links --hard-links --partial --block-size=131072 --delete --delete-after --ignore-errors'
-40 * * * * /var/www/download/bin/do_rsync.sh epel mirrors.kernel.org/fedora-epel/ '-vaH --numeric-ids --delete --delete-after --delay-updates --ignore-errors'
+
+10 * * * * /var/www/download/bin/do_rsync.sh centos ftp.riken.jp/centos/ '--delete --delete-after -av --ignore-errors'
+20 * * * * /var/www/download/bin/do_rsync.sh debian mirrors.kernel.org/debian/ '-av --times --links --hard-links --partial --block-size=131072 --delete --delete-after --ignore-errors'
+30 * * * * /var/www/download/bin/do_rsync.sh epel mirrors.kernel.org/fedora-epel/ '-vaH --numeric-ids --delete --delete-after --delay-updates --ignore-errors'
+40 * * * * /var/www/download/bin/do_rsync.sh fedora fedora-rsync.ftp.pub.2iij.net/fedora-enchilada/ '-vaH --numeric-ids --delete --delete-after --delay-updates --ignore-errors'
 50 * * * * /var/www/download/bin/do_rsync.sh gentoo ftp.ussg.iu.edu/gentoo-distfiles/ '-av --times --links --hard-links --partial --block-size=131072 --delete --delete-after --ignore-errors'
-10 * * * * /var/www/download/bin/do_rsync.sh freebsd ftp3.us.FreeBSD.org/FreeBSD/ '-vaHz --delete --ignore-errors'
-20 * * * * /var/www/download/bin/do_rsync.sh kali ftp.halifax.rwth-aachen.de/kali/ '-qaHv --delete --ignore-errors'
-30 * * * * /var/www/download/bin/do_rsync.sh linuxmint rsync-packages.linuxmint.com/packages/ '-av --times --links --hard-links --partial --block-size=131072 --delete --delete-after --ignore-errors'
-40 * * * * /var/www/download/bin/do_rsync.sh opensuse fr2.rpmfind.net/linux/opensuse/ '-rlptv -hi --stats --delete --ignore-errors'
-50 * * * * /var/www/download/bin/do_rsync.sh raspbian ftp.yzu.edu.tw/Linux/raspbian/raspbian/ '-av --delete --ignore-errors'
-10 * * * * /var/www/download/bin/do_rsync.sh tails rsync.torproject.org/amnesia-archive/ '-rtv --delete --ignore-errors'
-20 * * * * /var/www/download/bin/do_rsync.sh ubuntu archive.ubuntu.com/ubuntu/ '-rtlHpv --stats --ignore-errors' '--exclude="Packages*" --exclude="Sources*" --exclude="Release*" --ignore-errors -v' '--delete --delete-after --ignore-errors -v'
+10 * * * * /var/www/download/bin/do_rsync.sh kali ftp.halifax.rwth-aachen.de/kali/ '-qaHv --delete --ignore-errors'
+20 * * * * /var/www/download/bin/do_rsync.sh manjaro ftp.tsukuba.wide.ad.jp/manjaro '-rtlvH --delete-after --delay-updates --safe-links --chmod=a+rx'
+
 
 # Linux Distributions and its repos (Updated every 4 hours)
 
-15 0-23/4 * * * /var/www/download/bin/do_rsync.sh alpine rsync.alpinelinux.org/alpine/ '-pruav --timeout=600 --block-size=131072 --delete --delete-after --ignore-errors'
-15 1-23/4 * * * /var/www/download/bin/do_rsync.sh apache rsync.apache.org/apache-dist/ '-avz --delete --safe-links --ignore-errors'
-15 3-23/4 * * * /var/www/download/bin/do_rsync.sh blackarch mirror.team-cymru.org/blackarch/ '-rtlHv --delete-after --delay-updates --copy-links --safe-links --ignore-errors'
-15 0-23/4 * * * /var/www/download/bin/do_rsync.sh debian-backports debian.mirror.digitalpacific.com.au/debian-backports/ '-av --times --links --hard-links --partial --block-size=131072 --delete --delete-after --ignore-errors'
-15 1-23/4 * * * /var/www/download/bin/do_rsync.sh debian-cd cdimage.debian.org/debian-cd/ '-av --times --links --hard-links --partial --block-size=131072 --delete --delete-after --ignore-errors'
-15 2-23/4 * * * /var/www/download/bin/do_rsync.sh fedora fedora-rsync.ftp.pub.2iij.net/fedora-enchilada/ '-vaH --numeric-ids --delete --delete-after --delay-updates --ignore-errors'
-15 3-23/4 * * * /var/www/download/bin/do_rsync.sh gentoo-portage sgp1.mirrors.digitalocean.com/gentoo-portage '-av --times --links --hard-links --partial --block-size=131072 --delete --delete-after --ignore-errors'
-15 0-23/4 * * * /var/www/download/bin/do_rsync.sh gnewsense rsync.archive.gnewsense.org/gnewsense/ '-av -P --delete --delete-before --ignore-errors'
-15 1-23/4 * * * /var/www/download/bin/do_rsync.sh kali-images ftp.halifax.rwth-aachen.de/kali-images/ '-qaHv --delete --ignore-errors'
-15 2-23/4 * * * /var/www/download/bin/do_rsync.sh kali-security ftp.halifax.rwth-aachen.de/kali-security/ '-qaHv --delete --ignore-errors'
-15 3-23/4 * * * /var/www/download/bin/do_rsync.sh kernel rsync.kernel.org/pub/ '-rlHtSvz --delete --ignore-errors'
-15 0-23/4 * * * /var/www/download/bin/do_rsync.sh linuxmint-debian mirror.internode.on.net/linuxmint-debian/ '-av --times --links --hard-links --partial --block-size=131072 --delete --delete-after --ignore-errors'
-15 1-23/4 * * * /var/www/download/bin/do_rsync.sh openbsd sgp1.mirrors.digitalocean.com/openbsd/ '-vaHz --delete --ignore-errors'
-15 2-23/4 * * * /var/www/download/bin/do_rsync.sh manjaro ftp.tsukuba.wide.ad.jp/manjaro '-rtlvH --delete-after --delay-updates --safe-links --chmod=a+rx'
-15 3-23/4 * * * /var/www/download/bin/do_rsync.sh netbsd rsync3.jp.NetBSD.org/pub/NetBSD/ '--delete -Warts -v --ignore-errors'
-15 0-23/4 * * * /var/www/download/bin/do_rsync.sh repoforge repoforge.eecs.wsu.edu/repoforge/ '-vai4CH --safe-links --delete --block-size=131072 --ignore-errors'
-15 1-23/4 * * * /var/www/download/bin/do_rsync.sh rpmfusion download1.rpmfusion.org/rpmfusion/ '-vaH --numeric-ids --delete --delete-after --delay-updates --ignore-errors'
-15 2-23/4 * * * /var/www/download/bin/do_rsync.sh scientific rsync.scientificlinux.org/scientific/ '-avSH --delete --delete-after --ignore-errors'
-15 3-23/4 * * * /var/www/download/bin/do_rsync.sh slackware mirrors1.kernel.org/slackware/ '-av --delete --delete-after --progress --ignore-errors'
-15 0-23/4 * * * /var/www/download/bin/do_rsync.sh slackwarearm mirrors.vbi.vt.edu/slackwarearm/ '-av --times --links --hard-links --partial --block-size=131072 --delete --delete-after --ignore-errors'
-15 1-23/4 * * * /var/www/download/bin/do_rsync.sh ubuntu-releases releases.ubuntu.com/releases/ '-rtlHpv --stats --delete-after --ignore-errors'
+15 0-23/4 * * * /var/www/download/bin/do_rsync.sh eclipse rsync.gtlib.gatech.edu/eclipse/ '-rtlpv --delete --ignore-errors'
+15 1-23/4 * * * /var/www/download/bin/do_rsync.sh freebsd ftp3.us.FreeBSD.org/FreeBSD/ '-vaHz --delete --ignore-errors'
+15 2-23/4 * * * /var/www/download/bin/do_rsync.sh gnewsense rsync.archive.gnewsense.org/gnewsense/ '-av -P --delete --delete-before --ignore-errors'
+15 3-23/4 * * * /var/www/download/bin/do_rsync.sh kali-images ftp.halifax.rwth-aachen.de/kali-images/ '-qaHv --delete --ignore-errors'
+15 0-23/4 * * * /var/www/download/bin/do_rsync.sh kali-security ftp.halifax.rwth-aachen.de/kali-security/ '-qaHv --delete --ignore-errors'
+15 1-23/4 * * * /var/www/download/bin/do_rsync.sh opensuse fr2.rpmfind.net/linux/opensuse/ '-rlptv -hi --stats --delete --ignore-errors'
+15 2-23/4 * * * /var/www/download/bin/do_rsync.sh slackware mirrors1.kernel.org/slackware/ '-av --delete --delete-after --progress --ignore-errors'
+15 3-23/4 * * * /var/www/download/bin/do_rsync.sh ubuntu-releases releases.ubuntu.com/releases/ '-rtlHpv --stats --delete-after --ignore-errors'
 
-# Software Repositories (Updated every 6 hours)
+# Software Repositories and Extremely low usage linux distros (Updated every 6 hours)
 
-45 0-23/6 * * * /var/www/download/bin/do_rsync.sh ccc mirror.us.oneandone.net/ccc/ '-av --times --links --hard-links --partial --block-size=131072 --delete --delete-after --ignore-errors'
-45 1-23/6 * * * /var/www/download/bin/do_rsync.sh cpan ftp.ubuntu-tw.org/CPAN/ '-av --delete --ignore-errors'
-45 2-23/6 * * * /var/www/download/bin/do_rsync.sh cran cran.r-project.org/CRAN '-rtlzv --delete --ignore-errors'
-45 3-23/6 * * * /var/www/download/bin/do_rsync.sh ctan rsync.dante.ctan.org/CTAN/ '-rltgoDv --delete --ignore-errors'
-45 4-23/6 * * * /var/www/download/bin/do_rsync.sh cygwin cygwin.com/cygwin-ftp/ '-av --delete --delete-after --ignore-errors'
-45 5-23/6 * * * /var/www/download/bin/do_rsync.sh eclipse rsync.gtlib.gatech.edu/eclipse/ '-rtlpv --delete --ignore-errors'
-45 0-23/6 * * * /var/www/download/bin/do_rsync.sh fink master.us.finkmirrors.net/distfiles/ '-av --times --links --hard-links --partial --block-size=131072 --delete --delete-after --ignore-errors'
-45 1-23/6 * * * /var/www/download/bin/do_rsync.sh finkbindist master.us.finkmirrors.net/finkbindist/ '-av --times --links --hard-links --partial --block-size=131072 --delete --delete-after --ignore-errors'
-45 2-23/6 * * * /var/www/download/bin/do_rsync.sh finkinfo master.us.finkmirrors.net/finkinfo/ '-av --times --links --hard-links --partial --block-size=131072 --delete --delete-after --ignore-errors'
-45 3-23/6 * * * /var/www/download/bin/do_rsync.sh gnu mirror.team-cymru.org/gnu/ '-rltpHSv --delete-excluded --ignore-errors'
-45 4-23/6 * * * /var/www/download/bin/do_rsync.sh gnupg rsync.mirrorservice.org/ftp.gnupg.org/gcrypt/ '-vaH --numeric-ids --delete --delete-after --delay-updates --ignore-errors'
-45 5-23/6 * * * /var/www/download/bin/do_rsync.sh ietf rsync.ietf.org/everything-ftp/ '-vaH --numeric-ids --delete --delete-after --delay-updates --ignore-errors'
-45 0-23/6 * * * /var/www/download/bin/do_rsync.sh mariadb rsync.osuosl.org/mariadb/ '-av --partial --delete-after --delay-updates --ignore-errors'
-45 1-23/6 * * * /var/www/download/bin/do_rsync.sh mysql rsync.mirrorservice.org/ftp.mysql.com/ '-av --delete --delete-after --ignore-errors'
-45 2-23/6 * * * /var/www/download/bin/do_rsync.sh openoffice ftp.isu.edu.tw/openoffice/ '-avz --delete --safe-links --ignore-errors'
-45 3-23/6 * * * /var/www/download/bin/do_rsync.sh tdf rsync.documentfoundation.org/tdf-pub/ '--no-motd -rlptHv -hi --delete --ignore-errors'
+45 0-23/6 * * * /var/www/download/bin/do_rsync.sh alpine rsync.alpinelinux.org/alpine/ '-pruav --timeout=600 --block-size=131072 --delete --delete-after --ignore-errors'
+45 1-23/6 * * * /var/www/download/bin/do_rsync.sh apache rsync.apache.org/apache-dist/ '-avz --delete --safe-links --ignore-errors'
+45 2-23/6 * * * /var/www/download/bin/do_rsync.sh blackarch mirror.team-cymru.org/blackarch/ '-rtlHv --delete-after --delay-updates --copy-links --safe-links --ignore-errors'
+45 3-23/6 * * * /var/www/download/bin/do_rsync.sh ccc mirror.us.oneandone.net/ccc/ '-av --times --links --hard-links --partial --block-size=131072 --delete --delete-after --ignore-errors'
+45 4-23/6 * * * /var/www/download/bin/do_rsync.sh ctan rsync.dante.ctan.org/CTAN/ '-rltgoDv --delete --ignore-errors'
+45 5-23/6 * * * /var/www/download/bin/do_rsync.sh cygwin cygwin.com/cygwin-ftp/ '-av --delete --delete-after --ignore-errors'
+45 0-23/6 * * * /var/www/download/bin/do_rsync.sh debian-cd cdimage.debian.org/debian-cd/ '-av --times --links --hard-links --partial --block-size=131072 --delete --delete-after --ignore-errors'
+45 1-23/6 * * * /var/www/download/bin/do_rsync.sh ietf rsync.ietf.org/everything-ftp/ '-vaH --numeric-ids --delete --delete-after --delay-updates --ignore-errors'
+45 2-23/6 * * * /var/www/download/bin/do_rsync.sh mariadb rsync.osuosl.org/mariadb/ '-av --partial --delete-after --delay-updates --ignore-errors'
+45 3-23/6 * * * /var/www/download/bin/do_rsync.sh mysql rsync.mirrorservice.org/ftp.mysql.com/ '-av --delete --delete-after --ignore-errors'
+45 4-23/6 * * * /var/www/download/bin/do_rsync.sh tdf rsync.documentfoundation.org/tdf-pub/ '--no-motd -rlptHv -hi --delete --ignore-errors'
 
-# Distrobutions to be removed soon (Updated every 24 hours)
+
+# Software Repos and Linux Distributions to be removed soon (Updated every 24 hours)
 # If its a Linux distribution >100th in rank on distrowatch, it will be placed here
+
+45 2 * * * /var/www/download/bin/do_rsync.sh cpan ftp.ubuntu-tw.org/CPAN/ '-av --delete --ignore-errors'
+45 3 * * * /var/www/download/bin/do_rsync.sh cran cran.r-project.org/CRAN '-rtlzv --delete --ignore-errors'
+45 4 * * * /var/www/download/bin/do_rsync.sh openoffice ftp.isu.edu.tw/openoffice/ '-avz --delete --safe-links --ignore-errors'
+
+# Defcon, cause I like it
+
+#0 2 6 * * httrack "https://media.defcon.org" -O "/var/www/download/data/defcon" --retries=5 -c4 -A5242880 -B -v -r200 -z >> /var/www/download/log/progress/defcon
