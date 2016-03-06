@@ -1,0 +1,14 @@
+---
+layout: blog_list
+title: blog
+meta: Random mublings of that sysadmin who maintains this stuff.
+---
+
+<section class="wrapper style3 special">
+	{% for blog in site.categories.blog %}
+	<section class="inner">
+			<a href="{{site.baseurl}}{{blog.url}}">{{blog.title}}</a>
+			<p>{{blog.meta}}</p>
+	</section>
+	{% endfor %}
+</section>

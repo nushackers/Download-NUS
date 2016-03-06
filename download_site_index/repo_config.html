@@ -1,0 +1,39 @@
+---
+layout: page
+title: Repository Config
+---
+
+<section>
+	{% for config in site.categories.config %}
+	<section class="inner">
+			<a href="{{site.baseurl}}{{blog.url}}">{{config.title}}</a>
+			<p>{{config.meta}}</p>
+	</section>
+	{% endfor %}
+</section>
+
+<section>
+	<h4>List Of repositories</h4>
+	<div class="table-wrapper">
+		<table>
+			<thead>
+				<tr>
+					<th>Distribution</th>
+					<th>Site</th>
+					<th>Update Period (Hr)</th>
+				</tr>
+			</thead>
+			<tbody>
+			{% for repo in site.data.repository_list %}
+				<tr>
+					<td><a href="http://download.nus.edu.sg/mirror/{{repo.title}}">{{repo.title}}</td>
+					<td>{{repo.mirror}}</td>
+					<td>{{repo.update_freq}}</td>
+				</tr>
+			{% endfor %}
+			</tbody>
+		</table>
+	</div>
+</section>
+
+

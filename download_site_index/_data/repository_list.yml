@@ -1,0 +1,132 @@
+- title: arch
+  repo: arch
+  update_freq: 0.5
+  mirror: ftp.tku.edu.tw/archlinux/
+- title: ubuntu
+  repo: ubuntu
+  update_freq: 0.5
+  mirror: archive.ubuntu.com/ubuntu/
+
+# Important Distributions (Updated every hour)
+
+
+- title: centos
+  repo: centos
+  update_freq: 1
+  mirror: ftp.riken.jp/centos/
+- title: debian
+  repo: debian
+  update_freq: 1
+  mirror: mirrors.kernel.org/debian/
+- title: epel
+  repo: epel
+  update_freq: 1
+  mirror: mirrors.kernel.org/fedora-epel/
+- title: fedora
+  repo: fedora
+  update_freq: 1
+  mirror: fedora-rsync.ftp.pub.2iij.net/fedora-enchilada/
+- title: gentoo
+  repo: gentoo
+  update_freq: 1
+  mirror: ftp.ussg.iu.edu/gentoo-distfiles/
+- title: kali
+  repo: kali
+  update_freq: 1
+  mirror: ftp.halifax.rwth-aachen.de/kali/
+- title: manjaro
+  repo: manjaro
+  update_freq: 1
+  mirror: ftp.tsukuba.wide.ad.jp/manjaro/
+
+
+# Linux Distributions and its repos (Updated every 4 hours)
+
+- title: eclipse
+  repo: eclipse
+  update_freq: 4
+  mirror: rsync.gtlib.gatech.edu/eclipse/
+- title: freebsd
+  repo: freebsd
+  update_freq: 4
+  mirror: ftp3.us.FreeBSD.org/FreeBSD/
+- title: gnewsense
+  repo: gnewsense
+  update_freq: 4
+  mirror: rsync.archive.gnewsense.org/gnewsense/
+- title: kali-images
+  repo: kali-images
+  update_freq: 4
+  mirror: ftp.halifax.rwth-aachen.de/kali-images/
+- title: kali-security
+  repo: kali-security
+  update_freq: 4
+  mirror: ftp.halifax.rwth-aachen.de/kali-security/
+- title: opensuse
+  repo: opensuse
+  update_freq: 4
+  mirror: fr2.rpmfind.net/linux/opensuse/
+- title: slackware
+  repo: slackware
+  update_freq: 4
+  mirror: mirrors1.kernel.org/slackware/
+- title: ubuntu-releases
+  repo: ubuntu-releases
+  update_freq: 4
+  mirror: releases.ubuntu.com/releases/
+
+# Software Repositories and Extremely low usage linux distros (Updated every 6 hours)
+
+- title: alpine
+  repo: alpine
+  update_freq: 6
+  mirror: rsync.alpinelinux.org/alpine/
+- title: apache
+  repo: apache
+  update_freq: 6
+  mirror: rsync.apache.org/apache-dist/
+- title: blackarch
+  repo: blackarch
+  update_freq: 6
+  mirror: mirror.team-cymru.org/blackarch/
+- title: ccc
+  repo: ccc
+  update_freq: 6
+  mirror: mirror.us.oneandone.net/ccc/
+- title: cygwin
+  repo: cygwin
+  update_freq: 6
+  mirror: cygwin.com/cygwin-ftp/
+- title: debian-cd
+  repo: debian-cd
+  update_freq: 6
+  mirror: cdimage.debian.org/debian-cd/
+- title: ietf
+  repo: ietf
+  update_freq: 6
+  mirror: rsync.ietf.org/everything-ftp/
+- title: mariadb
+  repo: mariadb
+  update_freq: 6
+  mirror: rsync.osuosl.org/mariadb/
+- title: tdf
+  repo: tdf
+  update_freq: 6
+  mirror: rsync.documentfoundation.org/tdf-pub/
+
+
+# Software Repos and Linux Distributions to be removed soon (Updated every 24 hours)
+# If its a Linux distribution >100th in rank on distrowatch, it will be placed here
+
+- title: cpan
+  repo: cpan
+  update_freq: 24
+  mirror: ftp.ubuntu-tw.org/CPAN/
+- title: cran
+  repo: cran
+  update_freq: 24
+  mirror: cran.r-project.org/CRAN/
+- title: openoffice
+  repo: openoffice
+  update_freq: 24
+  mirror: ftp.isu.edu.tw/openoffice/

@@ -6,7 +6,7 @@
 
 # Benchmarked Distributions
 
-15-59/30 * * * * /var/www/download/bin/do_rsync.sh arch linux.cs.nctu.edu.tw/archlinux/ '-rtlHv --delete-after --delay-updates --copy-links --safe-links --ignore-errors'
+15-59/30 * * * * /var/www/download/bin/do_rsync.sh arch ftp.tku.edu.tw/archlinux/ '-rtlHv --delete-after --delay-updates --copy-links --safe-links --ignore-errors'
 15-59/30 * * * * /var/www/download/bin/do_rsync.sh ubuntu archive.ubuntu.com/ubuntu/ '-rtlHpv --stats --ignore-errors' '--exclude="Packages*" --exclude="Sources*" --exclude="Release*" --ignore-errors -v' '--delete --delete-after --ignore-errors -v'
 
 # Important Distributions (Updated every hour)
