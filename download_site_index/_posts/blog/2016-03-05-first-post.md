@@ -58,4 +58,4 @@ Thanklessness
 
 Since taking the role of mirror maintainer, I've recieved an *avalanche* of critques regarding download.nus.edu.sg. I especially loathe those thinly veiled [sacarsms](https://twitter.com/kaihendry/status/683940909654753280). Thing is, this is pretty much what I can do with the limited resources I have on hand, and the bargaining power I have with ComCen.
 
-Hopefully, the next generation of maintainers would have a better time managing this mirror.
+Hopefully, the next generation of maintainers will have a better time managing this mirror.

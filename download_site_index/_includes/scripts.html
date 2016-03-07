@@ -7,9 +7,30 @@
 <!--[if lte IE 8]><script src="js/ie/respond.min.js"></script><![endif]-->
 <script src="{{site.baseurl}}/js/main.js"></script>
 <script type="text/javascript">
-  function random_img(){
-    var rand_img=Math.floor(Math.random()*8)
-    $('#page-wrapper-placeholder').attr("id", "page-wrapper-" + rand_img);
-  }
-  random_img();
+	var rand_img;
+	var rand_vid;
+
+	function random_img(){
+		rand_img=Math.floor(Math.random()*8);
+		$('#page-wrapper-placeholder').attr("id", "page-wrapper-" + rand_img);  
+	}
+
+	random_img();
+
+	var video_list=["https://www.youtube.com/embed/gZSYA54DTW4?autoplay=1&iv_load_policy=3",
+		"https://www.youtube.com/embed/YchEuqYjMi8?start=58&autoplay=1&iv_load_policy=3",
+		"https://www.youtube.com/embed/oBY9xYUSdUg?start=15&autoplay=1&iv_load_policy=3",
+		"https://www.youtube.com/embed/cDBCnAC80Is?start=8&autoplay=1&iv_load_policy=3",
+		"https://www.youtube.com/embed/LuS5mehCAMI?end=60&autoplay=1&iv_load_policy=3",
+		"https://www.youtube.com/embed/0PxTAn4g20U?start=14&autoplay=1&iv_load_policy=3",
+		"https://www.youtube.com/embed/qDQxuUEMiV8?start=13&autoplay=1&iv_load_policy=3",
+		"https://www.youtube.com/embed/REKRLYoz2fc?start=336&end=414&autoplay=1&iv_load_policy=3"];
+
+	function random_vid(){
+		rand_vid=Math.floor(Math.random()*video_list.length);
+		$('#var_vid').attr("href", video_list[rand_vid]);
+	}
+
+	random_vid();
+
 </script>
