@@ -97,6 +97,10 @@
   repo: cygwin
   update_freq: 6
   mirror: cygwin.com/cygwin-ftp/
+- title: ctan
+  repo: ctan
+  update_freq: 6
+  mirror: rsync.dante.ctan.org/CTAN/
 - title: debian-cd
   repo: debian-cd
   update_freq: 6

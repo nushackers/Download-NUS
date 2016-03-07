@@ -16,7 +16,7 @@ Statistics
 
 These are the compiled statistics for past 19 days (in terms of nginx accesses)
 
-Repos permenantly deleted
+Repos permanently deleted
 -------
 
 **Repository** | **Accesses**
